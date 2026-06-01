@@ -7,15 +7,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-base: #030708;
+            /* Cores baseadas na logo (Verde Escuro, Vermelho, Branco) */
+            --bg-base: #050505;
             --text-main: #ffffff;
             --text-muted: #a1a1aa;
             
-            /* Glassmorphism Premium */
-            --glass-bg: rgba(15, 22, 18, 0.45);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.6);
-            --glass-accent: rgba(0, 230, 118, 0.1);
+            /* Glassmorphism Colors */
+            --glass-bg: rgba(25, 30, 25, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
             
             /* WhatsApp iOS Dark Mode Colors */
             --ios-bg: #0b141a;
@@ -25,18 +25,18 @@
             --ios-blue: #00a884;
         }
 
-        html { scroll-behavior: smooth; }
-
         body {
             background-color: var(--bg-base);
             color: var(--text-main);
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            margin: 0; padding: 0;
+            margin: 0;
+            padding: 0;
             text-align: center;
             overflow-x: hidden;
+            /* Fundo com luzes para o efeito Glass aparecer */
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(0, 230, 118, 0.15), transparent 45%),
-                radial-gradient(circle at 90% 50%, rgba(220, 20, 60, 0.12), transparent 45%);
+                radial-gradient(circle at 15% 30%, rgba(46, 139, 87, 0.25), transparent 40%),
+                radial-gradient(circle at 85% 70%, rgba(220, 20, 60, 0.2), transparent 40%);
             background-attachment: fixed;
         }
 
@@ -45,136 +45,211 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 24px;
-            background: rgba(3, 7, 8, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            padding: 12px 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--glass-border);
-            position: sticky; top: 0; z-index: 100;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .icon-btn {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--glass-border);
             color: var(--text-main);
-            border-radius: 14px;
-            width: 44px; height: 44px;
-            font-size: 24px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: all 0.3s ease;
+            border-radius: 12px;
+            width: 42px;
+            height: 42px;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            backdrop-filter: blur(10px);
         }
-        .icon-btn:hover { background: var(--glass-accent); border-color: #00E676; }
+
+        .icon-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
 
         .logo {
-            font-size: 20px; font-weight: 800;
-            display: flex; align-items: center; gap: 10px;
+            font-size: 20px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -0.5px;
         }
 
         .logo-img {
-            width: 36px; height: 36px; border-radius: 11px;
-            object-fit: cover; border: 1px solid rgba(255,255,255,0.15);
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 0 10px rgba(46, 139, 87, 0.5);
         }
 
+        /* Ping de Status Online no Topo */
         .status-ping {
-            display: flex; align-items: center; gap: 8px; font-size: 13px;
-            color: #00E676; background: rgba(0, 230, 118, 0.08);
-            padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(0, 230, 118, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #00E676;
+            background: rgba(0, 230, 118, 0.1);
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 230, 118, 0.2);
         }
+
         .ping-dot {
-            width: 8px; height: 8px; background: #00E676; border-radius: 50%;
-            box-shadow: 0 0 10px #00E676; animation: pulse 2s infinite;
+            width: 8px;
+            height: 8px;
+            background: #00E676;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #00E676;
+            animation: pulse 1.5s infinite;
         }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
-        /* Menu Lateral Restaurado e Limpo */
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+
+        /* Glassmorphism Sidebar (Restaurado para o formato de caixinhas com texto) */
         .sidebar {
-            position: fixed; top: 0; left: -340px; width: 300px; height: 100%;
-            background: rgba(5, 8, 6, 0.8);
-            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 280px;
+            height: 100%;
+            background: rgba(15, 18, 15, 0.6);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border-right: 1px solid var(--glass-border);
-            box-shadow: var(--glass-shadow); z-index: 200;
+            box-shadow: var(--glass-shadow);
+            z-index: 200;
             transition: 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-            text-align: left; padding: 30px 24px; box-sizing: border-box;
+            text-align: left;
+            padding: 20px;
+            box-sizing: border-box;
         }
-        .sidebar.active { left: 0; }
-        .close-menu { font-size: 32px; background: none; border: none; color: var(--text-muted); cursor: pointer; float: right; }
-        .menu-title { font-size: 26px; font-weight: 800; margin-bottom: 40px; letter-spacing: -0.5px; }
 
-        .menu-link {
-            display: block; background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border); color: #fff;
-            text-decoration: none; padding: 16px; border-radius: 16px;
-            font-size: 15px; font-weight: 600; margin-bottom: 15px;
-            transition: all 0.3s ease;
+        .sidebar.active { left: 0; }
+
+        .close-menu {
+            font-size: 30px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            float: right;
+            padding: 0;
         }
-        .menu-link:hover { background: var(--glass-accent); border-color: #00E676; transform: translateY(-2px); }
-        .menu-link-primary { background: linear-gradient(135deg, #00E676, #00b359); color: #000; border: none; }
-        .menu-link-primary:hover { color: #000; box-shadow: 0 8px 20px rgba(0, 230, 118, 0.3); }
+
+        .menu-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #fff;
+            margin-top: 50px;
+            margin-bottom: 30px;
+        }
+
+        /* Formato original dos botões do menu */
+        .menu-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .menu-section h3 { margin: 0 0 8px 0; font-size: 16px; }
+        .menu-section p { margin: 0 0 15px 0; font-size: 13px; color: var(--text-muted); line-height: 1.4; }
+
+        .btn-menu {
+            display: block;
+            text-align: center;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s;
+        }
+
+        .btn-menu:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+        .btn-primary { background: linear-gradient(135deg, #00E676, #00b359); color: #000; border: none; }
+        .btn-primary:hover { background: linear-gradient(135deg, #00ff88, #00cc66); box-shadow: 0 5px 15px rgba(0, 230, 118, 0.4); }
 
         .sidebar-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
-            z-index: 150; display: none;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+            z-index: 150; display: none; opacity: 0; transition: 0.4s;
         }
-        .sidebar-overlay.active { display: block; }
+        .sidebar-overlay.active { display: block; opacity: 1; }
 
-        /* Modal de Comandos */
+        /* Modal de Comandos Simplificado */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
             z-index: 300; display: none; align-items: center; justify-content: center;
+            opacity: 0; transition: 0.3s;
         }
-        .modal-overlay.active { display: flex; }
-        
+        .modal-overlay.active { display: flex; opacity: 1; }
+
         .modal-content {
-            background: rgba(10, 15, 12, 0.7); border: 1px solid var(--glass-border);
-            width: 90%; max-width: 440px; max-height: 80vh;
-            border-radius: 28px; padding: 28px; text-align: left;
-            overflow-y: auto; box-shadow: var(--glass-shadow); backdrop-filter: blur(20px);
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            width: 90%; max-width: 400px; max-height: 80vh;
+            border-radius: 24px; padding: 25px; text-align: left;
+            overflow-y: auto; box-shadow: var(--glass-shadow);
+            transform: scale(0.9); transition: 0.3s;
+            backdrop-filter: blur(20px);
         }
+        .modal-overlay.active .modal-content { transform: scale(1); }
 
         .cmd-item {
-            background: rgba(0,0,0,0.4); padding: 14px; border-radius: 14px;
-            margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.05);
+            background: rgba(0,0,0,0.3); padding: 12px; border-radius: 12px;
+            margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.05);
         }
         .cmd-item span { color: #00E676; font-weight: bold; font-family: monospace; font-size: 15px;}
-        .cmd-item p { margin: 5px 0 0 0; font-size: 13px; color: var(--text-muted); line-height: 1.4; }
+        .cmd-item p { margin: 5px 0 0 0; font-size: 13px; color: var(--text-muted); }
 
-        /* Hero Section */
-        .hero { padding: 60px 20px 30px; }
-        .hero h1 { font-size: 44px; font-weight: 800; margin: 0 0 15px 0; line-height: 1.1; letter-spacing: -1px; }
-        .hero p.subtitle { font-size: 17px; color: var(--text-muted); margin: 0 auto 35px auto; max-width: 440px; line-height: 1.6; }
-        
-        .cta-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 40px; }
-        .btn-action {
-            display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px; border-radius: 14px;
-            font-size: 15px; font-weight: 600; text-decoration: none; transition: all 0.3s ease;
+        /* Hero Section Original (Sem botões extras) */
+        .hero { padding: 60px 20px 40px; }
+        h1 { font-size: 40px; font-weight: 800; margin: 0 0 15px 0; line-height: 1.1; letter-spacing: -1px; }
+        p.subtitle { font-size: 17px; color: var(--text-muted); margin: 0 auto 35px auto; max-width: 420px; line-height: 1.5; }
+
+        /* Smartphone Mockup com Animação WhatsApp iOS Atualizada */
+        .mockup-container {
+            display: flex; justify-content: center; margin-bottom: 30px; position: relative; z-index: 10;
+            perspective: 1000px;
         }
-        .btn-main-green { background: linear-gradient(135deg, #00E676, #00b359); color: #000; }
-        .btn-main-green:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 230, 118, 0.3); }
-        .btn-outline { background: rgba(255,255,255,0.03); color: #fff; border: 1px solid var(--glass-border); }
-        .btn-outline:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
-
-        /* Smartphone Mockup Perfeito do WhatsApp */
-        .mockup-container { display: flex; justify-content: center; margin-bottom: 60px; z-index: 10; }
 
         .phone-mockup {
-            background-color: #000; border: 8px solid #1f1f1f; border-radius: 44px;
-            height: 540px; width: 275px; position: relative;
-            box-shadow: 0 30px 60px rgba(0,0,0, 0.8); overflow: hidden;
+            background-color: #000; border: 6px solid #1f1f1f; border-radius: 45px;
+            height: 520px; width: 260px; position: relative;
+            box-shadow: 0 30px 60px rgba(0,0,0, 0.8), inset 0 0 0 2px #333;
+            overflow: hidden; animation: phoneEntrance 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            opacity: 0; transform: translateY(60px) scale(0.95);
         }
 
-        /* Dynamic Island */
+        @keyframes phoneEntrance { to { opacity: 1; transform: translateY(0) scale(1); } }
+
         .phone-mockup::before {
-            content: ''; position: absolute; top: 11px; left: 50%; transform: translateX(-50%);
-            width: 80px; height: 22px; background-color: #000; border-radius: 20px; z-index: 40;
+            content: ''; position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+            width: 90px; height: 25px; background-color: #000; border-radius: 20px; z-index: 40;
         }
 
-        /* Top Bar Superior do iPhone (Rede, Wifi, Bateria) */
+        /* Top Bar Superior do iPhone */
         .phone-status-bar {
             position: absolute; top: 0; width: 100%; height: 35px;
             display: flex; justify-content: space-between; align-items: center;
-            padding: 0 24px; box-sizing: border-box; font-size: 11px; font-weight: 600;
+            padding: 0 20px; box-sizing: border-box; font-size: 11px; font-weight: 600;
             color: #fff; z-index: 35; background: var(--ios-header);
         }
         .status-icons { display: flex; gap: 4px; font-size: 10px; }
@@ -195,7 +270,7 @@
         .chat-status { text-align: left; flex: 1; }
         .chat-status strong { display: block; font-size: 14px; color: #e9edef; font-weight: 500; }
         .chat-status span { font-size: 11px; color: #8696a0; }
-        .ios-icons { color: #aebac1; font-size: 16px; display: flex; gap: 16px; }
+        .ios-icons { color: #aebac1; font-size: 16px; display: flex; gap: 14px; }
 
         /* Área de Rolagem Dinâmica das Mensagens */
         .chat-body {
@@ -203,19 +278,19 @@
             overflow: hidden; box-sizing: border-box;
         }
 
-        /* Container que vai deslizar para cima simulando o scroll real */
+        /* Container de Scroll (As mensagens nunca somem, a tela sobe) */
         .chat-scroll-container {
             display: flex; flex-direction: column; gap: 10px; width: 100%;
             position: absolute; left: 0; padding: 12px; box-sizing: border-box;
             animation: whatsappScroll 12s infinite cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* Balões de Conversa Idênticos ao App */
+        /* Layout de cada linha de mensagem */
         .msg-row { display: flex; width: 100%; position: relative; margin-bottom: 2px; }
         .msg-row.row-out { justify-content: flex-end; }
-        .msg-row.row-in { justify-content: flex-start; padding-left: 32px; } /* Espaço para a foto fixa do bot na linha */
+        .msg-row.row-in { justify-content: flex-start; padding-left: 32px; }
 
-        /* Foto do bot ao lado das mensagens dele */
+        /* Foto do bot fixa ao lado das mensagens dele */
         .bot-inline-avatar {
             position: absolute; left: 0; bottom: 0; width: 26px; height: 26px;
             border-radius: 50%; object-fit: cover;
@@ -223,52 +298,39 @@
 
         .msg-box {
             max-width: 82%; padding: 6px 9px 8px 9px; font-size: 13.5px; color: #e9edef;
-            position: relative; box-shadow: 0 1px 0.5px rgba(0,0,0,0.15); line-height: 1.4;
+            position: relative; box-shadow: 0 1px 0.5px rgba(0,0,0,0.15); line-height: 1.4; text-align: left;
         }
-
-        .msg-box.outgoing {
-            background-color: var(--ios-bubble-out); border-radius: 8px 8px 0px 8px;
-        }
-        .msg-box.incoming {
-            background-color: var(--ios-bubble-in); border-radius: 8px 8px 8px 0px;
-        }
+        .msg-box.outgoing { background-color: var(--ios-bubble-out); border-radius: 8px 8px 0px 8px; }
+        .msg-box.incoming { background-color: var(--ios-bubble-in); border-radius: 8px 8px 8px 0px; }
 
         .msg-time { font-size: 9.5px; color: #8696a0; float: right; margin: 4px 0 -4px 8px; display: flex; align-items: center; gap: 2px; }
-        .outgoing .msg-time { color: #8696a0; }
 
-        /* Caixa de Mídia/Imagem Arredondada */
+        /* Caixa de Mídia Enviada */
         .media-box {
             border-radius: 6px; overflow: hidden; margin-bottom: 4px;
-            width: 160px; height: 160px; background: #182229;
+            width: 150px; height: 150px; background: #182229;
             display: flex; align-items: center; justify-content: center;
         }
         .media-box img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Figurinha do WhatsApp Pronta */
+        /* Figurinha Gerada */
         .sticker-wrapper { padding: 4px 0; background: transparent !important; box-shadow: none !important; }
         .whatsapp-sticker {
-            width: 105px; height: 105px;
+            width: 110px; height: 110px;
             background: url('https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg') center/cover;
-            border-radius: 4px; animation: floatEffect 2s infinite alternate ease-in-out;
+            border-radius: 8px; animation: floatEffect 2s infinite alternate ease-in-out;
         }
         @keyframes floatEffect { from { transform: translateY(0); } to { transform: translateY(-4px); } }
 
-        /* TIMELINE DE ANIMAÇÃO POR SCROLL (A foto e o texto NUNCA somem, eles sobem organicamente) */
+        /* Animação do Scroll Realista */
         @keyframes whatsappScroll {
-            /* 0s a 3s: Usuário envia imagem */
             0%, 22% { transform: translateY(180px); } 
-            
-            /* 3s a 6s: Bot responde texto "Criando..." e a tela sobe um pouco */
             28%, 52% { transform: translateY(100px); }
-            
-            /* 6s a 10s: Figurinha é gerada, tela sobe totalmente revelando todo o histórico completo */
             58%, 92% { transform: translateY(-45px); }
-            
-            /* 10s a 12s: Reseta suavemente para o início */
             98%, 100% { transform: translateY(180px); }
         }
 
-        /* Controle individual de surgimento de cada balão acompanhando o scroll */
+        /* Animação do Surgimento dos Balões */
         @keyframes bubbleFade {
             0% { opacity: 0; transform: scale(0.9); }
             100% { opacity: 1; transform: scale(1); }
@@ -277,7 +339,7 @@
         .anim-b2 { animation: bubbleFade 0.3s 3.2s forwards; opacity: 0; }
         .anim-b3 { animation: bubbleFade 0.3s 6.8s forwards; opacity: 0; }
 
-        /* Barra de Entrada de Texto Inferior */
+        /* Rodapé do WhatsApp (Digitação) */
         .chat-footer {
             background: #101d25; padding: 8px 10px; display: flex; align-items: center; gap: 8px;
             border-top: 1px solid rgba(255,255,255,0.05); z-index: 30;
@@ -287,68 +349,79 @@
             flex: 1; background: #2a3942; padding: 7px 12px; border-radius: 8px;
             color: #8696a0; font-size: 14px; text-align: left; display: flex; justify-content: space-between;
         }
-        .wa-input-field span { color: #8696a0; }
         .wa-icon-mic { color: #8696a0; font-size: 16px; }
 
-        /* Estatísticas em Cards */
+        /* Seção de Estatísticas (Grid Original) */
         .stats-grid {
             display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;
-            max-width: 600px; margin: 40px auto; padding: 0 20px;
+            max-width: 600px; margin: 0 auto 50px auto; padding: 0 20px;
         }
-        @media(min-width: 600px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
-
         .stat-card {
             background: var(--glass-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border); padding: 20px 10px; border-radius: 20px; text-align: center;
+            border: 1px solid var(--glass-border); padding: 20px 15px; border-radius: 20px; text-align: center;
         }
-        .stat-card h3 { font-size: 24px; margin: 0 0 4px 0; color: #fff; font-weight: 800; }
-        .stat-card p { margin: 0; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-card h3 { font-size: 24px; margin: 0 0 5px 0; color: #fff; font-weight: 800; }
+        .stat-card p { margin: 0; font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
 
-        /* FAQ Sanfona */
-        .faq-section { max-width: 600px; margin: 60px auto; padding: 0 20px; text-align: left; }
-        .section-title { font-size: 26px; font-weight: 800; margin-bottom: 25px; text-align: center; }
-        
-        details {
-            background: var(--glass-bg); border: 1px solid var(--glass-border);
-            border-radius: 16px; margin-bottom: 12px; padding: 16px; backdrop-filter: blur(10px);
+        /* FAQ Simples Original */
+        .faq-section {
+            max-width: 600px; margin: 0 auto 50px auto; padding: 0 20px; text-align: left;
         }
-        details[open] { border-color: rgba(0, 230, 118, 0.3); }
-        summary { font-size: 15px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        summary::after { content: '＋'; font-size: 13px; color: #00E676; }
-        details[open] summary::after { content: '－'; }
-        details p { margin: 10px 0 0 0; font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+        .faq-title { font-size: 20px; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .faq-item { margin-bottom: 15px; }
+        .faq-item strong { color: #00E676; font-size: 15px; }
+        .faq-item p { margin: 5px 0 0 0; font-size: 14px; color: var(--text-muted); line-height: 1.5; }
 
-        footer { border-top: 1px solid var(--glass-border); padding: 30px 20px; font-size: 14px; color: var(--text-muted); }
+        footer { background: var(--glass-bg); padding: 30px 20px; font-size: 14px; color: var(--text-muted); }
+        footer span { color: #fff; font-weight: 600; }
+
     </style>
 </head>
 <body>
 
     <div class="sidebar-overlay" id="overlay" onclick="toggleMenu()"></div>
 
+    <!-- Menu Lateral (Restaurado com o formato original aprovado) -->
     <div class="sidebar" id="sidebar">
         <button class="close-menu" onclick="toggleMenu()">&times;</button>
         <div class="menu-title">Navegação</div>
         
-        <a href="#" onclick="openModal('cmdModal')" class="menu-link">📖 Lista de Comandos</a>
-        <a href="https://chat.whatsapp.com/CycrLPgo7Ib0c5aQLlL5pV?s=cl&p=a&mlu=0&amv=2" target="_blank" class="menu-link">👥 Entrar no Grupo</a>
-        <a href="https://api.whatsapp.com/send?phone=56950572559&text=%2Fmenu" target="_blank" class="menu-link menu-link-primary">🤖 Conversar no Privado</a>
-    </div>
+        <div class="menu-section">
+            <h3>📖 Comandos</h3>
+            <p>Veja a lista com todos os comandos disponíveis para usar com o Shard Bot.</p>
+            <a href="#" onclick="openModal('cmdModal')" class="btn-menu">Ver Lista de Comandos</a>
+        </div>
 
-    <div class="modal-overlay" id="cmdModal" onclick="closeModal(event)">
-        <div class="modal-content">
-            <h2 style="margin-top: 0; font-size: 22px;">Lista de Comandos</h2>
-            <p style="color: #aaa; font-size: 13px; margin-bottom: 20px;">Use estes comandos direto no chat com o Shard Bot:</p>
-            
-            <div class="cmd-item"><span>/s ou /sticker</span><p>Cria uma figurinha respondendo a uma imagem, GIF ou vídeo.</p></div>
-            <div class="cmd-item"><span>/play [música]</span><p>Busca e faz o download de áudio do YouTube direto no chat.</p></div>
-            <div class="cmd-item"><span>/toimg</span><p>Transforma qualquer figurinha estática de volta em imagem.</p></div>
-            <div class="cmd-item"><span>/gpt [pergunta]</span><p>Conversa com o sistema integrado de inteligência artificial.</p></div>
-            <div class="cmd-item"><span>/menu</span><p>Abre o menu interativo com todas as funções.</p></div>
-            
-            <button onclick="document.getElementById('cmdModal').classList.remove('active')" style="margin-top: 15px; width: 100%; padding: 12px; border-radius: 12px; background: #222; color: #fff; border: 1px solid #444; cursor: pointer; font-weight: 600;">Fechar</button>
+        <div class="menu-section">
+            <h3>👥 Grupo</h3>
+            <p>Entre em nosso grupo, interaja e desfrute do bot em conjunto com a comunidade!</p>
+            <a href="https://chat.whatsapp.com/CycrLPgo7Ib0c5aQLlL5pV?s=cl&p=a&mlu=0&amv=2" target="_blank" class="btn-menu">Entrar no Grupo</a>
+        </div>
+
+        <div class="menu-section">
+            <h3>🤖 Bot</h3>
+            <p>Desfrute de todas as ferramentas do bot gratuitamente no privado.</p>
+            <a href="https://api.whatsapp.com/send?phone=56950572559&text=%2Fmenu" target="_blank" class="btn-menu btn-primary">Conversar no Privado</a>
         </div>
     </div>
 
+    <!-- Modal de Comandos -->
+    <div class="modal-overlay" id="cmdModal" onclick="closeModal(event)">
+        <div class="modal-content">
+            <h2 style="margin-top: 0;">Lista de Comandos</h2>
+            <p style="color: #aaa; font-size: 13px;">Envie estes comandos no chat com o Shard Bot:</p>
+            
+            <div class="cmd-item"><span>/s ou /sticker</span><p>Cria uma figurinha respondendo a uma imagem ou vídeo.</p></div>
+            <div class="cmd-item"><span>/play [música]</span><p>Baixa o áudio de uma música do YouTube direto no zap.</p></div>
+            <div class="cmd-item"><span>/toimg</span><p>Transforma uma figurinha de volta em imagem.</p></div>
+            <div class="cmd-item"><span>/gpt [pergunta]</span><p>Conversa com a inteligência artificial.</p></div>
+            <div class="cmd-item"><span>/menu</span><p>Mostra o menu completo direto no WhatsApp.</p></div>
+            
+            <button onclick="document.getElementById('cmdModal').classList.remove('active')" style="margin-top: 20px; width: 100%; padding: 12px; border-radius: 10px; background: #222; color: #fff; border: 1px solid #444; cursor: pointer;">Fechar</button>
+        </div>
+    </div>
+
+    <!-- Cabeçalho -->
     <header>
         <button class="icon-btn" onclick="toggleMenu()">≡</button>
         <div class="logo">
@@ -360,16 +433,13 @@
         </div>
     </header>
 
+    <!-- Seção Principal Original -->
     <div class="hero">
         <h1>Figurinhas e Mídia<br>no seu WhatsApp</h1>
-        <p class="subtitle">Faça figurinhas, edite mídias e consulte inteligência artificial de forma automática e gratuita direto no chat!</p>
-        
-        <div class="cta-container">
-            <a href="https://api.whatsapp.com/send?phone=56950572559&text=%2Fmenu" target="_blank" class="btn-action btn-main-green">Testar Grátis no Privado</a>
-            <a href="#duvidas" class="btn-action btn-outline">Tirar Dúvidas</a>
-        </div>
+        <p class="subtitle">Faça figurinhas, edite imagens e muito mais de forma automática, direto no chat!</p>
     </div>
 
+    <!-- Smartphone Glass & Animação WhatsApp Aprimorada -->
     <div class="mockup-container">
         <div class="phone-mockup">
             
@@ -392,16 +462,18 @@
                 <div class="chat-body">
                     <div class="chat-scroll-container">
                         
+                        <!-- 1. Usuário envia -->
                         <div class="msg-row row-out anim-b1">
                             <div class="msg-box outgoing">
                                 <div class="media-box">
                                     <img src="https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg" alt="Upload">
                                 </div>
                                 Fazer figurinha
-                                <div class="msg-time">09:41 <span>✓✓</span></div>
+                                <div class="msg-time">09:41 <span style="color:#34b7f1">✓✓</span></div>
                             </div>
                         </div>
 
+                        <!-- 2. Bot processa (Com foto do lado) -->
                         <div class="msg-row row-in anim-b2">
                             <img src="https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg" class="bot-inline-avatar">
                             <div class="msg-box incoming">
@@ -410,6 +482,7 @@
                             </div>
                         </div>
 
+                        <!-- 3. Bot envia Sticker -->
                         <div class="msg-row row-in anim-b3">
                             <img src="https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg" class="bot-inline-avatar">
                             <div class="msg-box incoming sticker-wrapper">
@@ -433,47 +506,57 @@
         </div>
     </div>
 
+    <!-- Estatísticas Originais (Glass) -->
     <div class="stats-grid">
-        <div class="stat-card"><h3>3.2M+</h3><p>Stickers</p></div>
-        <div class="stat-card"><h3>15M+</h3><p>Mensagens</p></div>
-        <div class="stat-card"><h3>1.240</h3><p>Grupos</p></div>
-        <div class="stat-card"><h3>68k+</h3><p>Usuários</p></div>
+        <div class="stat-card">
+            <h3>3.2M+</h3>
+            <p>Figurinhas Feitas</p>
+        </div>
+        <div class="stat-card">
+            <h3>15M+</h3>
+            <p>Mensagens Lidas</p>
+        </div>
+        <div class="stat-card">
+            <h3>1.240</h3>
+            <p>Grupos Ativos</p>
+        </div>
+        <div class="stat-card">
+            <h3>68k+</h3>
+            <p>Usuários Totais</p>
+        </div>
     </div>
 
-    <div class="faq-section" id="duvidas">
-        <h2 class="section-title">Dúvidas Frequentes</h2>
+    <!-- FAQ Original -->
+    <div class="faq-section">
+        <h2 class="faq-title">Dúvidas Frequentes</h2>
         
-        <details>
-            <summary>O Shard Bot é totalmente gratuito?</summary>
-            <p>Sim! Você pode usar as principais funções de criação de stickers, buscas e moderação direto no chat sem pagar absolutamente nada.</p>
-        </details>
-        
-        <details>
-            <summary>Como coloco o bot no meu grupo?</summary>
-            <p>Basta adicionar o número do Shard Bot à sua lista de contatos e inseri-lo no grupo desejado. Promova-o a administrador para habilitar comandos avançados.</p>
-        </details>
-        
-        <details>
-            <summary>Ele funciona 24 horas por dia?</summary>
-            <p>Com certeza. Nosso sistema roda hospedado em servidores de nuvem dedicados de alta performance para garantir estabilidade e respostas rápidas a qualquer hora.</p>
-        </details>
+        <div class="faq-item">
+            <strong>É totalmente gratuito?</strong>
+            <p>Sim! Você pode usar as funções principais do Shard Bot no seu privado ou grupo sem pagar nada.</p>
+        </div>
+        <div class="faq-item">
+            <strong>Como coloco no meu grupo?</strong>
+            <p>Basta adicionar o número do bot (como um contato normal) ao seu grupo e dar as permissões necessárias.</p>
+        </div>
+        <div class="faq-item">
+            <strong>O bot fica online 24h?</strong>
+            <p>Nosso sistema é hospedado em servidores de alta qualidade para garantir que suas figurinhas sejam feitas a qualquer hora do dia.</p>
+        </div>
     </div>
 
     <footer>
-        Shard Bot © 2026
+        Desenvolvido com 💚 <br> <span>Shard Bot</span> © 2026
     </footer>
 
     <script>
-        // Funções do Menu Lateral
         function toggleMenu() {
             document.getElementById('sidebar').classList.toggle('active');
             document.getElementById('overlay').classList.toggle('active');
         }
 
-        // Funções do Modal
         function openModal(id) {
             document.getElementById(id).classList.add('active');
-            toggleMenu();
+            toggleMenu(); // Fecha o menu lateral quando abre o modal
         }
 
         function closeModal(event) {
