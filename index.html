@@ -18,11 +18,11 @@
             --glass-accent: rgba(0, 230, 118, 0.1);
             
             /* WhatsApp iOS Dark Mode Colors */
-            --ios-bg: #000000;
-            --ios-header: rgba(28, 28, 30, 0.85);
-            --ios-bubble-out: #005C4B;
-            --ios-bubble-in: #2C2C2E;
-            --ios-blue: #0a84ff;
+            --ios-bg: #0b141a;
+            --ios-header: #1f2c34;
+            --ios-bubble-out: #005c4b;
+            --ios-bubble-in: #202c33;
+            --ios-blue: #00a884;
         }
 
         html { scroll-behavior: smooth; }
@@ -118,6 +118,17 @@
         .menu-section h3 { margin: 0 0 6px 0; font-size: 17px; font-weight: 600; }
         .menu-section p { margin: 0 0 16px 0; font-size: 13px; color: var(--text-muted); line-height: 1.5; }
 
+        /* ESTILOS DOS BOTÕES DO MENU ADICIONADOS AQUI */
+        .btn-menu {
+            display: block; text-align: center; color: #fff; text-decoration: none;
+            padding: 12px; border-radius: 12px; font-size: 14px; font-weight: 600;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s;
+        }
+        .btn-menu:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
+        .btn-primary { background: linear-gradient(135deg, #00E676, #00b359); color: #000; border: none; }
+        .btn-primary:hover { box-shadow: 0 5px 15px rgba(0, 230, 118, 0.4); }
+
         .sidebar-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
@@ -189,7 +200,6 @@
             transform-style: preserve-3d;
         }
 
-        /* Efeito de inclinação ao passar o mouse */
         .mockup-container:hover .phone-mockup {
             transform: translateY(-5px) rotateX(5deg) rotateY(8deg);
         }
@@ -201,60 +211,106 @@
             width: 85px; height: 26px; background-color: #000; border-radius: 20px; z-index: 30;
         }
 
+        /* ----------------------------------------------------
+           NOVO SISTEMA CSS DO CELULAR (WHATSAPP IOS)
+           ---------------------------------------------------- */
+        .phone-status-bar {
+            position: absolute; top: 0; width: 100%; height: 35px;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 20px; box-sizing: border-box; font-size: 11px; font-weight: 600;
+            color: #fff; z-index: 35; background: var(--ios-header);
+        }
+        .status-icons { display: flex; gap: 4px; font-size: 10px; }
+
         .phone-screen {
             background-color: var(--ios-bg); width: 100%; height: 100%; display: flex; flex-direction: column; box-sizing: border-box;
-            background-image: radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 15px 15px;
+            background-image: radial-gradient(rgba(255,255,255,0.015) 1px, transparent 1px); background-size: 14px 14px;
+            padding-top: 35px; /* Evita que o header fique embaixo da barra de status */
         }
 
         .chat-header {
-            background: var(--ios-header); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            padding: 42px 15px 12px; display: flex; align-items: center; gap: 10px; border-bottom: 0.5px solid rgba(255,255,255,0.1);
+            background: var(--ios-header); padding: 10px 12px; display: flex; align-items: center; gap: 8px;
+            border-bottom: 1px solid rgba(0,0,0,0.2); z-index: 30;
         }
-        .ios-back { color: var(--ios-blue); font-size: 22px; }
-        .chat-avatar-img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+        .ios-back { color: var(--ios-blue); font-size: 18px; cursor: pointer; }
+        .chat-avatar-img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(255,255,255,0.1); }
         .chat-status { text-align: left; flex: 1; }
-        .chat-status strong { display: block; font-size: 15px; color: #fff; font-weight: 600; }
-        .chat-status span { font-size: 12px; color: #00E676; }
-        .ios-icons { color: var(--ios-blue); font-size: 18px; display: flex; gap: 15px; }
+        .chat-status strong { display: block; font-size: 14px; color: #e9edef; font-weight: 500; }
+        .chat-status span { font-size: 11px; color: #8696a0; }
+        .ios-icons { color: #aebac1; font-size: 16px; display: flex; gap: 14px; }
 
-        .chat-body { flex: 1; padding: 15px 12px; display: flex; flex-direction: column; gap: 10px; overflow: hidden; position: relative; }
-
-        .msg {
-            max-width: 75%; padding: 8px 12px; font-size: 14px; line-height: 1.3; color: #fff;
-            position: absolute; opacity: 0; display: flex; flex-direction: column;
-            transition: all 0.4s ease;
+        /* Área de Rolagem */
+        .chat-body {
+            flex: 1; padding: 12px; display: flex; flex-direction: column; position: relative;
+            overflow: hidden; box-sizing: border-box;
         }
 
-        .msg.outgoing { background-color: var(--ios-bubble-out); border-radius: 16px 16px 4px 16px; right: 12px; }
-        .msg.incoming { background-color: var(--ios-bubble-in); border-radius: 16px 16px 16px 4px; left: 12px; }
-        .msg-time { font-size: 10px; color: rgba(255,255,255,0.5); align-self: flex-end; margin-top: 4px; display: flex; align-items: center; gap: 2px; }
-
-        .msg-photo-box { width: 130px; height: 140px; background: #111; border-radius: 12px; margin-bottom: 5px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .msg-photo-box img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
-
-        .sticker-demo {
-            width: 110px; height: 110px; background: url('https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg') center/cover;
-            border-radius: 14px; box-shadow: 0 8px 20px rgba(0,0,0,0.6); animation: iosBounce 2.5s infinite alternate ease-in-out;
+        .chat-scroll-container {
+            display: flex; flex-direction: column; gap: 10px; width: 100%;
+            position: absolute; left: 0; padding: 12px; box-sizing: border-box;
+            animation: whatsappScroll 12s infinite cubic-bezier(0.25, 1, 0.5, 1);
         }
-        
-        @keyframes iosBounce { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-6px) scale(1.02); } }
 
-        /* Sequência de Mensagens Fluida */
-        @keyframes seqUser { 0%, 100% { opacity: 0; transform: translateY(15px) scale(0.95); } 4%, 44% { opacity: 1; transform: translateY(0) scale(1); } 48% { opacity: 0; } }
-        @keyframes seqBotText { 0%, 14% { opacity: 0; transform: translateY(10px); } 18%, 38% { opacity: 1; transform: translateY(0); } 42%, 100% { opacity: 0; } }
-        @keyframes seqBotSticker { 0%, 44% { opacity: 0; transform: scale(0.6); } 49%, 92% { opacity: 1; transform: scale(1); } 96%, 100% { opacity: 0; } }
+        .msg-row { display: flex; width: 100%; position: relative; margin-bottom: 2px; }
+        .msg-row.row-out { justify-content: flex-end; }
+        .msg-row.row-in { justify-content: flex-start; padding-left: 32px; }
 
-        .chat-anim-1 { top: 15px; animation: seqUser 12s infinite; }
-        .chat-anim-2 { top: 220px; animation: seqBotText 12s infinite; }
-        .chat-anim-3 { top: 275px; animation: seqBotSticker 12s infinite; background: transparent; padding: 0; }
+        .bot-inline-avatar {
+            position: absolute; left: 0; bottom: 0; width: 26px; height: 26px;
+            border-radius: 50%; object-fit: cover;
+        }
 
+        .msg-box {
+            max-width: 82%; padding: 6px 9px 8px 9px; font-size: 13.5px; color: #e9edef;
+            position: relative; box-shadow: 0 1px 0.5px rgba(0,0,0,0.15); line-height: 1.4; text-align: left;
+        }
+        .msg-box.outgoing { background-color: var(--ios-bubble-out); border-radius: 8px 8px 0px 8px; }
+        .msg-box.incoming { background-color: var(--ios-bubble-in); border-radius: 8px 8px 8px 0px; }
+
+        .msg-time { font-size: 9.5px; color: #8696a0; float: right; margin: 4px 0 -4px 8px; display: flex; align-items: center; gap: 2px; }
+
+        .media-box {
+            border-radius: 6px; overflow: hidden; margin-bottom: 4px;
+            width: 150px; height: 150px; background: #182229;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .media-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        .sticker-wrapper { padding: 4px 0; background: transparent !important; box-shadow: none !important; }
+        .whatsapp-sticker {
+            width: 110px; height: 110px;
+            background: url('https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg') center/cover;
+            border-radius: 8px; animation: floatEffect 2s infinite alternate ease-in-out;
+        }
+        @keyframes floatEffect { from { transform: translateY(0); } to { transform: translateY(-4px); } }
+
+        /* Animação que faz a rolagem perfeita (Simula celular) */
+        @keyframes whatsappScroll {
+            0%, 22% { transform: translateY(180px); } 
+            28%, 52% { transform: translateY(100px); }
+            58%, 92% { transform: translateY(-45px); }
+            98%, 100% { transform: translateY(180px); }
+        }
+
+        @keyframes bubbleFade {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .anim-b1 { animation: bubbleFade 0.3s 0s forwards; opacity: 0; }
+        .anim-b2 { animation: bubbleFade 0.3s 3.2s forwards; opacity: 0; }
+        .anim-b3 { animation: bubbleFade 0.3s 6.8s forwards; opacity: 0; }
+
+        /* Rodapé de Digitação do iPhone */
         .chat-footer {
-            background: var(--ios-header); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            padding: 10px; display: flex; align-items: center; gap: 12px; border-top: 0.5px solid rgba(255,255,255,0.1); padding-bottom: 24px;
+            background: #101d25; padding: 8px 10px; display: flex; align-items: center; gap: 8px;
+            border-top: 1px solid rgba(255,255,255,0.05); z-index: 30;
         }
-        .ios-plus { color: var(--ios-blue); font-size: 24px; }
-        .ios-input { flex: 1; background: rgba(255,255,255,0.1); padding: 8px 12px; border-radius: 20px; color: #fff; font-size: 14px; display: flex; justify-content: space-between; }
-        .ios-mic { color: var(--ios-blue); font-size: 20px; }
+        .wa-icon-plus { color: #8696a0; font-size: 20px; font-weight: bold; }
+        .wa-input-field {
+            flex: 1; background: #2a3942; padding: 7px 12px; border-radius: 8px;
+            color: #8696a0; font-size: 14px; text-align: left; display: flex; justify-content: space-between;
+        }
+        .wa-icon-mic { color: #8696a0; font-size: 16px; }
 
         /* NOVA SEÇÃO: Recursos e Vantagens */
         .section-title { font-size: 28px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; }
@@ -338,7 +394,7 @@
         <div class="menu-section">
             <h3>📖 Lista de Comandos</h3>
             <p>Descubra todas as automações de mídia, downloads e utilitários disponíveis.</p>
-            <a href="#" onclick="openModal('cmdModal')" class="btn-menu btn-secondary">Abrir Painel</a>
+            <a href="#" onclick="openModal('cmdModal')" class="btn-menu">Abrir Painel</a>
         </div>
 
         <div class="menu-section">
@@ -350,7 +406,7 @@
         <div class="menu-section">
             <h3>🤖 Conversar no PV</h3>
             <p>Inicie um chat direto e privado com o bot agora mesmo de forma gratuita.</p>
-            <a href="https://api.whatsapp.com/send?phone=56950572559&text=%2Fmenu" target="_blank" class="btn-menu">Iniciar Chat</a>
+            <a href="https://api.whatsapp.com/send?phone=56950572559&text=%2Fmenu" target="_blank" class="btn-menu btn-primary">Iniciar Chat</a>
         </div>
     </div>
 
@@ -407,28 +463,63 @@
 
     <div class="mockup-container">
         <div class="phone-mockup">
+            
+            <div class="phone-status-bar">
+                <div>09:41</div>
+                <div class="status-icons">📶 🪫</div>
+            </div>
+
             <div class="phone-screen">
                 <div class="chat-header">
                     <div class="ios-back">⟨</div>
                     <img src="https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg" class="chat-avatar-img">
-                    <div class="chat-status"><strong>Shard Bot</strong><span>online</span></div>
+                    <div class="chat-status">
+                        <strong>Shard Bot</strong>
+                        <span>online</span>
+                    </div>
                     <div class="ios-icons"><span>📹</span> <span>📞</span></div>
                 </div>
 
                 <div class="chat-body">
-                    <div class="msg outgoing chat-anim-1">
-                        <div class="msg-photo-box"><img src="https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg"></div>
-                        Fazer figurinha<div class="msg-time">09:12 <span style="color:#34b7f1">✓✓</span></div>
+                    <div class="chat-scroll-container">
+                        
+                        <div class="msg-row row-out anim-b1">
+                            <div class="msg-box outgoing">
+                                <div class="media-box">
+                                    <img src="https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg" alt="Upload">
+                                </div>
+                                Fazer figurinha
+                                <div class="msg-time">09:41 <span style="color:#34b7f1">✓✓</span></div>
+                            </div>
+                        </div>
+
+                        <div class="msg-row row-in anim-b2">
+                            <img src="https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg" class="bot-inline-avatar">
+                            <div class="msg-box incoming">
+                                Criando figurinha... ⏳
+                                <div class="msg-time">09:41</div>
+                            </div>
+                        </div>
+
+                        <div class="msg-row row-in anim-b3">
+                            <img src="https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg" class="bot-inline-avatar">
+                            <div class="msg-box incoming sticker-wrapper">
+                                <div class="whatsapp-sticker"></div>
+                            </div>
+                        </div>
+
                     </div>
-                    <div class="msg incoming chat-anim-2">Criando figurinha... ⏳<div class="msg-time">09:12</div></div>
-                    <div class="msg incoming chat-anim-3"><div class="sticker-demo"></div></div>
                 </div>
 
                 <div class="chat-footer">
-                    <div class="ios-plus">+</div>
-                    <div class="ios-input">Mensagem...<span>📷</span></div>
-                    <div class="ios-mic">🎙</div>
+                    <div class="wa-icon-plus">＋</div>
+                    <div class="wa-input-field">
+                        Mensagem...
+                        <span>📷</span>
+                    </div>
+                    <div class="wa-icon-mic">🎙</div>
                 </div>
+
             </div>
         </div>
     </div>
