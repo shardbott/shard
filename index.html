@@ -4,117 +4,249 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seu Bot de Figurinhas</title>
+    <!-- Importando Fonte Inter do Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        /* Estilos do Site */
+        :root {
+            --bg-color: #0d1117;
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --neon-green: #00E676;
+            --dark-card: #161b22;
+        }
+
         body {
-            background-color: #121212;
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
             text-align: center;
+            background-image: radial-gradient(circle at 50% -20%, #1a232c, var(--bg-color) 60%);
         }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px;
+
+        /* Top Bar */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 2px solid var(--neon-green);
+            background-color: rgba(13, 17, 23, 0.9);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        .logo {
-            font-size: 28px;
-            font-weight: bold;
-            color: #00ff88;
-            margin-bottom: 50px;
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
-        }
-        h1 {
-            font-size: 38px;
-            margin-bottom: 10px;
-        }
-        p.subtitle {
-            font-size: 18px;
-            color: #cccccc;
-            margin-bottom: 40px;
-        }
-        .btn-whatsapp {
-            background-color: transparent;
-            color: #00ff88;
-            border: 2px solid #00ff88;
-            padding: 15px 30px;
-            font-size: 18px;
-            font-weight: bold;
+
+        .icon-btn {
+            background: transparent;
+            border: 1px solid #333;
+            color: var(--text-muted);
             border-radius: 8px;
-            text-decoration: none;
-            display: inline-block;
-            transition: 0.3s;
-            margin-bottom: 50px;
-        }
-        .btn-whatsapp:hover {
-            background-color: #00ff88;
-            color: #121212;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.6);
-        }
-        .mockup {
-            background-color: #1e1e1e;
-            border: 4px solid #00ff88;
-            border-radius: 30px;
-            height: 400px;
-            width: 250px;
-            margin: 0 auto;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #555;
-            margin-bottom: 50px;
         }
-        .stats {
-            background-color: #1a1a1a;
-            padding: 30px;
-            border-radius: 10px;
-            margin-bottom: 40px;
+
+        .logo {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .stats h2 {
-            margin: 0;
+
+        /* Logo S minimalista */
+        .logo-icon {
+            color: var(--neon-green);
             font-size: 24px;
+            font-weight: 800;
+            line-height: 1;
         }
-        .stats span {
-            color: #00ff88;
-            font-weight: bold;
+
+        /* Hero Section */
+        .hero {
+            padding: 60px 20px 40px;
         }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 800;
+            margin: 0 0 15px 0;
+            line-height: 1.2;
+        }
+
+        p.subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin: 0 auto 40px auto;
+            max-width: 400px;
+            line-height: 1.5;
+        }
+
+        .btn-whatsapp {
+            background-color: transparent;
+            color: var(--neon-green);
+            border: 2px solid var(--neon-green);
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 12px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: rgba(0, 230, 118, 0.1);
+            box-shadow: 0 0 15px rgba(0, 230, 118, 0.3);
+        }
+
+        /* Ícone simples de WhatsApp em SVG */
+        .btn-whatsapp svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* Smartphone Mockup Realista */
+        .mockup-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: -20px; /* Sobrepor na área de estatísticas */
+            position: relative;
+            z-index: 10;
+        }
+
+        .phone-mockup {
+            background-color: #1a1a1a;
+            border: 5px solid var(--neon-green);
+            border-radius: 35px;
+            height: 480px;
+            width: 260px;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0, 0.5);
+            overflow: hidden;
+        }
+
+        /* Notch (Detalhe da câmera) */
+        .phone-mockup::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 25px;
+            background-color: var(--neon-green);
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            z-index: 2;
+        }
+
+        .phone-screen {
+            background-color: #0B141A; /* Cor de fundo do WhatsApp escuro */
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #444;
+            font-size: 12px;
+        }
+
+        /* Faixa de Estatísticas */
+        .stats-section {
+            background-color: var(--dark-card);
+            padding: 80px 20px 60px;
+            border-top: 1px solid #222;
+        }
+
+        .stats-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .stats-content h2 {
+            font-size: 22px;
+            font-weight: 400;
+            line-height: 1.6;
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        .stats-content h2 strong {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        /* Rodapé */
         footer {
+            background-color: var(--dark-card);
             font-size: 14px;
-            color: #777;
-            padding-bottom: 30px;
+            color: var(--text-muted);
+            padding-bottom: 40px;
         }
+        
         footer span {
-            color: #00ff88;
+            color: var(--neon-green);
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="logo">MeuBot</div>
+    <!-- Cabeçalho -->
+    <header>
+        <button class="icon-btn">≡</button>
+        <div class="logo">
+            <span class="logo-icon">S</span>
+            SeuBot
+        </div>
+        <button class="icon-btn">🌙</button>
+    </header>
 
+    <!-- Seção Principal -->
+    <div class="hero">
         <h1>Bot de Figurinhas<br>para o WhatsApp</h1>
         <p class="subtitle">Faça figurinhas, edite imagens, baixe arquivos e muito mais, sem baixar nenhum app!</p>
 
-        <a href="LINK_DO_SEU_WHATSAPP_AQUI" class="btn-whatsapp">
+        <a href="#" class="btn-whatsapp">
+            <svg viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+            </svg>
             Canal de Avisos no WhatsApp
         </a>
-
-        <div class="mockup">
-            [Coloque a imagem do<br>print do WhatsApp aqui]
-        </div>
-
-        <div class="stats">
-            <h2><span>68.051</span> usuários já criaram um total de <span>3.216.627</span> figurinhas!</h2>
-        </div>
-
-        <footer>
-            Desenvolvido com 💚 e ☕ por <span>Seu Nome</span><br>
-            MeuBot © 2026
-        </footer>
     </div>
+
+    <!-- Mockup do Celular -->
+    <div class="mockup-container">
+        <div class="phone-mockup">
+            <div class="phone-screen">
+                [Substitua por uma imagem 9:16<br>do seu bot funcionando]
+            </div>
+        </div>
+    </div>
+
+    <!-- Faixa de Estatísticas -->
+    <div class="stats-section">
+        <div class="stats-content">
+            <h2><strong>68.051</strong> usuários já criaram um total de <strong>3.216.627</strong> figurinhas com o SeuBot!</h2>
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer>
+        Desenvolvido com 💚 e ☕ por <span>Seu Nome</span><br><br>
+        SeuBot © 2026
+    </footer>
 
 </body>
 </html>
