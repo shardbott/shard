@@ -18,11 +18,11 @@
             --glass-accent: rgba(0, 230, 118, 0.1);
             
             /* WhatsApp iOS Dark Mode Colors */
-            --ios-bg: #000000;
-            --ios-header: rgba(28, 28, 30, 0.85);
-            --ios-bubble-out: #005C4B;
-            --ios-bubble-in: #2C2C2E;
-            --ios-blue: #0a84ff;
+            --ios-bg: #0b141a;
+            --ios-header: #1f2c34;
+            --ios-bubble-out: #005c4b;
+            --ios-bubble-in: #202c33;
+            --ios-blue: #00a884;
         }
 
         html { scroll-behavior: smooth; }
@@ -36,16 +36,9 @@
             overflow-x: hidden;
             background-image: 
                 radial-gradient(circle at 10% 20%, rgba(0, 230, 118, 0.15), transparent 45%),
-                radial-gradient(circle at 90% 50%, rgba(220, 20, 60, 0.12), transparent 45%),
-                radial-gradient(circle at 50% 80%, rgba(0, 230, 118, 0.08), transparent 50%);
+                radial-gradient(circle at 90% 50%, rgba(220, 20, 60, 0.12), transparent 45%);
             background-attachment: fixed;
         }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-base); }
-        ::-webkit-scrollbar-thumb { background: #222; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #333; }
 
         /* Glassmorphism Header */
         header {
@@ -70,12 +63,11 @@
             display: flex; align-items: center; justify-content: center;
             transition: all 0.3s ease;
         }
-        .icon-btn:hover { background: var(--glass-accent); border-color: #00E676; transform: scale(1.05); }
+        .icon-btn:hover { background: var(--glass-accent); border-color: #00E676; }
 
         .logo {
             font-size: 20px; font-weight: 800;
             display: flex; align-items: center; gap: 10px;
-            letter-spacing: -0.5px;
         }
 
         .logo-img {
@@ -84,7 +76,7 @@
         }
 
         .status-ping {
-            display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500;
+            display: flex; align-items: center; gap: 8px; font-size: 13px;
             color: #00E676; background: rgba(0, 230, 118, 0.08);
             padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(0, 230, 118, 0.15);
         }
@@ -92,239 +84,241 @@
             width: 8px; height: 8px; background: #00E676; border-radius: 50%;
             box-shadow: 0 0 10px #00E676; animation: pulse 2s infinite;
         }
-        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 0.5; } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
-        /* Glassmorphism Sidebar */
+        /* Menu Lateral Restaurado e Limpo */
         .sidebar {
             position: fixed; top: 0; left: -340px; width: 300px; height: 100%;
-            background: rgba(5, 8, 6, 0.75);
+            background: rgba(5, 8, 6, 0.8);
             backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
             border-right: 1px solid var(--glass-border);
             box-shadow: var(--glass-shadow); z-index: 200;
             transition: 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-            text-align: left; padding: 24px; box-sizing: border-box;
+            text-align: left; padding: 30px 24px; box-sizing: border-box;
         }
         .sidebar.active { left: 0; }
         .close-menu { font-size: 32px; background: none; border: none; color: var(--text-muted); cursor: pointer; float: right; }
-        .menu-title { font-size: 26px; font-weight: 800; margin-top: 40px; margin-bottom: 30px; letter-spacing: -0.5px; }
+        .menu-title { font-size: 26px; font-weight: 800; margin-bottom: 40px; letter-spacing: -0.5px; }
 
-        .menu-section {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 18px; padding: 20px; margin-bottom: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            transition: 0.3s;
+        .menu-link {
+            display: block; background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border); color: #fff;
+            text-decoration: none; padding: 16px; border-radius: 16px;
+            font-size: 15px; font-weight: 600; margin-bottom: 15px;
+            transition: all 0.3s ease;
         }
-        .menu-section:hover { background: rgba(255, 255, 255, 0.04); border-color: rgba(255, 255, 255, 0.08); }
-        .menu-section h3 { margin: 0 0 6px 0; font-size: 17px; font-weight: 600; }
-        .menu-section p { margin: 0 0 16px 0; font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+        .menu-link:hover { background: var(--glass-accent); border-color: #00E676; transform: translateY(-2px); }
+        .menu-link-primary { background: linear-gradient(135deg, #00E676, #00b359); color: #000; border: none; }
+        .menu-link-primary:hover { color: #000; box-shadow: 0 8px 20px rgba(0, 230, 118, 0.3); }
 
         .sidebar-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
-            z-index: 150; display: none; opacity: 0; transition: 0.4s;
+            z-index: 150; display: none;
         }
-        .sidebar-overlay.active { display: block; opacity: 1; }
+        .sidebar-overlay.active { display: block; }
 
-        /* Modal com Abas Avançado */
+        /* Modal de Comandos */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
             z-index: 300; display: none; align-items: center; justify-content: center;
-            opacity: 0; transition: 0.3s ease;
         }
-        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-overlay.active { display: flex; }
         
         .modal-content {
-            background: rgba(10, 15, 12, 0.6); border: 1px solid var(--glass-border);
-            width: 90%; max-width: 460px; max-height: 85vh;
+            background: rgba(10, 15, 12, 0.7); border: 1px solid var(--glass-border);
+            width: 90%; max-width: 440px; max-height: 80vh;
             border-radius: 28px; padding: 28px; text-align: left;
-            overflow-y: auto; box-shadow: var(--glass-shadow);
-            transform: scale(0.93); transition: 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-            backdrop-filter: blur(20px);
+            overflow-y: auto; box-shadow: var(--glass-shadow); backdrop-filter: blur(20px);
         }
-        .modal-overlay.active .modal-content { transform: scale(1); }
 
-        /* Abas do Modal */
-        .modal-tabs { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px; }
-        .tab-btn {
-            background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); color: var(--text-muted);
-            padding: 8px 14px; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600; transition: 0.2s;
+        .cmd-item {
+            background: rgba(0,0,0,0.4); padding: 14px; border-radius: 14px;
+            margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.05);
         }
-        .tab-btn.active { background: #00E676; color: #000; border-color: #00E676; }
-        .tab-pane { display: none; }
-        .tab-pane.active { display: block; animation: fadeIn 0.3s ease; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .cmd-item span { color: #00E676; font-weight: bold; font-family: monospace; font-size: 15px;}
+        .cmd-item p { margin: 5px 0 0 0; font-size: 13px; color: var(--text-muted); line-height: 1.4; }
 
         /* Hero Section */
-        .hero { padding: 70px 20px 40px; }
-        .hero h1 { font-size: 46px; font-weight: 800; margin: 0 0 18px 0; line-height: 1.1; letter-spacing: -1.5px; }
-        .hero p.subtitle { font-size: 18px; color: var(--text-muted); margin: 0 auto 35px auto; max-width: 460px; line-height: 1.6; }
+        .hero { padding: 60px 20px 30px; }
+        .hero h1 { font-size: 44px; font-weight: 800; margin: 0 0 15px 0; line-height: 1.1; letter-spacing: -1px; }
+        .hero p.subtitle { font-size: 17px; color: var(--text-muted); margin: 0 auto 35px auto; max-width: 440px; line-height: 1.6; }
         
-        /* Botões de Ação Principais */
-        .cta-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 20px; }
+        .cta-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 40px; }
         .btn-action {
             display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px; border-radius: 14px;
             font-size: 15px; font-weight: 600; text-decoration: none; transition: all 0.3s ease;
         }
-        .btn-main-green { background: linear-gradient(135deg, #00E676, #00b359); color: #000; box-shadow: 0 8px 24px rgba(0, 230, 118, 0.25); }
-        .btn-main-green:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0, 230, 118, 0.4); }
+        .btn-main-green { background: linear-gradient(135deg, #00E676, #00b359); color: #000; }
+        .btn-main-green:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 230, 118, 0.3); }
         .btn-outline { background: rgba(255,255,255,0.03); color: #fff; border: 1px solid var(--glass-border); }
-        .btn-outline:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); transform: translateY(-3px); }
+        .btn-outline:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
 
-        /* Smartphone Mockup com Efeito 3D Tilt */
-        .mockup-container {
-            display: flex; justify-content: center; margin-bottom: 60px; position: relative; z-index: 10;
-            perspective: 1500px;
-        }
+        /* Smartphone Mockup Perfeito do WhatsApp */
+        .mockup-container { display: flex; justify-content: center; margin-bottom: 60px; z-index: 10; }
 
         .phone-mockup {
-            background-color: var(--ios-bg); border: 6px solid #1a1a1a; border-radius: 46px;
-            height: 530px; width: 265px; position: relative;
-            box-shadow: 0 40px 80px rgba(0,0,0, 0.8), inset 0 0 0 2px #333;
-            overflow: hidden; opacity: 0;
-            transform: translateY(60px) rotateX(15deg);
-            animation: phoneEntrance 1.4s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
-            transition: transform 0.4s cubic-bezier(0.1, 0.8, 0.2, 1);
-            transform-style: preserve-3d;
+            background-color: #000; border: 8px solid #1f1f1f; border-radius: 44px;
+            height: 540px; width: 275px; position: relative;
+            box-shadow: 0 30px 60px rgba(0,0,0, 0.8); overflow: hidden;
         }
 
-        /* Efeito de inclinação ao passar o mouse */
-        .mockup-container:hover .phone-mockup {
-            transform: translateY(-5px) rotateX(5deg) rotateY(8deg);
-        }
-
-        @keyframes phoneEntrance { to { opacity: 1; transform: translateY(0) rotateX(0); } }
-
+        /* Dynamic Island */
         .phone-mockup::before {
-            content: ''; position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
-            width: 85px; height: 26px; background-color: #000; border-radius: 20px; z-index: 30;
+            content: ''; position: absolute; top: 11px; left: 50%; transform: translateX(-50%);
+            width: 80px; height: 22px; background-color: #000; border-radius: 20px; z-index: 40;
         }
+
+        /* Top Bar Superior do iPhone (Rede, Wifi, Bateria) */
+        .phone-status-bar {
+            position: absolute; top: 0; width: 100%; height: 35px;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 24px; box-sizing: border-box; font-size: 11px; font-weight: 600;
+            color: #fff; z-index: 35; background: var(--ios-header);
+        }
+        .status-icons { display: flex; gap: 4px; font-size: 10px; }
 
         .phone-screen {
             background-color: var(--ios-bg); width: 100%; height: 100%; display: flex; flex-direction: column; box-sizing: border-box;
-            background-image: radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 15px 15px;
+            background-image: radial-gradient(rgba(255,255,255,0.015) 1px, transparent 1px); background-size: 14px 14px;
+            padding-top: 35px;
         }
 
+        /* Header Interno do WhatsApp */
         .chat-header {
-            background: var(--ios-header); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            padding: 42px 15px 12px; display: flex; align-items: center; gap: 10px; border-bottom: 0.5px solid rgba(255,255,255,0.1);
+            background: var(--ios-header); padding: 10px 12px; display: flex; align-items: center; gap: 8px;
+            border-bottom: 1px solid rgba(0,0,0,0.2); z-index: 30;
         }
-        .ios-back { color: var(--ios-blue); font-size: 22px; }
-        .chat-avatar-img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+        .ios-back { color: var(--ios-blue); font-size: 18px; cursor: pointer; }
+        .chat-avatar-img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(255,255,255,0.1); }
         .chat-status { text-align: left; flex: 1; }
-        .chat-status strong { display: block; font-size: 15px; color: #fff; font-weight: 600; }
-        .chat-status span { font-size: 12px; color: #00E676; }
-        .ios-icons { color: var(--ios-blue); font-size: 18px; display: flex; gap: 15px; }
+        .chat-status strong { display: block; font-size: 14px; color: #e9edef; font-weight: 500; }
+        .chat-status span { font-size: 11px; color: #8696a0; }
+        .ios-icons { color: #aebac1; font-size: 16px; display: flex; gap: 16px; }
 
-        .chat-body { flex: 1; padding: 15px 12px; display: flex; flex-direction: column; gap: 10px; overflow: hidden; position: relative; }
-
-        .msg {
-            max-width: 75%; padding: 8px 12px; font-size: 14px; line-height: 1.3; color: #fff;
-            position: absolute; opacity: 0; display: flex; flex-direction: column;
-            transition: all 0.4s ease;
+        /* Área de Rolagem Dinâmica das Mensagens */
+        .chat-body {
+            flex: 1; padding: 12px; display: flex; flex-direction: column; position: relative;
+            overflow: hidden; box-sizing: border-box;
         }
 
-        .msg.outgoing { background-color: var(--ios-bubble-out); border-radius: 16px 16px 4px 16px; right: 12px; }
-        .msg.incoming { background-color: var(--ios-bubble-in); border-radius: 16px 16px 16px 4px; left: 12px; }
-        .msg-time { font-size: 10px; color: rgba(255,255,255,0.5); align-self: flex-end; margin-top: 4px; display: flex; align-items: center; gap: 2px; }
-
-        .msg-photo-box { width: 130px; height: 140px; background: #111; border-radius: 12px; margin-bottom: 5px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .msg-photo-box img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
-
-        .sticker-demo {
-            width: 110px; height: 110px; background: url('https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg') center/cover;
-            border-radius: 14px; box-shadow: 0 8px 20px rgba(0,0,0,0.6); animation: iosBounce 2.5s infinite alternate ease-in-out;
+        /* Container que vai deslizar para cima simulando o scroll real */
+        .chat-scroll-container {
+            display: flex; flex-direction: column; gap: 10px; width: 100%;
+            position: absolute; left: 0; padding: 12px; box-sizing: border-box;
+            animation: whatsappScroll 12s infinite cubic-bezier(0.25, 1, 0.5, 1);
         }
-        
-        @keyframes iosBounce { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-6px) scale(1.02); } }
 
-        /* Sequência de Mensagens Fluida */
-        @keyframes seqUser { 0%, 100% { opacity: 0; transform: translateY(15px) scale(0.95); } 4%, 44% { opacity: 1; transform: translateY(0) scale(1); } 48% { opacity: 0; } }
-        @keyframes seqBotText { 0%, 14% { opacity: 0; transform: translateY(10px); } 18%, 38% { opacity: 1; transform: translateY(0); } 42%, 100% { opacity: 0; } }
-        @keyframes seqBotSticker { 0%, 44% { opacity: 0; transform: scale(0.6); } 49%, 92% { opacity: 1; transform: scale(1); } 96%, 100% { opacity: 0; } }
+        /* Balões de Conversa Idênticos ao App */
+        .msg-row { display: flex; width: 100%; position: relative; margin-bottom: 2px; }
+        .msg-row.row-out { justify-content: flex-end; }
+        .msg-row.row-in { justify-content: flex-start; padding-left: 32px; } /* Espaço para a foto fixa do bot na linha */
 
-        .chat-anim-1 { top: 15px; animation: seqUser 12s infinite; }
-        .chat-anim-2 { top: 220px; animation: seqBotText 12s infinite; }
-        .chat-anim-3 { top: 275px; animation: seqBotSticker 12s infinite; background: transparent; padding: 0; }
+        /* Foto do bot ao lado das mensagens dele */
+        .bot-inline-avatar {
+            position: absolute; left: 0; bottom: 0; width: 26px; height: 26px;
+            border-radius: 50%; object-fit: cover;
+        }
 
+        .msg-box {
+            max-width: 82%; padding: 6px 9px 8px 9px; font-size: 13.5px; color: #e9edef;
+            position: relative; box-shadow: 0 1px 0.5px rgba(0,0,0,0.15); line-height: 1.4;
+        }
+
+        .msg-box.outgoing {
+            background-color: var(--ios-bubble-out); border-radius: 8px 8px 0px 8px;
+        }
+        .msg-box.incoming {
+            background-color: var(--ios-bubble-in); border-radius: 8px 8px 8px 0px;
+        }
+
+        .msg-time { font-size: 9.5px; color: #8696a0; float: right; margin: 4px 0 -4px 8px; display: flex; align-items: center; gap: 2px; }
+        .outgoing .msg-time { color: #8696a0; }
+
+        /* Caixa de Mídia/Imagem Arredondada */
+        .media-box {
+            border-radius: 6px; overflow: hidden; margin-bottom: 4px;
+            width: 160px; height: 160px; background: #182229;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .media-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Figurinha do WhatsApp Pronta */
+        .sticker-wrapper { padding: 4px 0; background: transparent !important; box-shadow: none !important; }
+        .whatsapp-sticker {
+            width: 105px; height: 105px;
+            background: url('https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg') center/cover;
+            border-radius: 4px; animation: floatEffect 2s infinite alternate ease-in-out;
+        }
+        @keyframes floatEffect { from { transform: translateY(0); } to { transform: translateY(-4px); } }
+
+        /* TIMELINE DE ANIMAÇÃO POR SCROLL (A foto e o texto NUNCA somem, eles sobem organicamente) */
+        @keyframes whatsappScroll {
+            /* 0s a 3s: Usuário envia imagem */
+            0%, 22% { transform: translateY(180px); } 
+            
+            /* 3s a 6s: Bot responde texto "Criando..." e a tela sobe um pouco */
+            28%, 52% { transform: translateY(100px); }
+            
+            /* 6s a 10s: Figurinha é gerada, tela sobe totalmente revelando todo o histórico completo */
+            58%, 92% { transform: translateY(-45px); }
+            
+            /* 10s a 12s: Reseta suavemente para o início */
+            98%, 100% { transform: translateY(180px); }
+        }
+
+        /* Controle individual de surgimento de cada balão acompanhando o scroll */
+        @keyframes bubbleFade {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .anim-b1 { animation: bubbleFade 0.3s 0s forwards; opacity: 0; }
+        .anim-b2 { animation: bubbleFade 0.3s 3.2s forwards; opacity: 0; }
+        .anim-b3 { animation: bubbleFade 0.3s 6.8s forwards; opacity: 0; }
+
+        /* Barra de Entrada de Texto Inferior */
         .chat-footer {
-            background: var(--ios-header); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            padding: 10px; display: flex; align-items: center; gap: 12px; border-top: 0.5px solid rgba(255,255,255,0.1); padding-bottom: 24px;
+            background: #101d25; padding: 8px 10px; display: flex; align-items: center; gap: 8px;
+            border-top: 1px solid rgba(255,255,255,0.05); z-index: 30;
         }
-        .ios-plus { color: var(--ios-blue); font-size: 24px; }
-        .ios-input { flex: 1; background: rgba(255,255,255,0.1); padding: 8px 12px; border-radius: 20px; color: #fff; font-size: 14px; display: flex; justify-content: space-between; }
-        .ios-mic { color: var(--ios-blue); font-size: 20px; }
-
-        /* NOVA SEÇÃO: Recursos e Vantagens */
-        .section-title { font-size: 28px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; }
-        .section-desc { color: var(--text-muted); font-size: 15px; margin-bottom: 40px; }
-
-        .features-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;
-            max-width: 900px; margin: 60px auto; padding: 0 20px;
+        .wa-icon-plus { color: #8696a0; font-size: 20px; font-weight: bold; }
+        .wa-input-field {
+            flex: 1; background: #2a3942; padding: 7px 12px; border-radius: 8px;
+            color: #8696a0; font-size: 14px; text-align: left; display: flex; justify-content: space-between;
         }
-        .feature-card {
-            background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px;
-            padding: 30px 20px; text-align: left; transition: all 0.3s ease;
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-        }
-        .feature-card:hover { transform: translateY(-5px); background: rgba(25, 35, 25, 0.6); border-color: rgba(0, 230, 118, 0.3); }
-        .feature-icon { font-size: 32px; margin-bottom: 15px; display: block; }
-        .feature-card h4 { margin: 0 0 10px 0; font-size: 18px; font-weight: 700; }
-        .feature-card p { margin: 0; font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+        .wa-input-field span { color: #8696a0; }
+        .wa-icon-mic { color: #8696a0; font-size: 16px; }
 
-        /* NOVA SEÇÃO: Linha do Tempo (Como Funciona) */
-        .timeline-section { max-width: 700px; margin: 80px auto; padding: 0 24px; text-align: left; }
-        .timeline { position: relative; border-left: 2px dashed rgba(255,255,255,0.1); padding-left: 24px; margin-left: 10px; }
-        .timeline-item { position: relative; margin-bottom: 40px; }
-        .timeline-item::before {
-            content: ''; position: absolute; left: -31px; top: 4px;
-            width: 12px; height: 12px; background: #00E676; border-radius: 50%;
-            box-shadow: 0 0 8px #00E676;
-        }
-        .timeline-item h4 { margin: 0 0 5px 0; font-size: 18px; font-weight: 700; }
-        .timeline-item p { margin: 0; font-size: 14px; color: var(--text-muted); line-height: 1.5; }
-
-        /* Pop-ups de Estatísticas Avançadas */
+        /* Estatísticas em Cards */
         .stats-grid {
-            display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
-            max-width: 600px; margin: 60px auto; padding: 0 20px;
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;
+            max-width: 600px; margin: 40px auto; padding: 0 20px;
         }
-
         @media(min-width: 600px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
 
         .stat-card {
             background: var(--glass-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border); padding: 24px 15px; border-radius: 22px; text-align: center;
-            box-shadow: var(--glass-shadow); transition: transform 0.3s ease;
+            border: 1px solid var(--glass-border); padding: 20px 10px; border-radius: 20px; text-align: center;
         }
-        .stat-card:hover { transform: scale(1.05); border-color: rgba(255,255,255,0.15); }
-        .stat-card h3 { font-size: 26px; margin: 0 0 5px 0; color: #fff; font-weight: 800; letter-spacing: -0.5px; }
-        .stat-card p { margin: 0; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
+        .stat-card h3 { font-size: 24px; margin: 0 0 4px 0; color: #fff; font-weight: 800; }
+        .stat-card p { margin: 0; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
 
-        /* FAQ Estilo Sanfona Interativa */
-        .faq-section { max-width: 650px; margin: 80px auto; padding: 0 20px; text-align: left; }
+        /* FAQ Sanfona */
+        .faq-section { max-width: 600px; margin: 60px auto; padding: 0 20px; text-align: left; }
+        .section-title { font-size: 26px; font-weight: 800; margin-bottom: 25px; text-align: center; }
         
         details {
             background: var(--glass-bg); border: 1px solid var(--glass-border);
-            border-radius: 16px; margin-bottom: 12px; padding: 16px;
-            transition: all 0.3s ease; backdrop-filter: blur(10px);
+            border-radius: 16px; margin-bottom: 12px; padding: 16px; backdrop-filter: blur(10px);
         }
-        details[open] { border-color: rgba(0, 230, 118, 0.3); background: rgba(20, 28, 24, 0.5); }
-        summary { font-size: 15px; font-weight: 600; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
-        summary::-webkit-details-marker { display: none; }
-        summary::after { content: '＋'; font-size: 14px; color: #00E676; transition: 0.3s; }
-        details[open] summary::after { content: '－'; transform: rotate(90deg); }
-        details p { margin: 12px 0 0 0; font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+        details[open] { border-color: rgba(0, 230, 118, 0.3); }
+        summary { font-size: 15px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        summary::after { content: '＋'; font-size: 13px; color: #00E676; }
+        details[open] summary::after { content: '－'; }
+        details p { margin: 10px 0 0 0; font-size: 14px; color: var(--text-muted); line-height: 1.5; }
 
-        footer {
-            background: rgba(3, 7, 8, 0.8); backdrop-filter: blur(10px);
-            border-top: 1px solid var(--glass-border);
-            padding: 40px 20px; font-size: 14px; color: var(--text-muted);
-        }
-        footer span { color: #fff; font-weight: 600; }
-
+        footer { border-top: 1px solid var(--glass-border); padding: 30px 20px; font-size: 14px; color: var(--text-muted); }
     </style>
 </head>
 <body>
@@ -333,54 +327,25 @@
 
     <div class="sidebar" id="sidebar">
         <button class="close-menu" onclick="toggleMenu()">&times;</button>
-        <div class="menu-title">Shard Bot</div>
+        <div class="menu-title">Navegação</div>
         
-        <div class="menu-section">
-            <h3>📖 Lista de Comandos</h3>
-            <p>Descubra todas as automações de mídia, downloads e utilitários disponíveis.</p>
-            <a href="#" onclick="openModal('cmdModal')" class="btn-menu btn-secondary">Abrir Painel</a>
-        </div>
-
-        <div class="menu-section">
-            <h3>👥 Grupo Oficial</h3>
-            <p>Entre no ecossistema, teste ferramentas e troque figurinhas com outros membros.</p>
-            <a href="https://chat.whatsapp.com/CycrLPgo7Ib0c5aQLlL5pV?s=cl&p=a&mlu=0&amv=2" target="_blank" class="btn-menu">Entrar no Grupo</a>
-        </div>
-
-        <div class="menu-section">
-            <h3>🤖 Conversar no PV</h3>
-            <p>Inicie um chat direto e privado com o bot agora mesmo de forma gratuita.</p>
-            <a href="https://api.whatsapp.com/send?phone=56950572559&text=%2Fmenu" target="_blank" class="btn-menu">Iniciar Chat</a>
-        </div>
+        <a href="#" onclick="openModal('cmdModal')" class="menu-link">📖 Lista de Comandos</a>
+        <a href="https://chat.whatsapp.com/CycrLPgo7Ib0c5aQLlL5pV?s=cl&p=a&mlu=0&amv=2" target="_blank" class="menu-link">👥 Entrar no Grupo</a>
+        <a href="https://api.whatsapp.com/send?phone=56950572559&text=%2Fmenu" target="_blank" class="menu-link menu-link-primary">🤖 Conversar no Privado</a>
     </div>
 
     <div class="modal-overlay" id="cmdModal" onclick="closeModal(event)">
         <div class="modal-content">
-            <h3 style="margin-top: 0; font-size: 22px; letter-spacing: -0.5px;">Painel de Comandos</h3>
+            <h2 style="margin-top: 0; font-size: 22px;">Lista de Comandos</h2>
+            <p style="color: #aaa; font-size: 13px; margin-bottom: 20px;">Use estes comandos direto no chat com o Shard Bot:</p>
             
-            <div class="modal-tabs">
-                <button class="tab-btn active" onclick="switchTab(event, 'tab-media')">Mídia</button>
-                <button class="tab-btn" onclick="switchTab(event, 'tab-grupos')">Grupos</button>
-                <button class="tab-btn" onclick="switchTab(event, 'tab-utils')">Outros</button>
-            </div>
+            <div class="cmd-item"><span>/s ou /sticker</span><p>Cria uma figurinha respondendo a uma imagem, GIF ou vídeo.</p></div>
+            <div class="cmd-item"><span>/play [música]</span><p>Busca e faz o download de áudio do YouTube direto no chat.</p></div>
+            <div class="cmd-item"><span>/toimg</span><p>Transforma qualquer figurinha estática de volta em imagem.</p></div>
+            <div class="cmd-item"><span>/gpt [pergunta]</span><p>Conversa com o sistema integrado de inteligência artificial.</p></div>
+            <div class="cmd-item"><span>/menu</span><p>Abre o menu interativo com todas as funções.</p></div>
             
-            <div id="tab-media" class="tab-pane active">
-                <div class="cmd-item"><span>/s ou /sticker</span><p>Transforma imagens, GIFs ou vídeos em figurinhas em segundos.</p></div>
-                <div class="cmd-item"><span>/toimg</span><p>Converte uma figurinha estática de volta para uma imagem simples.</p></div>
-                <div class="cmd-item"><span>/play [nome]</span><p>Pesquisa e faz o download de áudios direto do YouTube.</p></div>
-            </div>
-            
-            <div id="tab-grupos" class="tab-pane">
-                <div class="cmd-item"><span>/ban @user</span><p>Remove um usuário do grupo rapidamente (Apenas Admins).</p></div>
-                <div class="cmd-item"><span>/marcar</span><p>Menciona todos os membros do grupo de uma só vez de forma discreta.</p></div>
-            </div>
-            
-            <div id="tab-utils" class="tab-pane">
-                <div class="cmd-item"><span>/gpt [texto]</span><p>Envia perguntas e gera textos usando inteligência artificial avançada.</p></div>
-                <div class="cmd-item"><span>/menu</span><p>Exibe o painel interativo de ajuda completo no chat.</p></div>
-            </div>
-            
-            <button onclick="document.getElementById('cmdModal').classList.remove('active')" style="margin-top: 20px; width: 100%; padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; font-weight: 600;">Fechar Janela</button>
+            <button onclick="document.getElementById('cmdModal').classList.remove('active')" style="margin-top: 15px; width: 100%; padding: 12px; border-radius: 12px; background: #222; color: #fff; border: 1px solid #444; cursor: pointer; font-weight: 600;">Fechar</button>
         </div>
     </div>
 
@@ -391,44 +356,79 @@
             Shard Bot
         </div>
         <div class="status-ping">
-            <div class="ping-dot"></div> Servidor Ativo
+            <div class="ping-dot"></div> Online
         </div>
     </header>
 
     <div class="hero">
-        <h1>Automação e Mídia<br>direto no WhatsApp</h1>
-        <p class="subtitle">Crie figurinhas animadas, faça downloads de arquivos, consulte IA e gerencie grupos em uma única conversa.</p>
+        <h1>Figurinhas e Mídia<br>no seu WhatsApp</h1>
+        <p class="subtitle">Faça figurinhas, edite mídias e consulte inteligência artificial de forma automática e gratuita direto no chat!</p>
         
         <div class="cta-container">
-            <a href="https://api.whatsapp.com/send?phone=56950572559&text=%2Fmenu" target="_blank" class="btn-action btn-main-green">Testar no Privado Grátis</a>
-            <a href="#recursos" class="btn-action btn-outline">Conhecer Recursos</a>
+            <a href="https://api.whatsapp.com/send?phone=56950572559&text=%2Fmenu" target="_blank" class="btn-action btn-main-green">Testar Grátis no Privado</a>
+            <a href="#duvidas" class="btn-action btn-outline">Tirar Dúvidas</a>
         </div>
     </div>
 
     <div class="mockup-container">
         <div class="phone-mockup">
+            
+            <div class="phone-status-bar">
+                <div>09:41</div>
+                <div class="status-icons">📶 🪫</div>
+            </div>
+
             <div class="phone-screen">
                 <div class="chat-header">
                     <div class="ios-back">⟨</div>
                     <img src="https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg" class="chat-avatar-img">
-                    <div class="chat-status"><strong>Shard Bot</strong><span>online</span></div>
+                    <div class="chat-status">
+                        <strong>Shard Bot</strong>
+                        <span>online</span>
+                    </div>
                     <div class="ios-icons"><span>📹</span> <span>📞</span></div>
                 </div>
 
                 <div class="chat-body">
-                    <div class="msg outgoing chat-anim-1">
-                        <div class="msg-photo-box"><img src="https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg"></div>
-                        Fazer figurinha<div class="msg-time">09:12 <span style="color:#34b7f1">✓✓</span></div>
+                    <div class="chat-scroll-container">
+                        
+                        <div class="msg-row row-out anim-b1">
+                            <div class="msg-box outgoing">
+                                <div class="media-box">
+                                    <img src="https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg" alt="Upload">
+                                </div>
+                                Fazer figurinha
+                                <div class="msg-time">09:41 <span>✓✓</span></div>
+                            </div>
+                        </div>
+
+                        <div class="msg-row row-in anim-b2">
+                            <img src="https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg" class="bot-inline-avatar">
+                            <div class="msg-box incoming">
+                                Criando figurinha... ⏳
+                                <div class="msg-time">09:41</div>
+                            </div>
+                        </div>
+
+                        <div class="msg-row row-in anim-b3">
+                            <img src="https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg" class="bot-inline-avatar">
+                            <div class="msg-box incoming sticker-wrapper">
+                                <div class="whatsapp-sticker"></div>
+                            </div>
+                        </div>
+
                     </div>
-                    <div class="msg incoming chat-anim-2">Criando figurinha... ⏳<div class="msg-time">09:12</div></div>
-                    <div class="msg incoming chat-anim-3"><div class="sticker-demo"></div></div>
                 </div>
 
                 <div class="chat-footer">
-                    <div class="ios-plus">+</div>
-                    <div class="ios-input">Mensagem...<span>📷</span></div>
-                    <div class="ios-mic">🎙</div>
+                    <div class="wa-icon-plus">＋</div>
+                    <div class="wa-input-field">
+                        Mensagem...
+                        <span>📷</span>
+                    </div>
+                    <div class="wa-icon-mic">🎙</div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -440,86 +440,37 @@
         <div class="stat-card"><h3>68k+</h3><p>Usuários</p></div>
     </div>
 
-    <div id="recursos" style="padding-top: 40px;">
-        <h2 class="section-title">O que o Shard Bot faz?</h2>
-        <p class="section-desc">Uma coleção completa de ferramentas direto no seu app de mensagens.</p>
-        
-        <div class="features-grid">
-            <div class="feature-card">
-                <span class="feature-icon">⚡</span>
-                <h4>Processamento Instantâneo</h4>
-                <p>Construído sobre arquitetura veloz em Node.js para responder seus comandos em menos de 3 segundos.</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">🎬</span>
-                <h4>Suporte Completo a Mídias</h4>
-                <p>Envie fotos, vídeos ou GIFs e receba figurinhas estáticas ou animadas perfeitamente recortadas.</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">🧠</span>
-                <h4>Inteligência Artificial</h4>
-                <p>Consulte dúvidas, gere códigos ou traduza textos usando IA integrada diretamente no chat.</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">🛡️</span>
-                <h4>Segurança Extrema</h4>
-                <p>Processamento focado em privacidade. Seus arquivos de mídia são processados em cache e descartados imediatamente.</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="timeline-section">
-        <h2 class="section-title">Como começar a usar?</h2>
-        <p class="section-desc">Siga o passo a passo abaixo e comece em menos de um minuto.</p>
-        
-        <div class="timeline">
-            <div class="timeline-item">
-                <h4>1. Abra a Conversa</h4>
-                <p>Clique em um de nossos botões de ação para abrir o chat do Shard Bot diretamente no seu WhatsApp.</p>
-            </div>
-            <div class="timeline-item">
-                <h4>2. Envie o Comando /menu</h4>
-                <p>Envie a mensagem inicial para receber a lista interativa com todas as funções catalogadas do sistema.</p>
-            </div>
-            <div class="timeline-item">
-                <h4>3. Crie e Desfrute</h4>
-                <p>Envie imagens com a legenda do comando correspondente ou use em seus grupos favoritos gratuitamente.</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="faq-section">
-        <h2 class="section-title" style="text-align: center; margin-bottom: 30px;">Dúvidas Frequentes</h2>
+    <div class="faq-section" id="duvidas">
+        <h2 class="section-title">Dúvidas Frequentes</h2>
         
         <details>
             <summary>O Shard Bot é totalmente gratuito?</summary>
-            <p>Sim! Você pode desfrutar das principais ferramentas de conversão, buscas e IA integradas no privado ou em grupos de forma 100% gratuita.</p>
+            <p>Sim! Você pode usar as principais funções de criação de stickers, buscas e moderação direto no chat sem pagar absolutamente nada.</p>
         </details>
         
         <details>
-            <summary>Como faço para adicionar o bot em meu grupo?</summary>
-            <p>Basta adicionar o número do bot aos contatos do seu grupo de WhatsApp. Para utilizar comandos de moderação avançados, lembre-se de promovê-lo a administrador.</p>
+            <summary>Como coloco o bot no meu grupo?</summary>
+            <p>Basta adicionar o número do Shard Bot à sua lista de contatos e inseri-lo no grupo desejado. Promova-o a administrador para habilitar comandos avançados.</p>
         </details>
         
         <details>
-            <summary>O sistema fica ativo 24 horas por dia?</summary>
-            <p>Com certeza. Nossa aplicação é hospedada em servidores em nuvem de alta estabilidade e monitorada constantemente para garantir disponibilidade total.</p>
+            <summary>Ele funciona 24 horas por dia?</summary>
+            <p>Com certeza. Nosso sistema roda hospedado em servidores de nuvem dedicados de alta performance para garantir estabilidade e respostas rápidas a qualquer hora.</p>
         </details>
     </div>
 
     <footer>
-        Desenvolvido com excelência técnica <br><br>
-        <span>Shard Bot</span> © 2026
+        Shard Bot © 2026
     </footer>
 
     <script>
-        // Menu Lateral
+        // Funções do Menu Lateral
         function toggleMenu() {
             document.getElementById('sidebar').classList.toggle('active');
             document.getElementById('overlay').classList.toggle('active');
         }
 
-        // Modals
+        // Funções do Modal
         function openModal(id) {
             document.getElementById(id).classList.add('active');
             toggleMenu();
@@ -529,18 +480,6 @@
             if(event.target.classList.contains('modal-overlay')) {
                 event.target.classList.remove('active');
             }
-        }
-
-        // Sistema de Abas do Modal
-        function switchTab(event, tabId) {
-            const tabs = document.querySelectorAll('.tab-pane');
-            const buttons = document.querySelectorAll('.tab-btn');
-            
-            tabs.forEach(tab => tab.classList.remove('active'));
-            buttons.forEach(btn => btn.classList.remove('active'));
-            
-            document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
         }
     </script>
 
