@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Cores baseadas na logo (Verde Escuro, Vermelho, Branco) */
+            /* Cores baseadas na logo */
             --bg-base: #050505;
             --text-main: #ffffff;
             --text-muted: #a1a1aa;
@@ -33,7 +33,6 @@
             padding: 0;
             text-align: center;
             overflow-x: hidden;
-            /* Fundo com luzes para o efeito Glass aparecer */
             background-image: 
                 radial-gradient(circle at 15% 30%, rgba(46, 139, 87, 0.25), transparent 40%),
                 radial-gradient(circle at 85% 70%, rgba(220, 20, 60, 0.2), transparent 40%);
@@ -71,9 +70,7 @@
             backdrop-filter: blur(10px);
         }
 
-        .icon-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-        }
+        .icon-btn:hover { background: rgba(255, 255, 255, 0.15); }
 
         .logo {
             font-size: 20px;
@@ -93,15 +90,34 @@
             box-shadow: 0 0 10px rgba(46, 139, 87, 0.5);
         }
 
-        .spacer { width: 42px; }
+        /* Ping de Status Online no Topo */
+        .status-ping {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #00E676;
+            background: rgba(0, 230, 118, 0.1);
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 230, 118, 0.2);
+        }
+
+        .ping-dot {
+            width: 8px;
+            height: 8px;
+            background: #00E676;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #00E676;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
 
         /* Glassmorphism Sidebar */
         .sidebar {
             position: fixed;
-            top: 0;
-            left: -320px;
-            width: 280px;
-            height: 100%;
+            top: 0; left: -320px; width: 280px; height: 100%;
             background: rgba(15, 18, 15, 0.6);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
@@ -117,290 +133,167 @@
         .sidebar.active { left: 0; }
 
         .close-menu {
-            font-size: 30px;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            float: right;
-            padding: 0;
+            font-size: 30px; background: none; border: none;
+            color: var(--text-muted); cursor: pointer; float: right; padding: 0;
         }
 
         .menu-title {
-            font-size: 24px;
-            font-weight: 800;
-            color: #fff;
-            margin-top: 50px;
-            margin-bottom: 30px;
+            font-size: 24px; font-weight: 800; color: #fff;
+            margin-top: 50px; margin-bottom: 30px;
         }
 
         .menu-section {
             background: rgba(255, 255, 255, 0.03);
-            border-radius: 16px;
-            padding: 18px;
-            margin-bottom: 20px;
+            border-radius: 16px; padding: 18px; margin-bottom: 20px;
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .menu-section h3 { margin: 0 0 8px 0; font-size: 17px; }
-        .menu-section p { margin: 0 0 18px 0; font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+        .menu-section h3 { margin: 0 0 8px 0; font-size: 16px; }
+        .menu-section p { margin: 0 0 15px 0; font-size: 13px; color: var(--text-muted); line-height: 1.5; }
 
         .btn-menu {
-            display: block;
-            text-align: center;
+            display: block; text-align: center;
             background: linear-gradient(135deg, #2e8b57, #1e5c3a);
-            color: #fff;
-            text-decoration: none;
-            padding: 12px;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 600;
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: 0.3s;
+            color: #fff; text-decoration: none; padding: 12px;
+            border-radius: 12px; font-size: 14px; font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.2); transition: 0.3s;
         }
 
         .btn-menu:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(46, 139, 87, 0.4); }
+        .btn-secondary { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.1); }
 
         .sidebar-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(4px);
-            z-index: 150;
-            display: none;
-            opacity: 0;
-            transition: 0.4s;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+            z-index: 150; display: none; opacity: 0; transition: 0.4s;
         }
         .sidebar-overlay.active { display: block; opacity: 1; }
 
+        /* Modal de Comandos */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
+            z-index: 300; display: none; align-items: center; justify-content: center;
+            opacity: 0; transition: 0.3s;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+
+        .modal-content {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            width: 90%; max-width: 400px; max-height: 80vh;
+            border-radius: 24px; padding: 25px; text-align: left;
+            overflow-y: auto; box-shadow: var(--glass-shadow);
+            transform: scale(0.9); transition: 0.3s;
+        }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+
+        .cmd-item {
+            background: rgba(0,0,0,0.3); padding: 12px; border-radius: 12px;
+            margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.05);
+        }
+        .cmd-item span { color: #00E676; font-weight: bold; font-family: monospace; font-size: 15px;}
+        .cmd-item p { margin: 5px 0 0 0; font-size: 13px; color: var(--text-muted); }
+
         /* Hero Section */
-        .hero { padding: 60px 20px 40px; }
+        .hero { padding: 50px 20px 40px; }
         h1 { font-size: 40px; font-weight: 800; margin: 0 0 15px 0; line-height: 1.1; letter-spacing: -1px; }
         p.subtitle { font-size: 17px; color: var(--text-muted); margin: 0 auto 35px auto; max-width: 420px; line-height: 1.5; }
 
-        /* Smartphone Mockup */
-        .mockup-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: -30px;
-            position: relative;
-            z-index: 10;
-            perspective: 1000px;
-        }
-
+        /* Smartphone Mockup iOS */
+        .mockup-container { display: flex; justify-content: center; margin-bottom: 40px; position: relative; z-index: 10; perspective: 1000px; }
         .phone-mockup {
-            background-color: var(--ios-bg);
-            border: 6px solid #222;
-            border-radius: 45px;
-            height: 520px;
-            width: 260px;
-            position: relative;
+            background-color: var(--ios-bg); border: 6px solid #222; border-radius: 45px;
+            height: 520px; width: 260px; position: relative;
             box-shadow: 0 30px 60px rgba(0,0,0, 0.8), inset 0 0 0 2px #444;
-            overflow: hidden;
-            animation: phoneEntrance 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-            opacity: 0;
-            transform: translateY(60px) scale(0.95);
+            overflow: hidden; animation: phoneEntrance 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            opacity: 0; transform: translateY(60px) scale(0.95);
         }
 
-        @keyframes phoneEntrance {
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
+        @keyframes phoneEntrance { to { opacity: 1; transform: translateY(0) scale(1); } }
 
-        /* Dynamic Island / Notch */
         .phone-mockup::before {
-            content: '';
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90px;
-            height: 25px;
-            background-color: #000;
-            border-radius: 20px;
-            z-index: 30;
+            content: ''; position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+            width: 90px; height: 25px; background-color: #000; border-radius: 20px; z-index: 30;
         }
 
-        /* iOS WhatsApp Screen */
         .phone-screen {
-            background-color: var(--ios-bg);
-            /* Wallpaper estilo iOS escuro */
-            background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 15px 15px;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            box-sizing: border-box;
+            background-color: var(--ios-bg); background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 15px 15px; width: 100%; height: 100%; display: flex; flex-direction: column; box-sizing: border-box;
         }
 
-        /* Topo iOS WhatsApp */
         .chat-header {
-            background: var(--ios-header);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 40px 15px 10px; /* Espaço pro notch */
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-bottom: 0.5px solid rgba(255,255,255,0.1);
+            background: var(--ios-header); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            padding: 40px 15px 10px; display: flex; align-items: center; gap: 10px; border-bottom: 0.5px solid rgba(255,255,255,0.1);
         }
 
-        .ios-back {
-            color: var(--ios-blue);
-            font-size: 22px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-        }
-
-        .chat-avatar-img {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
+        .ios-back { color: var(--ios-blue); font-size: 22px; font-weight: 500; display: flex; align-items: center; }
+        .chat-avatar-img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
         .chat-status { text-align: left; flex: 1; }
         .chat-status strong { display: block; font-size: 15px; color: #fff; font-weight: 600; }
         .chat-status span { font-size: 12px; color: var(--text-muted); }
-        
         .ios-icons { color: var(--ios-blue); font-size: 18px; display: flex; gap: 15px; }
 
-        /* Área de Mensagens */
-        .chat-body {
-            flex: 1;
-            padding: 15px 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            overflow: hidden;
-            position: relative;
-        }
+        .chat-body { flex: 1; padding: 15px 12px; display: flex; flex-direction: column; gap: 10px; overflow: hidden; position: relative; }
 
-        /* Balões iOS */
         .msg {
-            max-width: 75%;
-            padding: 8px 12px;
-            font-size: 15px;
-            line-height: 1.3;
-            color: #fff;
-            position: absolute;
-            opacity: 0;
-            display: flex;
-            flex-direction: column;
+            max-width: 75%; padding: 8px 12px; font-size: 15px; line-height: 1.3; color: #fff;
+            position: absolute; opacity: 0; display: flex; flex-direction: column;
         }
 
-        .msg.outgoing {
-            background-color: var(--ios-bubble-out);
-            border-radius: 18px 18px 4px 18px;
-            right: 12px;
-        }
+        .msg.outgoing { background-color: var(--ios-bubble-out); border-radius: 18px 18px 4px 18px; right: 12px; }
+        .msg.incoming { background-color: var(--ios-bubble-in); border-radius: 18px 18px 18px 4px; left: 12px; }
 
-        .msg.incoming {
-            background-color: var(--ios-bubble-in);
-            border-radius: 18px 18px 18px 4px;
-            left: 12px;
-        }
+        .msg-time { font-size: 10px; color: rgba(255,255,255,0.6); align-self: flex-end; margin-top: 4px; margin-bottom: -2px; display: flex; align-items: center; gap: 3px; }
 
-        .msg-time {
-            font-size: 10px;
-            color: rgba(255,255,255,0.6);
-            align-self: flex-end;
-            margin-top: 4px;
-            margin-bottom: -2px;
-            display: flex;
-            align-items: center;
-            gap: 3px;
-        }
-
-        /* Foto enviada pelo usuário */
-        .msg-photo-box {
-            width: 130px;
-            height: 140px;
-            background: #111;
-            border-radius: 12px;
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
+        .msg-photo-box { width: 130px; height: 140px; background: #111; border-radius: 12px; margin-bottom: 5px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .msg-photo-box img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; }
 
-        /* Figurinha do Bot */
         .sticker-demo {
-            width: 110px;
-            height: 110px;
-            background: url('https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg') center/cover;
-            border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            animation: bounce 2s infinite alternate;
+            width: 110px; height: 110px; background: url('https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg') center/cover;
+            border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); animation: bounce 2s infinite alternate;
         }
         
         @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-5px); } }
 
-        /* Timelines do Chat */
-        @keyframes seqUser {
-            0%, 100% { opacity: 0; transform: translateY(15px); }
-            5%, 45% { opacity: 1; transform: translateY(0); }
-            50% { opacity: 0; }
-        }
-        @keyframes seqBotText {
-            0%, 15% { opacity: 0; transform: scale(0.9); }
-            20%, 35% { opacity: 1; transform: scale(1); }
-            40%, 100% { opacity: 0; }
-        }
-        @keyframes seqBotSticker {
-            0%, 42% { opacity: 0; transform: scale(0.5); }
-            47%, 92% { opacity: 1; transform: scale(1); }
-            97%, 100% { opacity: 0; }
-        }
+        @keyframes seqUser { 0%, 100% { opacity: 0; transform: translateY(15px); } 5%, 45% { opacity: 1; transform: translateY(0); } 50% { opacity: 0; } }
+        @keyframes seqBotText { 0%, 15% { opacity: 0; transform: scale(0.9); } 20%, 35% { opacity: 1; transform: scale(1); } 40%, 100% { opacity: 0; } }
+        @keyframes seqBotSticker { 0%, 42% { opacity: 0; transform: scale(0.5); } 47%, 92% { opacity: 1; transform: scale(1); } 97%, 100% { opacity: 0; } }
 
         .chat-anim-1 { top: 15px; animation: seqUser 11s infinite; }
         .chat-anim-2 { top: 220px; animation: seqBotText 11s infinite; }
         .chat-anim-3 { top: 275px; animation: seqBotSticker 11s infinite; background: transparent; padding: 0; }
 
-        /* Barra de Digitação iOS */
         .chat-footer {
-            background: var(--ios-header);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 10px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            border-top: 0.5px solid rgba(255,255,255,0.1);
-            padding-bottom: 25px; /* Espaço da barra do iPhone */
+            background: var(--ios-header); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            padding: 10px; display: flex; align-items: center; gap: 12px; border-top: 0.5px solid rgba(255,255,255,0.1); padding-bottom: 25px;
         }
         
         .ios-plus { color: var(--ios-blue); font-size: 24px; font-weight: 400; }
-        .ios-input {
-            flex: 1;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.15);
-            padding: 8px 12px;
-            border-radius: 20px;
-            color: #fff;
-            font-size: 14px;
-            display: flex;
-            justify-content: space-between;
-        }
+        .ios-input { flex: 1; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); padding: 8px 12px; border-radius: 20px; color: #fff; font-size: 14px; display: flex; justify-content: space-between; }
         .ios-mic { color: var(--ios-blue); font-size: 20px; }
 
-        /* Seção Estatísticas (Glass) */
-        .stats-section {
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            padding: 80px 20px 60px;
-            border-top: 1px solid var(--glass-border);
-            margin-top: 20px;
+        /* Pop-ups de Estatísticas */
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;
+            max-width: 600px; margin: 0 auto 50px auto; padding: 0 20px;
         }
 
-        .stats-content h2 { font-size: 22px; font-weight: 400; color: #eee; line-height: 1.5; margin: 0; }
-        .stats-content h2 strong { font-size: 28px; font-weight: 800; color: #fff; }
+        .stat-card {
+            background: var(--glass-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border); padding: 20px 15px; border-radius: 20px; text-align: center;
+        }
 
-        footer { background: var(--glass-bg); padding-bottom: 40px; font-size: 14px; color: var(--text-muted); }
+        .stat-card h3 { font-size: 24px; margin: 0 0 5px 0; color: #fff; font-weight: 800; }
+        .stat-card p { margin: 0; font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+
+        /* FAQ Simples */
+        .faq-section { max-width: 600px; margin: 0 auto 50px auto; padding: 0 20px; text-align: left; }
+        .faq-title { font-size: 20px; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .faq-item { margin-bottom: 15px; }
+        .faq-item strong { color: #00E676; font-size: 15px; }
+        .faq-item p { margin: 5px 0 0 0; font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+
+        footer { background: transparent; padding-bottom: 40px; font-size: 14px; color: var(--text-muted); text-align: center; }
         footer span { color: #fff; font-weight: 600; }
 
     </style>
@@ -409,46 +302,79 @@
 
     <div class="sidebar-overlay" id="overlay" onclick="toggleMenu()"></div>
 
-    <!-- Menu Lateral -->
     <div class="sidebar" id="sidebar">
         <button class="close-menu" onclick="toggleMenu()">&times;</button>
         <div class="menu-title">Navegação</div>
         
         <div class="menu-section">
-            <h3>Comunidade</h3>
+            <h3>📖 Comandos</h3>
+            <p>Veja tudo o que o bot é capaz de fazer.</p>
+            <a href="#" onclick="openModal('cmdModal')" class="btn-menu btn-secondary">Ver Lista Completa</a>
+        </div>
+
+        <div class="menu-section">
+            <h3>👥 Comunidade</h3>
             <p>Entre em nosso grupo, interaja e desfrute do bot em conjunto!</p>
             <a href="https://chat.whatsapp.com/CycrLPgo7Ib0c5aQLlL5pV?s=cl&p=a&mlu=0&amv=2" target="_blank" class="btn-menu">Entrar no Grupo</a>
         </div>
 
         <div class="menu-section">
-            <h3>Bot Privado</h3>
+            <h3>🤖 Bot Privado</h3>
             <p>Desfrute de todas as ferramentas do Shard Bot gratuitamente no privado.</p>
             <a href="https://api.whatsapp.com/send?phone=56950572559&text=%2Fmenu" target="_blank" class="btn-menu">Conversar no Privado</a>
         </div>
     </div>
 
-    <!-- Cabeçalho -->
+    <div class="modal-overlay" id="cmdModal" onclick="closeModal(event)">
+        <div class="modal-content">
+            <h2 style="margin-top: 0;">Lista de Comandos</h2>
+            <p style="color: #aaa; font-size: 13px;">Envie estes comandos no chat com o Shard Bot:</p>
+            
+            <div class="cmd-item">
+                <span>/s ou /sticker</span>
+                <p>Cria uma figurinha respondendo a uma imagem ou vídeo.</p>
+            </div>
+            <div class="cmd-item">
+                <span>/play [música]</span>
+                <p>Baixa o áudio de uma música do YouTube direto no zap.</p>
+            </div>
+            <div class="cmd-item">
+                <span>/toimg</span>
+                <p>Transforma uma figurinha de volta em imagem.</p>
+            </div>
+            <div class="cmd-item">
+                <span>/gpt [pergunta]</span>
+                <p>Conversa com a inteligência artificial.</p>
+            </div>
+            <div class="cmd-item">
+                <span>/menu</span>
+                <p>Mostra o menu completo direto no WhatsApp.</p>
+            </div>
+            
+            <button onclick="document.getElementById('cmdModal').classList.remove('active')" style="margin-top: 20px; width: 100%; padding: 12px; border-radius: 10px; background: #222; color: #fff; border: 1px solid #444; cursor: pointer;">Fechar</button>
+        </div>
+    </div>
+
     <header>
         <button class="icon-btn" onclick="toggleMenu()">≡</button>
         <div class="logo">
             <img src="https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg" alt="Logo Shard Bot" class="logo-img">
             Shard Bot
         </div>
-        <div class="spacer"></div>
+        <div class="status-ping">
+            <div class="ping-dot"></div> Online
+        </div>
     </header>
 
-    <!-- Seção Principal -->
     <div class="hero">
         <h1>Figurinhas e Mídia<br>no seu WhatsApp</h1>
         <p class="subtitle">Faça figurinhas, edite imagens e muito mais de forma automática, direto no chat!</p>
     </div>
 
-    <!-- Smartphone Glass & iOS UI -->
     <div class="mockup-container">
         <div class="phone-mockup">
             <div class="phone-screen">
                 
-                <!-- Header do Chat (Estilo iOS) -->
                 <div class="chat-header">
                     <div class="ios-back">⟨</div>
                     <img src="https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg" class="chat-avatar-img">
@@ -461,10 +387,7 @@
                     </div>
                 </div>
 
-                <!-- Corpo do Chat -->
                 <div class="chat-body">
-                    
-                    <!-- 1. Usuário envia -->
                     <div class="msg outgoing chat-anim-1">
                         <div class="msg-photo-box">
                             <img src="https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg">
@@ -473,20 +396,16 @@
                         <div class="msg-time">08:57 <span style="color:#34b7f1">✓✓</span></div>
                     </div>
 
-                    <!-- 2. Bot processa -->
                     <div class="msg incoming chat-anim-2">
                         Criando figurinha... ⏳
                         <div class="msg-time">08:57</div>
                     </div>
 
-                    <!-- 3. Bot envia Sticker -->
                     <div class="msg incoming chat-anim-3">
                         <div class="sticker-demo"></div>
                     </div>
-
                 </div>
 
-                <!-- Footer do Chat (Estilo iOS) -->
                 <div class="chat-footer">
                     <div class="ios-plus">+</div>
                     <div class="ios-input">
@@ -500,10 +419,39 @@
         </div>
     </div>
 
-    <!-- Estatísticas (Glass) -->
-    <div class="stats-section">
-        <div class="stats-content">
-            <h2><strong>68.051</strong> usuários já criaram um total de <strong>3.216.627</strong> figurinhas com o Shard Bot!</h2>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>3.2M+</h3>
+            <p>Figurinhas Feitas</p>
+        </div>
+        <div class="stat-card">
+            <h3>15M+</h3>
+            <p>Mensagens Lidas</p>
+        </div>
+        <div class="stat-card">
+            <h3>1.240</h3>
+            <p>Grupos Ativos</p>
+        </div>
+        <div class="stat-card">
+            <h3>68k+</h3>
+            <p>Usuários Totais</p>
+        </div>
+    </div>
+
+    <div class="faq-section">
+        <h2 class="faq-title">Dúvidas Frequentes</h2>
+        
+        <div class="faq-item">
+            <strong>É totalmente gratuito?</strong>
+            <p>Sim! Você pode usar as funções principais do Shard Bot no seu privado ou grupo sem pagar nada.</p>
+        </div>
+        <div class="faq-item">
+            <strong>Como coloco no meu grupo?</strong>
+            <p>Basta adicionar o número do bot (como um contato normal) ao seu grupo e dar as permissões de administrador se quiser que ele gerencie as mensagens.</p>
+        </div>
+        <div class="faq-item">
+            <strong>O bot fica online 24h?</strong>
+            <p>Nosso sistema é hospedado em servidores na nuvem de alta qualidade para garantir que suas figurinhas sejam feitas a qualquer hora do dia ou da noite.</p>
         </div>
     </div>
 
@@ -513,9 +461,22 @@
     </footer>
 
     <script>
+        // Controla o Menu Lateral
         function toggleMenu() {
             document.getElementById('sidebar').classList.toggle('active');
             document.getElementById('overlay').classList.toggle('active');
+        }
+
+        // Controla o Modal de Comandos
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+            toggleMenu(); // Fecha o menu lateral automaticamente
+        }
+
+        function closeModal(event) {
+            if(event.target.classList.contains('modal-overlay')) {
+                event.target.classList.remove('active');
+            }
         }
     </script>
 
