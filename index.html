@@ -349,19 +349,21 @@
 
         /* ==========================================
            Estilos para os Live Toasts (Notificações)
-           Canto Superior Direito + Animações Melhoradas
+           Canto Inferior Centralizado
            ========================================== */
         #toast-container {
             position: fixed;
-            top: auto;       /* Movido para o topo */
-            right: 20px;     /* Movido para a direita */
-            left: auto;      /* Remove o alinhamento à esquerda anterior */
-            bottom: 20px;    /* Remove o alinhamento à base anterior */
+            top: auto;       
+            right: auto;     
+            left: 50%;      
+            bottom: 20px;    
+            transform: translateX(-50%); /* Centraliza perfeitamente no meio da tela */
             z-index: 1000;
             display: flex;
-            flex-direction: column;
+            flex-direction: column-reverse; /* Novas notificações empurram as velhas pra cima */
             gap: 12px;
             pointer-events: none; 
+            width: max-content; /* Se ajusta ao conteúdo */
         }
 
         .live-toast {
@@ -377,22 +379,20 @@
             align-items: center;
             gap: 14px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            /* Animação vindo da direita (+120%) */
-            transform: translateX(-120%);
+            /* Animação vindo de baixo (+100px) em vez das laterais */
+            transform: translateY(100px);
             opacity: 0;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Efeito "mola" (bounce) ao entrar */
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
             max-width: 320px;
             position: relative;
-            overflow: hidden; /* Para a barra de progresso não vazar as bordas */
+            overflow: hidden; 
         }
 
-        /* Classe que ativa a notificação */
         .live-toast.show {
-            transform: translateX(0);
+            transform: translateY(0); /* Sobe pra posição original */
             opacity: 1;
         }
 
-        /* Ícone da notificação */
         .toast-icon-bg {
             background: rgba(0, 230, 118, 0.15);
             width: 38px;
@@ -409,7 +409,6 @@
             color: var(--neon-green);
         }
         
-        /* Texto da notificação */
         .toast-content {
             flex: 1;
         }
@@ -428,7 +427,6 @@
             line-height: 1.4;
         }
 
-        /* Barra de tempo (progress bar) inferior animada */
         .toast-progress {
             position: absolute;
             bottom: 0;
@@ -436,7 +434,6 @@
             height: 3px;
             background: var(--neon-green);
             width: 100%;
-            /* A animação dura 4 segundos, que é o tempo exato que o toast fica na tela */
             animation: toastProgressAnim 4s linear forwards;
         }
 
@@ -445,20 +442,12 @@
             to { width: 0%; }
         }
 
-        /* Responsividade para mobile: Toasts no topo centro em telas pequenas */
         @media (max-width: 600px) {
             #toast-container {
-                top: 20px;
-                right: 5%;
-                left: 5%;
                 width: 90%;
             }
             .live-toast {
-                transform: translateY(-100px); /* Vindo de cima para baixo no mobile */
                 max-width: 100%;
-            }
-            .live-toast.show {
-                transform: translateY(0);
             }
         }
     </style>
@@ -742,15 +731,6 @@
         carregarStatusAoVivo();
         setInterval(carregarStatusAoVivo, 10000); 
 
-        // ==========================================
-        // Lógica dos Live Toasts (Notificações Fake)
-        // ==========================================
-        
-        /* Cada linha abaixo é uma notificação diferente.
-           'icon': é a classe do ícone (pesquise em boxicons.com se quiser outros)
-           'title': é o texto em negrito (título principal)
-           'text': é a mensagem secundária menor
-        */
         const mensagensToast = [
             { icon: 'bx-image-add', title: 'Sticker Criado!', text: 'Alguém acabou de gerar uma figurinha animada. ⚡' },
             { icon: 'bx-music', title: 'Download de Áudio', text: 'Usuário usou /play para baixar uma música. 🎵' },
@@ -761,10 +741,8 @@
         ];
 
         function dispararToastAleatorio() {
-            // Seleciona uma notificação aleatória do array acima
             const notificacao = mensagensToast[Math.floor(Math.random() * mensagensToast.length)];
             
-            // Cria a caixa da notificação
             const toast = document.createElement('div');
             toast.className = 'live-toast';
             toast.innerHTML = `
@@ -778,34 +756,25 @@
                 <div class="toast-progress"></div>
             `;
 
-            // Insere na página
             const container = document.getElementById('toast-container');
             container.appendChild(toast);
 
-            // Animação de entrada
             setTimeout(() => {
                 toast.classList.add('show');
             }, 50);
 
-            // Remove a notificação após 4 segundos (tempo que a barra verde esvazia)
             setTimeout(() => {
                 toast.classList.remove('show');
                 
-                // Aguarda a animação de saída terminar para deletar do HTML
                 setTimeout(() => {
                     toast.remove();
                 }, 500); 
             }, 4000);
 
-            /* O código abaixo sorteia um tempo para a próxima notificação aparecer.
-               O padrão atual é entre 8000ms (8s) e 20000ms (20s).
-               Se quiser mais rápido, mude para valores menores, ex: 5000 e 10000.
-            */
             const proximoEm = Math.floor(Math.random() * (20000 - 8000 + 1)) + 8000;
             setTimeout(dispararToastAleatorio, proximoEm);
         }
 
-        // A primeira notificação aparece 3 segundos após o site carregar
         setTimeout(dispararToastAleatorio, 3000);
     </script>
 
