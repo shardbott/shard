@@ -324,7 +324,7 @@
         .timeline-item h4 { margin: 0 0 5px 0; font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
         .timeline-item p { margin: 0; font-size: 14px; color: var(--text-muted); line-height: 1.5; }
 
-        /* Estatísticas */
+        /* Estatísticas Dinâmicas com IDs adicionados */
         .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; max-width: 600px; margin: 60px auto; padding: 0 20px; }
         @media(min-width: 600px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
 
@@ -507,12 +507,12 @@
         </div>
     </div>
 
-    <!-- Estatísticas -->
+    <!-- Estatísticas Dinâmicas -->
     <div class="stats-grid">
-        <div class="stat-card"><h3>3.2M+</h3><p>Stickers</p></div>
-        <div class="stat-card"><h3>15M+</h3><p>Mensagens</p></div>
-        <div class="stat-card"><h3>1.240</h3><p>Grupos</p></div>
-        <div class="stat-card"><h3>68k+</h3><p>Usuários</p></div>
+        <div class="stat-card"><h3 id="stat-stickers">0</h3><p>Stickers</p></div>
+        <div class="stat-card"><h3 id="stat-mensagens">0</h3><p>Mensagens</p></div>
+        <div class="stat-card"><h3 id="stat-grupos">0</h3><p>Grupos</p></div>
+        <div class="stat-card"><h3 id="stat-usuarios">0</h3><p>Usuários</p></div>
     </div>
 
     <!-- Seção de Recursos -->
@@ -618,6 +618,38 @@
             document.getElementById(tabId).classList.add('active');
             event.currentTarget.classList.add('active');
         }
+
+        // --- SISTEMA DE ESTATÍSTICAS AO VIVO ---
+        async function carregarStatusAoVivo() {
+            try {
+                // Link real do bot na Square Cloud
+                const urlAPI = 'https://shard.squareweb.app/api/stats'; 
+                
+                const resposta = await fetch(urlAPI);
+                const dados = await resposta.json();
+
+                // Função que transforma números grandes em formatos compactos (ex: 1500 vira 1.5k)
+                const formatar = (num) => {
+                    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M+';
+                    if (num >= 1000) return (num / 1000).toFixed(1) + 'k+';
+                    return num;
+                };
+
+                // Injeta os dados do MongoDB direto na tela do usuário
+                document.getElementById('stat-stickers').innerText = formatar(dados.figurinhas || 0);
+                document.getElementById('stat-mensagens').innerText = formatar(dados.mensagens || 0);
+                document.getElementById('stat-grupos').innerText = formatar(dados.grupos || 0);
+                document.getElementById('stat-usuarios').innerText = formatar(dados.usuarios || 0);
+                
+            } catch (erro) {
+                console.log("Erro ao buscar dados ao vivo do bot:", erro);
+            }
+        }
+
+        // Carrega imediatamente ao abrir o site
+        carregarStatusAoVivo();
+        // Atualiza silenciosamente a cada 10 segundos
+        setInterval(carregarStatusAoVivo, 10000); 
     </script>
 
 </body>
