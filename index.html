@@ -9,8 +9,12 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     
     <style>
-          { -webkit-tap-highlight-color: transparent; outline: none;
+        /* Regra para remover o quadrado azul de clique no celular */
+        * {
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
         }
+
         :root {
             --bg-base: #030708;
             --text-main: #ffffff;
@@ -22,7 +26,7 @@
             --glass-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.6);
             --glass-accent: rgba(0, 230, 118, 0.1);
             
-            /* WhatsApp Android Dark Mode Colors (Inspirado na referência) */
+            /* WhatsApp Android Dark Mode Colors */
             --wa-bg: #0b141a;
             --wa-header: #1f2c34;
             --wa-bubble-out: #005c4b;
@@ -101,7 +105,6 @@
         }
         .menu-section:hover { background: rgba(255, 255, 255, 0.04); border-color: rgba(255, 255, 255, 0.08); }
         
-        /* Ajuste do ícone no título do menu lateral */
         .menu-section h3 { margin: 0 0 8px 0; font-size: 17px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
         .menu-section h3 i { font-size: 22px; color: var(--neon-green); }
         .menu-section p { margin: 0 0 16px 0; font-size: 13px; color: var(--text-muted); line-height: 1.5; }
@@ -166,9 +169,7 @@
         .btn-outline { background: rgba(255,255,255,0.03); color: #fff; border: 1px solid var(--glass-border); }
         .btn-outline:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); transform: translateY(-3px); }
 
-        /* ==========================================================
-           NOVO MOCKUP: ESTILO ANDROID / WHATSAPP IDÊNTICO À FOTO
-           ========================================================== */
+        /* CELULAR MOCKUP */
         .mockup-container {
             display: flex; justify-content: center; margin-bottom: 60px; position: relative; z-index: 10; perspective: 1500px;
         }
@@ -183,23 +184,20 @@
         .mockup-container:hover .phone-mockup { transform: translateY(-5px) rotateX(5deg) rotateY(8deg); }
         @keyframes phoneEntrance { to { opacity: 1; transform: translateY(0) rotateX(0); } }
 
-        /* Botões Físicos Laterais do Celular */
-        .phone-mockup::before { /* Volume */
+        .phone-mockup::before {
             content: ''; position: absolute; left: -4px; top: 110px; width: 4px; height: 60px;
             background: var(--neon-green); border-radius: 4px 0 0 4px; z-index: -1;
         }
-        .phone-mockup::after { /* Energia */
+        .phone-mockup::after {
             content: ''; position: absolute; right: -4px; top: 140px; width: 4px; height: 40px;
             background: var(--neon-green); border-radius: 0 4px 4px 0; z-index: -1;
         }
 
-        /* Top Notch Camera */
         .phone-notch {
             position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 80px; height: 22px;
             background-color: #000; border-radius: 20px; z-index: 40;
         }
 
-        /* Top Bar Android (09:29 / Icones Redes) */
         .phone-status-bar {
             position: absolute; top: 0; width: 100%; height: 35px;
             display: flex; justify-content: space-between; align-items: center;
@@ -208,14 +206,12 @@
         }
         .status-icons { display: flex; align-items: center; gap: 4px; font-size: 13px; color: var(--neon-green); }
 
-        /* Tela do Celular */
         .phone-screen {
             background-color: var(--wa-bg); width: 100%; height: 100%; display: flex; flex-direction: column; box-sizing: border-box;
             background-image: radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 12px 12px;
             padding-top: 35px;
         }
 
-        /* Header WhatsApp Estilo Imagem */
         .chat-header {
             background: var(--wa-header); padding: 10px 15px; display: flex; align-items: center; gap: 10px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.2); z-index: 30;
@@ -226,13 +222,11 @@
         .chat-status span { font-size: 11px; color: #8696a0; }
         .header-dots { color: #fff; font-size: 20px; }
 
-        /* Área de Mensagens */
         .chat-body {
             flex: 1; padding: 12px; display: flex; flex-direction: column; position: relative;
             overflow: hidden; box-sizing: border-box;
         }
 
-        /* Sistema de Scroll Animado */
         .chat-scroll-container {
             display: flex; flex-direction: column; gap: 10px; width: 100%;
             position: absolute; left: 0; padding: 12px; box-sizing: border-box;
@@ -243,7 +237,6 @@
         .msg-row.row-out { justify-content: flex-end; }
         .msg-row.row-in { justify-content: flex-start; }
 
-        /* Balões de Mensagem idênticos à imagem */
         .msg-box {
             padding: 5px; font-size: 13.5px; color: #e9edef; position: relative;
             box-shadow: 0 1px 1px rgba(0,0,0,0.2); text-align: left; max-width: 85%;
@@ -257,9 +250,7 @@
         }
         .media-box img { width: 100%; height: 100%; object-fit: cover; }
         
-        .sticker-wrapper {
-            background: transparent !important; box-shadow: none !important; padding: 0 !important;
-        }
+        .sticker-wrapper { background: transparent !important; box-shadow: none !important; padding: 0 !important; }
         .whatsapp-sticker {
             width: 120px; height: 120px; border-radius: 10px;
             background: url('https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg') center/cover;
@@ -271,11 +262,10 @@
             display: flex; align-items: center; gap: 3px; background: rgba(0,0,0,0.3);
             padding: 2px 6px; border-radius: 10px; backdrop-filter: blur(2px);
         }
-        .msg-time i { color: #53bdeb; font-size: 14px; } /* Cor do double check azul */
+        .msg-time i { color: #53bdeb; font-size: 14px; }
 
         @keyframes floatEffect { from { transform: translateY(0); } to { transform: translateY(-4px); } }
 
-        /* Animação de Scroll */
         @keyframes whatsappScroll {
             0%, 22% { transform: translateY(220px); } 
             28%, 52% { transform: translateY(140px); }
@@ -288,7 +278,6 @@
         .anim-b2 { animation: bubbleFade 0.3s 3.2s forwards; opacity: 0; }
         .anim-b3 { animation: bubbleFade 0.3s 6.8s forwards; opacity: 0; }
 
-        /* Rodapé do Android WhatsApp (Pílula Branca) */
         .chat-footer {
             background: transparent; padding: 8px 10px; display: flex; align-items: flex-end; gap: 8px; z-index: 30;
         }
@@ -306,9 +295,7 @@
             color: #0b141a; font-size: 22px; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
-        /* ---------------------------------------------------------------------- */
-
-        /* NOVA SEÇÃO: Recursos e Vantagens */
+        /* Recursos e Vantagens */
         .section-title { font-size: 28px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; }
         .section-desc { color: var(--text-muted); font-size: 15px; margin-bottom: 40px; }
 
@@ -326,7 +313,7 @@
         .feature-card h4 { margin: 0 0 10px 0; font-size: 18px; font-weight: 700; }
         .feature-card p { margin: 0; font-size: 14px; color: var(--text-muted); line-height: 1.5; }
 
-        /* NOVA SEÇÃO: Linha do Tempo (Como Funciona) */
+        /* Linha do Tempo */
         .timeline-section { max-width: 700px; margin: 80px auto; padding: 0 24px; text-align: left; }
         .timeline { position: relative; border-left: 2px dashed rgba(255,255,255,0.1); padding-left: 24px; margin-left: 10px; }
         .timeline-item { position: relative; margin-bottom: 40px; }
@@ -337,7 +324,7 @@
         .timeline-item h4 { margin: 0 0 5px 0; font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
         .timeline-item p { margin: 0; font-size: 14px; color: var(--text-muted); line-height: 1.5; }
 
-        /* Pop-ups de Estatísticas Avançadas */
+        /* Estatísticas */
         .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; max-width: 600px; margin: 60px auto; padding: 0 20px; }
         @media(min-width: 600px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
 
@@ -350,7 +337,7 @@
         .stat-card h3 { font-size: 26px; margin: 0 0 5px 0; color: #fff; font-weight: 800; letter-spacing: -0.5px; }
         .stat-card p { margin: 0; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
 
-        /* FAQ Estilo Sanfona Interativa */
+        /* FAQ Sanfona */
         .faq-section { max-width: 650px; margin: 80px auto; padding: 0 20px; text-align: left; }
         details {
             background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; margin-bottom: 12px; padding: 16px;
@@ -375,7 +362,7 @@
 
     <div class="sidebar-overlay" id="overlay" onclick="toggleMenu()"></div>
 
-    <!-- Menu Lateral com Ícones Profissionais Boxicons -->
+    <!-- Menu Lateral -->
     <div class="sidebar" id="sidebar">
         <button class="close-menu" onclick="toggleMenu()">&times;</button>
         <div class="menu-title">Shard Bot</div>
@@ -453,16 +440,11 @@
         </div>
     </div>
 
-    <!-- ===============================================================
-         NOVO CELULAR: ESTILO ANDROID WHATSAPP (EXATAMENTE COMO A IMAGEM) 
-         =============================================================== -->
     <div class="mockup-container">
         <div class="phone-mockup">
             
-            <!-- Notch Central -->
             <div class="phone-notch"></div>
 
-            <!-- Top Bar Android (Sinal, Wifi, Bateria verde) -->
             <div class="phone-status-bar">
                 <div>09:29</div>
                 <div class="status-icons">
@@ -473,22 +455,18 @@
             </div>
 
             <div class="phone-screen">
-                <!-- Cabeçalho do Chat -->
                 <div class="chat-header">
                     <img src="https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg" class="chat-avatar-img">
                     <div class="chat-status">
                         <strong>Shard Bot</strong>
                         <span>online</span>
                     </div>
-                    <!-- 3 pontinhos como na imagem -->
                     <i class='bx bx-dots-vertical-rounded header-dots'></i>
                 </div>
 
-                <!-- Corpo do Chat -->
                 <div class="chat-body">
                     <div class="chat-scroll-container">
                         
-                        <!-- 1. Envio da Imagem (Balão Android) -->
                         <div class="msg-row row-out anim-b1">
                             <div class="msg-box outgoing">
                                 <div class="media-box">
@@ -498,7 +476,6 @@
                             </div>
                         </div>
 
-                        <!-- 2. Bot Processando (Texto) -->
                         <div class="msg-row row-in anim-b2">
                             <div class="msg-box incoming" style="padding: 10px 14px; max-width: 70%;">
                                 Criando figurinha... ⏳
@@ -506,7 +483,6 @@
                             </div>
                         </div>
 
-                        <!-- 3. Bot Entrega Figurinha Gerada -->
                         <div class="msg-row row-in anim-b3">
                             <div class="msg-box incoming sticker-wrapper">
                                 <div class="whatsapp-sticker"></div>
@@ -516,7 +492,6 @@
                     </div>
                 </div>
 
-                <!-- Rodapé de Digitação do Android (Pílula branca) -->
                 <div class="chat-footer">
                     <div class="wa-input-pill">
                         <i class='bx bx-smile'></i>
@@ -532,15 +507,15 @@
         </div>
     </div>
 
-    <!-- Estatísticas Dinâmicas -->
+    <!-- Estatísticas -->
     <div class="stats-grid">
-        <div class="stat-card"><h3 id="stat-stickers">0</h3><p>Stickers</p></div>
-        <div class="stat-card"><h3 id="stat-mensagens">0</h3><p>Mensagens</p></div>
-        <div class="stat-card"><h3 id="stat-grupos">0</h3><p>Grupos</p></div>
-        <div class="stat-card"><h3 id="stat-usuarios">0</h3><p>Usuários</p></div>
+        <div class="stat-card"><h3>3.2M+</h3><p>Stickers</p></div>
+        <div class="stat-card"><h3>15M+</h3><p>Mensagens</p></div>
+        <div class="stat-card"><h3>1.240</h3><p>Grupos</p></div>
+        <div class="stat-card"><h3>68k+</h3><p>Usuários</p></div>
     </div>
 
-    <!-- Seção de Recursos com Ícones -->
+    <!-- Seção de Recursos -->
     <div id="recursos" style="padding-top: 40px;">
         <h2 class="section-title">O que o Shard Bot faz?</h2>
         <p class="section-desc">Uma coleção completa de ferramentas direto no seu app de mensagens.</p>
@@ -643,38 +618,6 @@
             document.getElementById(tabId).classList.add('active');
             event.currentTarget.classList.add('active');
         }
-
-        // --- SISTEMA DE ESTATÍSTICAS AO VIVO ---
-        async function carregarStatusAoVivo() {
-            try {
-                // IMPORTANTE: Troque o link abaixo pelo link real do seu bot na Square Cloud
-                const urlAPI = 'https://shard.squareweb.app/'; 
-                
-                const resposta = await fetch(urlAPI);
-                const dados = await resposta.json();
-
-                // Função que transforma números grandes em formatos compactos (ex: 1500 vira 1.5k)
-                const formatar = (num) => {
-                    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M+';
-                    if (num >= 1000) return (num / 1000).toFixed(1) + 'k+';
-                    return num;
-                };
-
-                // Injeta os dados do MongoDB direto na tela do usuário
-                document.getElementById('stat-stickers').innerText = formatar(dados.figurinhas || 0);
-                document.getElementById('stat-mensagens').innerText = formatar(dados.mensagens || 0);
-                document.getElementById('stat-grupos').innerText = formatar(dados.grupos || 0);
-                document.getElementById('stat-usuarios').innerText = formatar(dados.usuarios || 0);
-                
-            } catch (erro) {
-                console.log("Erro ao buscar dados ao vivo do bot:", erro);
-            }
-        }
-
-        // Carrega imediatamente ao abrir o site
-        carregarStatusAoVivo();
-        // Atualiza silenciosamente a cada 10 segundos
-        setInterval(carregarStatusAoVivo, 10000); 
     </script>
 
 </body>
