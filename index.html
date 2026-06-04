@@ -4,12 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shard Bot - Figurinhas no WhatsApp</title>
+    
+    <meta property="og:title" content="Shard Bot - Automação e Mídia no WhatsApp">
+    <meta property="og:description" content="Crie figurinhas animadas, baixe músicas e use Inteligência Artificial direto no seu chat gratuitamente.">
+    <meta property="og:image" content="https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://seusite.com.br"> <meta name="theme-color" content="#00E676">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Biblioteca de Ícones Profissionais (Boxicons) -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     
     <style>
-        /* Regra para remover o quadrado azul de clique no celular */
         * {
             -webkit-tap-highlight-color: transparent;
             outline: none;
@@ -19,14 +24,10 @@
             --bg-base: #030708;
             --text-main: #ffffff;
             --text-muted: #a1a1aa;
-            
-            /* Glassmorphism Premium */
             --glass-bg: rgba(15, 22, 18, 0.45);
             --glass-border: rgba(255, 255, 255, 0.08);
             --glass-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.6);
             --glass-accent: rgba(0, 230, 118, 0.1);
-            
-            /* WhatsApp Android Dark Mode Colors */
             --wa-bg: #0b141a;
             --wa-header: #1f2c34;
             --wa-bubble-out: #005c4b;
@@ -50,13 +51,11 @@
             background-attachment: fixed;
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-base); }
         ::-webkit-scrollbar-thumb { background: #222; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #333; }
 
-        /* Header */
         header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 12px 24px; background: rgba(3, 7, 8, 0.6);
@@ -88,7 +87,6 @@
         }
         @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 0.5; } }
 
-        /* Sidebar */
         .sidebar {
             position: fixed; top: 0; left: -340px; width: 300px; height: 100%;
             background: rgba(5, 8, 6, 0.75); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
@@ -125,7 +123,6 @@
         }
         .sidebar-overlay.active { display: block; opacity: 1; }
 
-        /* Modal com Abas */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
@@ -154,7 +151,6 @@
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Hero Section */
         .hero { padding: 70px 20px 40px; }
         .hero h1 { font-size: 46px; font-weight: 800; margin: 0 0 18px 0; line-height: 1.1; letter-spacing: -1.5px; }
         .hero p.subtitle { font-size: 18px; color: var(--text-muted); margin: 0 auto 35px auto; max-width: 460px; line-height: 1.6; }
@@ -169,7 +165,6 @@
         .btn-outline { background: rgba(255,255,255,0.03); color: #fff; border: 1px solid var(--glass-border); }
         .btn-outline:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); transform: translateY(-3px); }
 
-        /* CELULAR MOCKUP */
         .mockup-container {
             display: flex; justify-content: center; margin-bottom: 60px; position: relative; z-index: 10; perspective: 1500px;
         }
@@ -295,7 +290,6 @@
             color: #0b141a; font-size: 22px; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
-        /* Recursos e Vantagens */
         .section-title { font-size: 28px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; }
         .section-desc { color: var(--text-muted); font-size: 15px; margin-bottom: 40px; }
 
@@ -313,7 +307,6 @@
         .feature-card h4 { margin: 0 0 10px 0; font-size: 18px; font-weight: 700; }
         .feature-card p { margin: 0; font-size: 14px; color: var(--text-muted); line-height: 1.5; }
 
-        /* Linha do Tempo */
         .timeline-section { max-width: 700px; margin: 80px auto; padding: 0 24px; text-align: left; }
         .timeline { position: relative; border-left: 2px dashed rgba(255,255,255,0.1); padding-left: 24px; margin-left: 10px; }
         .timeline-item { position: relative; margin-bottom: 40px; }
@@ -324,7 +317,6 @@
         .timeline-item h4 { margin: 0 0 5px 0; font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
         .timeline-item p { margin: 0; font-size: 14px; color: var(--text-muted); line-height: 1.5; }
 
-        /* Estatísticas Dinâmicas com IDs adicionados */
         .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; max-width: 600px; margin: 60px auto; padding: 0 20px; }
         @media(min-width: 600px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
 
@@ -337,7 +329,6 @@
         .stat-card h3 { font-size: 26px; margin: 0 0 5px 0; color: #fff; font-weight: 800; letter-spacing: -0.5px; }
         .stat-card p { margin: 0; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
 
-        /* FAQ Sanfona */
         .faq-section { max-width: 650px; margin: 80px auto; padding: 0 20px; text-align: left; }
         details {
             background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; margin-bottom: 12px; padding: 16px;
@@ -356,13 +347,81 @@
         }
         footer span { color: #fff; font-weight: 600; }
 
+        /* ==========================================
+           Estilos para os Live Toasts (Notificações)
+           ========================================== */
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none; /* Permite clicar através deles se necessário */
+        }
+
+        .live-toast {
+            background: rgba(15, 22, 18, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 230, 118, 0.3);
+            border-left: 4px solid var(--neon-green);
+            color: #fff;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            transform: translateX(-120%);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 300px;
+        }
+
+        .live-toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .live-toast i {
+            font-size: 20px;
+            color: var(--neon-green);
+        }
+        
+        .toast-content strong {
+            display: block;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Responsividade para mobile: Toasts no topo ou centro inferior */
+        @media (max-width: 600px) {
+            #toast-container {
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 90%;
+            }
+            .live-toast {
+                transform: translateY(100px); /* Animação sobe em vez de vir do lado */
+                max-width: 100%;
+            }
+            .live-toast.show {
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 <body>
 
     <div class="sidebar-overlay" id="overlay" onclick="toggleMenu()"></div>
 
-    <!-- Menu Lateral -->
     <div class="sidebar" id="sidebar">
         <button class="close-menu" onclick="toggleMenu()">&times;</button>
         <div class="menu-title">Shard Bot</div>
@@ -386,7 +445,6 @@
         </div>
     </div>
 
-    <!-- Pop-up de Comandos com Ícones -->
     <div class="modal-overlay" id="cmdModal" onclick="closeModal(event)">
         <div class="modal-content">
             <h3 style="margin-top: 0; font-size: 22px; letter-spacing: -0.5px;">Painel de Comandos</h3>
@@ -417,7 +475,6 @@
         </div>
     </div>
 
-    <!-- Cabeçalho Principal -->
     <header>
         <button class="icon-btn" onclick="toggleMenu()"><i class='bx bx-menu'></i></button>
         <div class="logo">
@@ -429,7 +486,6 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
     <div class="hero">
         <h1>Automação e Mídia<br>direto no WhatsApp</h1>
         <p class="subtitle">Crie figurinhas animadas, faça downloads de arquivos, consulte IA e gerencie grupos em uma única conversa.</p>
@@ -507,7 +563,6 @@
         </div>
     </div>
 
-    <!-- Estatísticas Dinâmicas -->
     <div class="stats-grid">
         <div class="stat-card"><h3 id="stat-stickers">0</h3><p>Stickers</p></div>
         <div class="stat-card"><h3 id="stat-mensagens">0</h3><p>Mensagens</p></div>
@@ -515,7 +570,6 @@
         <div class="stat-card"><h3 id="stat-usuarios">0</h3><p>Usuários</p></div>
     </div>
 
-    <!-- Seção de Recursos -->
     <div id="recursos" style="padding-top: 40px;">
         <h2 class="section-title">O que o Shard Bot faz?</h2>
         <p class="section-desc">Uma coleção completa de ferramentas direto no seu app de mensagens.</p>
@@ -544,7 +598,6 @@
         </div>
     </div>
 
-    <!-- Linha do Tempo -->
     <div class="timeline-section">
         <h2 class="section-title">Como começar a usar?</h2>
         <p class="section-desc">Siga o passo a passo abaixo e comece em menos de um minuto.</p>
@@ -565,7 +618,6 @@
         </div>
     </div>
 
-    <!-- FAQ -->
     <div class="faq-section">
         <h2 class="section-title" style="text-align: center; margin-bottom: 30px;">Dúvidas Frequentes</h2>
         
@@ -585,11 +637,12 @@
         </details>
     </div>
 
-    <!-- Rodapé -->
     <footer>
         Desenvolvido com excelência técnica <br><br>
         <span>Shard Bot</span> © 2026
     </footer>
+
+    <div id="toast-container"></div>
 
     <script>
         function toggleMenu() {
@@ -619,23 +672,18 @@
             event.currentTarget.classList.add('active');
         }
 
-        // --- SISTEMA DE ESTATÍSTICAS AO VIVO ---
         async function carregarStatusAoVivo() {
             try {
-                // Link real do bot na Square Cloud
                 const urlAPI = 'https://shard.squareweb.app/api/stats'; 
-                
                 const resposta = await fetch(urlAPI);
                 const dados = await resposta.json();
 
-                // Função que transforma números grandes em formatos compactos (ex: 1500 vira 1.5k)
                 const formatar = (num) => {
                     if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M+';
                     if (num >= 1000) return (num / 1000).toFixed(1) + 'k+';
                     return num;
                 };
 
-                // Injeta os dados do MongoDB direto na tela do usuário
                 document.getElementById('stat-stickers').innerText = formatar(dados.figurinhas || 0);
                 document.getElementById('stat-mensagens').innerText = formatar(dados.mensagens || 0);
                 document.getElementById('stat-grupos').innerText = formatar(dados.grupos || 0);
@@ -646,10 +694,58 @@
             }
         }
 
-        // Carrega imediatamente ao abrir o site
         carregarStatusAoVivo();
-        // Atualiza silenciosamente a cada 10 segundos
         setInterval(carregarStatusAoVivo, 10000); 
+
+        // ==========================================
+        // Lógica dos Live Toasts (Notificações Fake)
+        // ==========================================
+        const mensagensToast = [
+            { icon: 'bx-image', text: 'Alguém acabou de criar uma figurinha! ⚡' },
+            { icon: 'bx-music', text: 'Usuário usou /play para baixar música 🎵' },
+            { icon: 'bx-group', text: '+1 grupo adicionou o Shard Bot 🛡️' },
+            { icon: 'bx-bot', text: 'Alguém conversou com a Inteligência Artificial 🧠' }
+        ];
+
+        function dispararToastAleatorio() {
+            // Seleciona uma mensagem aleatória
+            const notificacao = mensagensToast[Math.floor(Math.random() * mensagensToast.length)];
+            
+            // Cria o elemento do toast
+            const toast = document.createElement('div');
+            toast.className = 'live-toast';
+            toast.innerHTML = `
+                <i class='bx ${notificacao.icon}'></i>
+                <div class="toast-content">
+                    <strong>Atividade Recente</strong>
+                    ${notificacao.text}
+                </div>
+            `;
+
+            // Adiciona na tela
+            const container = document.getElementById('toast-container');
+            container.appendChild(toast);
+
+            // Anima para mostrar
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100);
+
+            // Remove o toast após 4.5 segundos
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toast.remove();
+                }, 400); // Tempo da animação CSS de saída
+            }, 4500);
+
+            // Agenda o próximo toast aleatoriamente entre 8 e 20 segundos
+            const proximoEm = Math.floor(Math.random() * (20000 - 8000 + 1)) + 8000;
+            setTimeout(dispararToastAleatorio, proximoEm);
+        }
+
+        // Inicia o ciclo dos toasts após 3 segundos do site carregar
+        setTimeout(dispararToastAleatorio, 3000);
     </script>
 
 </body>
