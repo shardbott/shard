@@ -349,67 +349,112 @@
 
         /* ==========================================
            Estilos para os Live Toasts (Notificações)
+           Canto Superior Direito + Animações Melhoradas
            ========================================== */
         #toast-container {
             position: fixed;
-            bottom: 20px;
-            left: 20px;
+            top: 20px;       /* Movido para o topo */
+            right: 20px;     /* Movido para a direita */
+            left: auto;      /* Remove o alinhamento à esquerda anterior */
+            bottom: auto;    /* Remove o alinhamento à base anterior */
             z-index: 1000;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            pointer-events: none; /* Permite clicar através deles se necessário */
+            gap: 12px;
+            pointer-events: none; 
         }
 
         .live-toast {
-            background: rgba(15, 22, 18, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(0, 230, 118, 0.3);
-            border-left: 4px solid var(--neon-green);
+            background: rgba(15, 22, 18, 0.9);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: #fff;
-            padding: 12px 18px;
+            padding: 14px 20px;
             border-radius: 12px;
             font-size: 13px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-            transform: translateX(-120%);
+            gap: 14px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            /* Animação vindo da direita (+120%) */
+            transform: translateX(120%);
             opacity: 0;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            max-width: 300px;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Efeito "mola" (bounce) ao entrar */
+            max-width: 320px;
+            position: relative;
+            overflow: hidden; /* Para a barra de progresso não vazar as bordas */
         }
 
+        /* Classe que ativa a notificação */
         .live-toast.show {
             transform: translateX(0);
             opacity: 1;
         }
 
-        .live-toast i {
+        /* Ícone da notificação */
+        .toast-icon-bg {
+            background: rgba(0, 230, 118, 0.15);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .toast-icon-bg i {
             font-size: 20px;
             color: var(--neon-green);
         }
         
-        .toast-content strong {
-            display: block;
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-bottom: 2px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        /* Texto da notificação */
+        .toast-content {
+            flex: 1;
         }
 
-        /* Responsividade para mobile: Toasts no topo ou centro inferior */
+        .toast-content strong {
+            display: block;
+            font-size: 12px;
+            color: #fff;
+            margin-bottom: 3px;
+            font-weight: 700;
+        }
+
+        .toast-content span {
+            display: block;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Barra de tempo (progress bar) inferior animada */
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: var(--neon-green);
+            width: 100%;
+            /* A animação dura 4 segundos, que é o tempo exato que o toast fica na tela */
+            animation: toastProgressAnim 4s linear forwards;
+        }
+
+        @keyframes toastProgressAnim {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+
+        /* Responsividade para mobile: Toasts no topo centro em telas pequenas */
         @media (max-width: 600px) {
             #toast-container {
-                bottom: 20px;
-                left: 50%;
-                transform: translateX(-50%);
+                top: 20px;
+                right: 5%;
+                left: 5%;
                 width: 90%;
             }
             .live-toast {
-                transform: translateY(100px); /* Animação sobe em vez de vir do lado */
+                transform: translateY(-100px); /* Vindo de cima para baixo no mobile */
                 max-width: 100%;
             }
             .live-toast.show {
@@ -700,51 +745,67 @@
         // ==========================================
         // Lógica dos Live Toasts (Notificações Fake)
         // ==========================================
+        
+        /* Cada linha abaixo é uma notificação diferente.
+           'icon': é a classe do ícone (pesquise em boxicons.com se quiser outros)
+           'title': é o texto em negrito (título principal)
+           'text': é a mensagem secundária menor
+        */
         const mensagensToast = [
-            { icon: 'bx-image', text: 'Alguém acabou de criar uma figurinha! ⚡' },
-            { icon: 'bx-music', text: 'Usuário usou /play para baixar música 🎵' },
-            { icon: 'bx-group', text: '+1 grupo adicionou o Shard Bot 🛡️' },
-            { icon: 'bx-bot', text: 'Alguém conversou com a Inteligência Artificial 🧠' }
+            { icon: 'bx-image-add', title: 'Sticker Criado!', text: 'Alguém acabou de gerar uma figurinha animada. ⚡' },
+            { icon: 'bx-music', title: 'Download de Áudio', text: 'Usuário usou /play para baixar uma música. 🎵' },
+            { icon: 'bx-group', title: 'Novo Grupo', text: 'O Shard Bot acabou de ser adicionado a um grupo! 🛡️' },
+            { icon: 'bx-bot', title: 'Ação Realizada', text: 'Um usuário utilizou um comando no chat privado. 🚀' },
+            { icon: 'bx-check-double', title: 'Usuário Ativo', text: 'Alguém solicitou o menu principal de comandos. 📋' },
+            { icon: 'bx-user-plus', title: 'Novo Usuário', text: 'Mais uma pessoa começou a usar o bot. 🎉' }
         ];
 
         function dispararToastAleatorio() {
-            // Seleciona uma mensagem aleatória
+            // Seleciona uma notificação aleatória do array acima
             const notificacao = mensagensToast[Math.floor(Math.random() * mensagensToast.length)];
             
-            // Cria o elemento do toast
+            // Cria a caixa da notificação
             const toast = document.createElement('div');
             toast.className = 'live-toast';
             toast.innerHTML = `
-                <i class='bx ${notificacao.icon}'></i>
-                <div class="toast-content">
-                    <strong>Atividade Recente</strong>
-                    ${notificacao.text}
+                <div class="toast-icon-bg">
+                    <i class='bx ${notificacao.icon}'></i>
                 </div>
+                <div class="toast-content">
+                    <strong>${notificacao.title}</strong>
+                    <span>${notificacao.text}</span>
+                </div>
+                <div class="toast-progress"></div>
             `;
 
-            // Adiciona na tela
+            // Insere na página
             const container = document.getElementById('toast-container');
             container.appendChild(toast);
 
-            // Anima para mostrar
+            // Animação de entrada
             setTimeout(() => {
                 toast.classList.add('show');
-            }, 100);
+            }, 50);
 
-            // Remove o toast após 4.5 segundos
+            // Remove a notificação após 4 segundos (tempo que a barra verde esvazia)
             setTimeout(() => {
                 toast.classList.remove('show');
+                
+                // Aguarda a animação de saída terminar para deletar do HTML
                 setTimeout(() => {
                     toast.remove();
-                }, 400); // Tempo da animação CSS de saída
-            }, 4500);
+                }, 500); 
+            }, 4000);
 
-            // Agenda o próximo toast aleatoriamente entre 8 e 20 segundos
+            /* O código abaixo sorteia um tempo para a próxima notificação aparecer.
+               O padrão atual é entre 8000ms (8s) e 20000ms (20s).
+               Se quiser mais rápido, mude para valores menores, ex: 5000 e 10000.
+            */
             const proximoEm = Math.floor(Math.random() * (20000 - 8000 + 1)) + 8000;
             setTimeout(dispararToastAleatorio, proximoEm);
         }
 
-        // Inicia o ciclo dos toasts após 3 segundos do site carregar
+        // A primeira notificação aparece 3 segundos após o site carregar
         setTimeout(dispararToastAleatorio, 3000);
     </script>
 
