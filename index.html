@@ -87,11 +87,13 @@
         }
         @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 0.5; } }
 
+        /* Sidebar: Adicionado suporte a rolagem se houver muitos menus em telas pequenas */
         .sidebar {
             position: fixed; top: 0; left: -340px; width: 300px; height: 100%;
             background: rgba(5, 8, 6, 0.75); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
             border-right: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); z-index: 200;
             transition: 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); text-align: left; padding: 24px; box-sizing: border-box;
+            overflow-y: auto; /* Permite scroll se o menu for longo no celular */
         }
         .sidebar.active { left: 0; }
         .close-menu { font-size: 36px; background: none; border: none; color: var(--text-muted); cursor: pointer; float: right; margin-top: -5px; }
@@ -459,6 +461,12 @@
     <div class="sidebar" id="sidebar">
         <button class="close-menu" onclick="toggleMenu()">&times;</button>
         <div class="menu-title">Shard Bot</div>
+        
+        <div class="menu-section">
+            <h3><i class='bx bx-news'></i> Canal Oficial</h3>
+            <p>Fique por dentro das últimas atualizações, avisos e novidades do bot.</p>
+            <a href="https://whatsapp.com/channel/0029Vb9GgFv60eBowyg1q32I" target="_blank" class="btn-menu">Acessar Canal</a>
+        </div>
         
         <div class="menu-section">
             <h3><i class='bx bx-book-open'></i> Lista de Comandos</h3>
