@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shard Bot - Figurinhas no WhatsApp</title>
+    <!-- Título da Aba e Imagem do Globo (Favicon) -->
+    <title>Shard Bot - Automação para WhatsApp</title>
+    <link rel="icon" href="https://i.imgur.com/600dpTI.jpeg" type="image/jpeg">
     
     <meta property="og:title" content="Shard Bot - Automação e Mídia no WhatsApp">
     <meta property="og:description" content="Crie figurinhas animadas, baixe músicas e use Inteligência Artificial direto no seu chat gratuitamente.">
@@ -75,6 +77,19 @@
 
         .logo { font-size: 20px; font-weight: 800; display: flex; align-items: center; gap: 10px; letter-spacing: -0.5px; }
         .logo-img { width: 36px; height: 36px; border-radius: 11px; object-fit: cover; border: 1px solid rgba(255,255,255,0.15); }
+
+        /* Raio Animado do Logo */
+        .logo-raio {
+            color: var(--neon-green);
+            font-size: 26px;
+            margin-left: -2px;
+            animation: brilhoRaio 1.5s infinite alternate ease-in-out;
+        }
+
+        @keyframes brilhoRaio {
+            0% { transform: scale(1); filter: drop-shadow(0 0 2px var(--neon-green)); }
+            100% { transform: scale(1.15); filter: drop-shadow(0 0 12px var(--neon-green)); }
+        }
 
         .status-ping {
             display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500;
@@ -521,7 +536,7 @@
         <button class="icon-btn" onclick="toggleMenu()"><i class='bx bx-menu'></i></button>
         <div class="logo">
             <img src="https://i.imgur.com/BEqSu9O.jpeg" alt="Logo Shard Bot" class="logo-img">
-            Shard Bot
+            Shard Bot <i class='bx bxs-bolt logo-raio'></i>
         </div>
         <div class="status-ping">
             <div class="ping-dot"></div> Servidor Ativo
@@ -534,7 +549,7 @@
         
         <div class="cta-container">
             <a href="https://api.whatsapp.com/send?phone=56950572559&text=%2Fmenu" target="_blank" class="btn-action btn-main-green"><i class='bx bxl-whatsapp' style="font-size: 22px;"></i> Testar no Privado Grátis</a>
-            <a href="#recursos" class="btn-action btn-outline">Conhecer Recursos</a>
+            <a onclick="document.getElementById('recursos').scrollIntoView({behavior: 'smooth'})" class="btn-action btn-outline" style="cursor: pointer;">Conhecer Recursos</a>
         </div>
     </div>
 
