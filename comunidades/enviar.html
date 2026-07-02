@@ -56,7 +56,8 @@
             width: 100%; background: var(--neon-green); color: #000; border: none; padding: 14px;
             border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 25px; transition: 0.3s;
         }
-        .btn-enviar:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 230, 118, 0.3); }
+        .btn-enviar:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 230, 118, 0.3); }
+        .btn-enviar:disabled { opacity: 0.7; cursor: not-allowed; }
     </style>
 </head>
 <body>
@@ -102,11 +103,62 @@
     </div>
 
     <script>
-        function enviarGrupoForm(event) {
+        async function enviarGrupoForm(event) {
             event.preventDefault();
-            alert("Grupo enviado com sucesso! Ele passará por aprovação manual.");
-            // CAMINHO CORRIGIDO
-            window.location.href = "/comunidades/index.html";
+
+            // Altera o texto do botão para mostrar que está carregando
+            const btn = document.querySelector('.btn-enviar');
+            const textoOriginal = btn.innerText;
+            btn.innerText = "Enviando...";
+            btn.disabled = true;
+
+            // Captura os valores dos campos digitados
+            const link = document.getElementById('link-grupo').value;
+            const numeroDono = document.getElementById('dono-grupo').value;
+            const descricao = document.getElementById('desc-grupo').value;
+
+            // Captura apenas as regras que foram marcadas (checkboxes)
+            const checkboxes = document.querySelectorAll('.regras-grid input[type="checkbox"]:checked');
+            const regras = Array.from(checkboxes).map(cb => cb.value);
+
+            // Monta o objeto com os dados para enviar à API
+            const dadosGrupo = {
+                link: link,
+                numeroDono: numeroDono,
+                descricao: descricao,
+                regras: regras,
+                categoria: "Amizade" // Padrão temporário, ajustaremos isso depois
+            };
+
+            try {
+                // Faz a chamada real para a sua API na Square Cloud
+                const resposta = await fetch('https://apishard.squareweb.app/api/comunidades', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dadosGrupo)
+                });
+
+                const resultado = await resposta.json();
+
+                if (resultado.sucesso) {
+                    alert("✨ Sucesso! Seu grupo foi enviado e está na fila para aprovação manual.");
+                    window.location.href = "/comunidades/index.html";
+                } else {
+                    alert("❌ Erro ao enviar: " + (resultado.erro || "Tente novamente mais tarde."));
+                    // Desbloqueia o botão caso dê erro
+                    btn.innerText = textoOriginal;
+                    btn.disabled = false;
+                }
+
+            } catch (erro) {
+                console.error("Erro na requisição:", erro);
+                alert("❌ Erro de conexão com o servidor. Tente novamente.");
+                // Desbloqueia o botão caso a internet falhe
+                btn.innerText = textoOriginal;
+                btn.disabled = false;
+            }
         }
     </script>
 </body>
