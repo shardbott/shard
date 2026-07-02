@@ -170,17 +170,28 @@
             });
         });
 
-        // Conta a visualização aqui na vitrine
+        // Conta a visualização com Sistema Anti-Spam (localStorage)
         async function verGrupo(id, botaoClicado) {
             botaoClicado.innerText = "Abrindo...";
             botaoClicado.style.pointerEvents = "none"; 
 
-            try {
-                await fetch(`https://apishard.squareweb.app/api/comunidades/${id}/clique`, { method: 'POST' });
-            } catch (erro) {
-                console.log("Erro de rede ignorado para não travar o usuário");
+            // 1. Puxa a lista de grupos que esse usuário já clicou hoje
+            let gruposVisitados = JSON.parse(localStorage.getItem('gruposVisitados_Shard') || '[]');
+
+            // 2. Só dispara para a API se ele ainda não tiver clicado neste ID
+            if (!gruposVisitados.includes(id)) {
+                try {
+                    await fetch(`https://apishard.squareweb.app/api/comunidades/${id}/clique`, { method: 'POST' });
+                    
+                    // 3. Salva que ele já visitou para bloquear futuros cliques
+                    gruposVisitados.push(id);
+                    localStorage.setItem('gruposVisitados_Shard', JSON.stringify(gruposVisitados));
+                } catch (erro) {
+                    console.log("Erro de rede ignorado para não travar o usuário");
+                }
             }
             
+            // 4. Redireciona para a página (quer tenha contado view ou não)
             window.location.href = `/comunidades/detalhes.html?id=${id}`;
         }
 
