@@ -107,18 +107,19 @@
             </div>
 
             <div class="gerenciar-grid">
-                </div>
+                <!-- Os cards aparecerão aqui -->
+            </div>
         </div>
     </div>
 
     <script>
         async function acessarPainel() {
-            // Pega o número digitado e remove espaços ou traços
             const numeroRaw = document.getElementById('numero-login').value;
             const numero = numeroRaw.replace(/\D/g, ''); 
+            const senhaRaw = document.getElementById('senha-login').value; // CAPTURA A SENHA
 
-            if(numero.length < 10) {
-                alert("Por favor, insira um número válido com DDD (apenas números).");
+            if(numero.length < 10 || senhaRaw.length < 1) {
+                alert("Por favor, insira um número válido com DDD e sua senha.");
                 return;
             }
 
@@ -128,37 +129,43 @@
             btn.disabled = true;
 
             try {
-                // Faz a busca na sua API pelo número do dono
-                const resposta = await fetch(`https://apishard.squareweb.app/api/comunidades/dono/${numero}`);
+                // MUDA PARA POST E ENVIA NÚMERO E SENHA NO BODY
+                const resposta = await fetch('https://apishard.squareweb.app/api/comunidades/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ numero: numero, senha: senhaRaw })
+                });
+
                 const grupos = await resposta.json();
 
                 btn.innerText = txtOriginal;
                 btn.disabled = false;
+
+                if (resposta.status === 401) {
+                    alert("Número ou senha incorretos.");
+                    return;
+                }
 
                 if (grupos.erro) {
                     alert("Erro ao buscar grupos no servidor.");
                     return;
                 }
 
-                // Troca a tela
                 document.getElementById('login-area').style.display = 'none';
                 document.getElementById('dashboard-area').style.display = 'block';
 
                 const grid = document.querySelector('.gerenciar-grid');
-                grid.innerHTML = ''; // Limpa a grade antes de adicionar
+                grid.innerHTML = ''; 
 
-                // Se o usuário não tem grupos
                 if (grupos.length === 0) {
                     grid.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 20px;">Você ainda não enviou nenhum grupo com este número.</p>';
                     return;
                 }
 
-                // Cria os cards para cada grupo que o usuário possui
                 grupos.forEach(grupo => {
                     const dataObj = new Date(grupo.dataEnvio);
                     const dataFormatada = dataObj.toLocaleDateString('pt-BR');
                     
-                    // Define as cores e textos com base no status do banco de dados
                     const badgeClass = grupo.status === 'aprovado' ? 'aprovado' : 'pendente';
                     const badgeTexto = grupo.status === 'aprovado' ? 'Aprovado' : 'Pendente';
                     const cardClass = grupo.status === 'pendente' ? 'pendente' : '';
@@ -192,6 +199,7 @@
 
         function sairPainel() {
             document.getElementById('numero-login').value = '';
+            document.getElementById('senha-login').value = '';
             document.getElementById('dashboard-area').style.display = 'none';
             document.getElementById('login-area').style.display = 'block';
             document.querySelector('.gerenciar-grid').innerHTML = '';
