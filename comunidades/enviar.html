@@ -26,7 +26,7 @@
         .btn-voltar { color: #fff; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; }
         
         .container { max-width: 600px; margin: 40px auto; padding: 0 20px; text-align: left; }
-        h1 { font-size: 28px; font-weight: 800; margin-0-0-10px-0; letter-spacing: -0.5px; }
+        h1 { font-size: 28px; font-weight: 800; margin: 0 0 10px 0; letter-spacing: -0.5px; }
         p.desc { color: var(--text-muted); margin: 0 0 30px 0; font-size: 14.5px; line-height: 1.5; }
 
         form { background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 30px; border-radius: 24px; box-shadow: var(--glass-shadow); backdrop-filter: blur(10px); }
@@ -41,7 +41,6 @@
         .form-control:focus { border-color: var(--neon-green); box-shadow: 0 0 10px rgba(0, 230, 118, 0.15); }
         textarea.form-control { resize: none; height: 100px; }
 
-        /* Grid de Regras (Estilo Checkbox Premium) */
         .regras-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 10px; }
         @media(min-width: 450px) { .regras-grid { grid-template-columns: 1fr 1fr; } }
         
@@ -63,7 +62,7 @@
 <body>
 
     <header>
-        <a href="index.html" class="btn-voltar"><i class='bx bx-left-arrow-alt' style="font-size: 24px;"></i> Voltar para a Lista</a>
+        <a href="/comunidades/index.html" class="btn-voltar"><i class='bx bx-left-arrow-alt' style="font-size: 24px;"></i> Voltar para a Lista</a>
     </header>
 
     <div class="container">
@@ -105,9 +104,9 @@
     <script>
         function enviarGrupoForm(event) {
             event.preventDefault();
-            // FASE DE PLANEJAMENTO: Aqui enviaremos o formulário via POST ao Express/MongoDB
             alert("Grupo enviado com sucesso! Ele passará por aprovação manual.");
-            window.location.href = "index.html";
+            // CAMINHO CORRIGIDO
+            window.location.href = "/comunidades/index.html";
         }
     </script>
 </body>
