@@ -31,7 +31,6 @@
 
         .container { max-width: 700px; margin: 50px auto; padding: 0 20px; }
 
-        /* Área de Login */
         #login-area {
             background: var(--glass-bg); border: 1px solid var(--glass-border);
             padding: 40px; border-radius: 24px; text-align: center; backdrop-filter: blur(10px);
@@ -53,14 +52,12 @@
         }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 230, 118, 0.3); }
 
-        /* Área do Painel (Escondida por padrão) */
         #dashboard-area { display: none; }
         .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
         .dash-header h1 { margin: 0; font-size: 28px; }
         .dash-header a { background: rgba(255,255,255,0.05); color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 10px; font-size: 14px; font-weight: 600; border: 1px solid var(--glass-border); transition: 0.3s; }
         .dash-header a:hover { background: rgba(255,255,255,0.1); }
 
-        /* Cards de Gerenciamento */
         .gerenciar-grid { display: flex; flex-direction: column; gap: 20px; }
         .manage-card {
             background: var(--glass-bg); border: 1px solid var(--glass-border); border-left: 4px solid var(--neon-green);
@@ -88,11 +85,10 @@
 <body>
 
     <header>
-        <a href="index.html" class="btn-voltar"><i class='bx bx-left-arrow-alt' style="font-size: 24px;"></i> Voltar</a>
+        <a href="/comunidades/index.html" class="btn-voltar"><i class='bx bx-left-arrow-alt' style="font-size: 24px;"></i> Voltar</a>
     </header>
 
     <div class="container">
-        
         <div id="login-area">
             <i class='bx bx-lock-alt'></i>
             <h2>Acessar Meus Grupos</h2>
@@ -109,7 +105,6 @@
             </div>
 
             <div class="gerenciar-grid">
-                
                 <div class="manage-card">
                     <div class="mc-header">
                         <div class="mc-info">
@@ -139,10 +134,8 @@
                         <button class="btn-action delete"><i class='bx bx-trash'></i> Excluir</button>
                     </div>
                 </div>
-
             </div>
         </div>
-
     </div>
 
     <script>
@@ -152,8 +145,6 @@
                 alert("Por favor, insira um número válido com DDD.");
                 return;
             }
-            // FASE DE PLANEJAMENTO: Aqui faremos fetch(GET) no MongoDB para buscar os grupos deste número
-            // Simulação de transição de tela:
             document.getElementById('login-area').style.display = 'none';
             document.getElementById('dashboard-area').style.display = 'block';
         }
