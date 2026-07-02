@@ -15,65 +15,50 @@
             --glass-bg: rgba(15, 22, 18, 0.45);
             --glass-border: rgba(255, 255, 255, 0.08);
             --glass-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.6);
-            --wa-green: #25D366; /* Verde Oficial do WhatsApp */
+            --neon-green: #00E676;
         }
-        
         body {
             background-color: var(--bg-base); color: var(--text-main);
-            font-family: '-apple-system', 'BlinkMacSystemFont', 'Inter', sans-serif; 
-            margin: 0; padding: 0;
-            background-image: radial-gradient(circle at 50% 0%, rgba(37, 211, 102, 0.08), transparent 50%);
+            font-family: 'Inter', sans-serif; margin: 0; padding: 0;
+            background-image: radial-gradient(circle at 50% 0%, rgba(0, 230, 118, 0.08), transparent 50%);
             background-attachment: fixed; min-height: 100vh;
         }
-
-        /* Topbar Estilo iPhone Glass */
         header {
             display: flex; justify-content: space-between; align-items: center; padding: 15px 24px;
-            background: rgba(3, 7, 8, 0.65); 
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-bottom: 0.5px solid rgba(255, 255, 255, 0.1); 
-            position: sticky; top: 0; z-index: 100;
+            background: rgba(3, 7, 8, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 100;
         }
-        
         .btn-nav { color: #fff; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
-        .btn-nav:hover { color: var(--wa-green); }
-        .btn-header-enviar { background: var(--wa-green); color: #000; padding: 8px 16px; border-radius: 12px; font-weight: 700; }
-        .btn-header-enviar:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); }
+        .btn-nav:hover { color: var(--neon-green); }
+        .btn-header-enviar { background: var(--neon-green); color: #000; padding: 8px 16px; border-radius: 12px; font-weight: 700; }
+        .btn-header-enviar:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0, 230, 118, 0.3); }
 
         .container { max-width: 900px; margin: 40px auto; padding: 0 20px; text-align: left; }
         h1 { font-size: 32px; font-weight: 800; margin: 0 0 8px 0; letter-spacing: -1px; }
         p.subtitle { color: var(--text-muted); margin: 0 0 40px 0; font-size: 15px; }
 
-        /* Categorias com Emojis */
+        /* Categorias */
         .categories { display: flex; gap: 10px; margin-bottom: 30px; overflow-x: auto; padding-bottom: 10px; }
-        .categories::-webkit-scrollbar { height: 4px; }
-        .categories::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
         .btn-cat {
             background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); color: var(--text-muted);
             padding: 10px 20px; border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: 600; transition: 0.3s; white-space: nowrap;
         }
-        .btn-cat.active, .btn-cat:hover { background: var(--wa-green); color: #000; border-color: var(--wa-green); }
+        .btn-cat.active, .btn-cat:hover { background: var(--neon-green); color: #000; border-color: var(--neon-green); }
 
-        /* Grid de Cards Premium */
+        /* Grid de Cards */
         .groups-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
         @media(min-width: 750px) { .groups-grid { grid-template-columns: 1fr 1fr; } }
 
         .group-card {
             background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px;
-            overflow: hidden; display: flex; flex-direction: column; 
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            overflow: hidden; display: flex; flex-direction: column; backdrop-filter: blur(10px);
             transition: all 0.3s ease; box-shadow: var(--glass-shadow);
         }
-        .group-card:hover { border-color: rgba(37, 211, 102, 0.4); transform: translateY(-3px); }
+        .group-card:hover { border-color: rgba(0, 230, 118, 0.3); transform: translateY(-3px); }
         
         .card-banner { width: 100%; height: 160px; background: #111; overflow: hidden; position: relative; }
-        .card-banner img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
-        .card-tag { 
-            position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.6); 
-            padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; 
-            text-transform: uppercase; color: var(--wa-green); border: 1px solid rgba(37, 211, 102, 0.2); 
-            backdrop-filter: blur(5px);
-        }
+        .card-banner img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; }
+        .card-tag { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.6); padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--neon-green); border: 1px solid rgba(0, 230, 118, 0.2); }
 
         .card-content { padding: 20px; display: flex; flex-direction: column; flex: 1; justify-content: space-between; }
         .card-content h3 { margin: 0 0 10px 0; font-size: 18px; font-weight: 700; color: #fff; }
@@ -81,137 +66,58 @@
 
         .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px; }
         .card-views { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
-        .card-views i { font-size: 16px; color: var(--wa-green); }
+        .card-views i { font-size: 16px; color: var(--neon-green); }
         
         .btn-view {
             background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: #fff;
             padding: 8px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; text-decoration: none; cursor: pointer; transition: 0.3s;
         }
-        .btn-view:hover { background: var(--wa-green); color: #000; border-color: var(--wa-green); }
-
-        /* Loader */
-        #loading-area { text-align: center; padding: 50px 20px; color: var(--text-muted); grid-column: 1 / -1; }
-        #loading-area i { font-size: 40px; color: var(--wa-green); margin-bottom: 10px; }
+        .btn-view:hover { background: var(--neon-green); color: #000; border-color: var(--neon-green); }
     </style>
 </head>
 <body>
 
     <header>
         <a href="/index.html" class="btn-nav"><i class='bx bx-left-arrow-alt' style="font-size: 24px;"></i> Shard Bot</a>
+        
         <a href="/comunidades/enviar.html" class="btn-nav btn-header-enviar"><i class='bx bx-plus'></i> Enviar Grupo</a>
     </header>
 
     <div class="container">
-        <h1>Descobrir Comunidades 🚀</h1>
-        <p class="subtitle">Explore e entre nos melhores grupos e canais do WhatsApp revisados pelos nossos moderadores. 📱</p>
+        <h1>Descobrir Comunidades</h1>
+        <p class="subtitle">Explore e entre nos melhores grupos e canais do WhatsApp revisados pelos nossos moderadores.</p>
 
-        <!-- Filtros Dinâmicos (usando data-cat para a API ler apenas o texto limpo) -->
-        <div class="categories" id="filtros">
-            <button class="btn-cat active" data-cat="Todos">Todos</button>
-            <button class="btn-cat" data-cat="Amizade">Amizade 🤝</button>
-            <button class="btn-cat" data-cat="Jogos">Jogos 🎮</button>
-            <button class="btn-cat" data-cat="Memes">Memes 😂</button>
-            <button class="btn-cat" data-cat="Estudos">Estudos 📚</button>
-            <button class="btn-cat" data-cat="Vendas">Vendas 🛒</button>
-            <button class="btn-cat" data-cat="+18">+18 🔞</button>
+        <div class="categories">
+            <button class="btn-cat active">Todos</button>
+            <button class="btn-cat">Amizade</button>
+            <button class="btn-cat">Jogos</button>
+            <button class="btn-cat">Memes</button>
+            <button class="btn-cat">Estudos</button>
         </div>
 
-        <div class="groups-grid" id="lista-grupos">
-            <!-- Os cards serão gerados aqui pelo JavaScript -->
-        </div>
-
-        <!-- Tela de Carregamento -->
-        <div id="loading-area">
-            <i class='bx bx-loader-alt bx-spin'></i>
-            <p>Buscando comunidades incríveis...</p>
+        <div class="groups-grid">
+            <div class="group-card">
+                <div class="card-banner">
+                    <span class="card-tag">Amizade</span>
+                    <img src="https://i.imgur.com/Qm8plwA.jpeg" alt="Banner Grupo">
+                </div>
+                <div class="card-content">
+                    <h3>Fugitivos do Caps 🤪</h3>
+                    <p>Seja bem-vindo ao melhor grupo de amizade do WhatsApp! Aqui você vai encontrar pessoas divertidas e resenha 24h.</p>
+                    <div class="card-footer">
+                        <div class="card-views"><i class='bx bx-show'></i> <span>127</span> acessos</div>
+                        <a onclick="verGrupo('id_exemplo_1')" class="btn-view">Ver Grupo</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        async function carregarGrupos(categoria = 'Todos') {
-            const grid = document.getElementById('lista-grupos');
-            const loading = document.getElementById('loading-area');
-            
-            grid.innerHTML = '';
-            loading.style.display = 'block';
-
-            try {
-                // A API recebe a categoria limpa vinda do data-cat
-                const url = categoria === 'Todos' 
-                    ? 'https://apishard.squareweb.app/api/comunidades'
-                    : `https://apishard.squareweb.app/api/comunidades?categoria=${categoria}`;
-                
-                const resposta = await fetch(url);
-                const grupos = await resposta.json();
-                
-                loading.style.display = 'none';
-
-                if (grupos.length === 0) {
-                    grid.innerHTML = `
-                        <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #888; background: var(--glass-bg); border-radius: 20px; border: 1px dashed var(--glass-border);">
-                            <i class='bx bx-ghost' style="font-size: 40px; margin-bottom: 10px;"></i>
-                            <p>Nenhum grupo encontrado nesta categoria.</p>
-                            <a href="/comunidades/enviar.html" style="color: var(--wa-green); text-decoration: none; font-weight: 600;">Seja o primeiro a enviar!</a>
-                        </div>`;
-                    return;
-                }
-
-                grupos.forEach(grupo => {
-                    grid.innerHTML += `
-                        <div class="group-card">
-                            <div class="card-banner">
-                                <span class="card-tag">${grupo.categoria}</span>
-                                <img src="${grupo.imagem}" alt="Banner Grupo" onerror="this.src='https://i.imgur.com/Qm8plwA.jpeg'">
-                            </div>
-                            <div class="card-content">
-                                <h3>${grupo.nome}</h3>
-                                <p>${grupo.descricao}</p>
-                                <div class="card-footer">
-                                    <div class="card-views"><i class='bx bx-show'></i> <span>${grupo.visualizacoes}</span> acessos</div>
-                                    <a onclick="verGrupo('${grupo._id}', this)" class="btn-view">Ver Grupo</a>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-            } catch (erro) {
-                console.error("Erro ao buscar grupos:", erro);
-                loading.innerHTML = `<p style="color: #ff4757;"><i class='bx bx-error'></i> Erro ao carregar as comunidades.</p>`;
-            }
-        }
-
-        document.querySelectorAll('.btn-cat').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.btn-cat').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                
-                // Passa o valor limpo escondido no dataset
-                const categoriaLimpa = e.target.getAttribute('data-cat');
-                carregarGrupos(categoriaLimpa);
-            });
-        });
-
-        // Conta a visualização com Sistema Anti-Spam (localStorage)
-        async function verGrupo(id, botaoClicado) {
-            botaoClicado.innerText = "Abrindo...";
-            botaoClicado.style.pointerEvents = "none"; 
-
-            let gruposVisitados = JSON.parse(localStorage.getItem('gruposVisitados_Shard') || '[]');
-
-            if (!gruposVisitados.includes(id)) {
-                try {
-                    await fetch(`https://apishard.squareweb.app/api/comunidades/${id}/clique`, { method: 'POST' });
-                    gruposVisitados.push(id);
-                    localStorage.setItem('gruposVisitados_Shard', JSON.stringify(gruposVisitados));
-                } catch (erro) {
-                    console.log("Erro de rede ignorado para não travar o usuário");
-                }
-            }
-            
+        function verGrupo(id) {
+            // CAMINHO CORRIGIDO: Redireciona com segurança a partir da raiz
             window.location.href = `/comunidades/detalhes.html?id=${id}`;
         }
-
-        carregarGrupos();
     </script>
 </body>
 </html>
