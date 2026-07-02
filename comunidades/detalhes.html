@@ -29,10 +29,14 @@
 
         .container { max-width: 700px; margin: 30px auto; padding: 0 20px; }
         
+        #loading-area { text-align: center; padding: 50px 20px; color: var(--text-muted); }
+        #loading-area i { font-size: 40px; color: var(--neon-green); margin-bottom: 10px; }
+
         .group-header {
             background: var(--glass-bg); border: 1px solid var(--glass-border);
             border-radius: 24px; overflow: hidden; backdrop-filter: blur(10px);
             margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: none; 
         }
         .banner { height: 200px; width: 100%; position: relative; background: #111; }
         .banner img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
@@ -65,14 +69,15 @@
             font-size: 12.5px; color: #888; line-height: 1.6; margin-bottom: 25px;
             padding-left: 15px; border-left: 2px solid #333;
         }
-        .meta-info { font-size: 12px; color: #555; text-align: center; margin-bottom: 25px; }
+        .meta-info { font-size: 12px; color: #555; text-align: center; margin-bottom: 25px; display: none; }
 
         .btn-entrar {
-            display: block; width: 100%; background: var(--neon-green); color: #000;
+            display: block; width: 100%; background: var(--neon-green); color: #000; border: none;
             text-align: center; padding: 16px; border-radius: 14px; font-size: 18px; font-weight: 700;
-            text-decoration: none; transition: 0.3s; box-shadow: 0 8px 24px rgba(0, 230, 118, 0.25);
+            cursor: pointer; transition: 0.3s; box-shadow: 0 8px 24px rgba(0, 230, 118, 0.25);
         }
-        .btn-entrar:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0, 230, 118, 0.4); }
+        .btn-entrar:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0, 230, 118, 0.4); }
+        .btn-entrar:disabled { opacity: 0.7; cursor: wait; }
 
         .btn-report {
             display: block; width: 100%; background: rgba(255, 71, 87, 0.1); color: var(--danger-red);
@@ -89,49 +94,109 @@
     </header>
 
     <div class="container">
-        <div class="group-header">
+        
+        <div id="loading-area">
+            <i class='bx bx-loader-alt bx-spin'></i>
+            <p>Carregando informações do grupo...</p>
+        </div>
+
+        <div class="group-header" id="grupo-conteudo">
             <div class="banner">
-                <img src="https://i.imgur.com/Qm8plwA.jpeg" alt="Banner do Grupo">
-                <div class="tag-cat">Amizade</div>
+                <img id="grupo-img" src="" alt="Banner do Grupo">
+                <div class="tag-cat" id="grupo-categoria">Categoria</div>
             </div>
             <div class="info-content">
-                <h1>Fugitivos do Caps 🤪</h1>
-                <p class="desc-text">Seja bem-vindo ao melhor grupo de amizade do WhatsApp! Aqui você vai encontrar pessoas legais, pessoas divertidas e quem sabe até arrumar um romance.</p>
+                <h1 id="grupo-nome">Nome do Grupo</h1>
+                <p class="desc-text" id="grupo-desc">Descrição do grupo carregada aqui...</p>
                 
                 <div class="stats-bar">
-                    O grupo <strong>Fugitivos do Caps 🤪</strong> já teve <strong>127 acessos</strong> através do Shard Bot. <a href="/comunidades/enviar.html">Envie o seu grupo</a> também e comece a receber novos integrantes!
+                    O grupo <strong id="grupo-nome-stats"></strong> já teve <strong id="grupo-views">0</strong> acessos através do Shard Bot. <a href="/comunidades/enviar.html">Envie o seu grupo</a> também e comece a receber novos integrantes!
                 </div>
 
                 <div class="regras-section">
                     <h3><i class='bx bx-list-ul'></i> Regras do Grupo</h3>
                     <p>Leia todas as regras exigidas pelo administrador:</p>
-                    <ul class="regras-list">
-                        <li><span class="num">1</span> Proibido conteúdo adulto</li>
-                        <li><span class="num">2</span> Proibido agressividade</li>
-                        <li><span class="num">3</span> Proibido uso de palavrões</li>
-                        <li><span class="num">4</span> Proibido trava zap</li>
-                        <li><span class="num">5</span> Proibido menores de 18 anos</li>
-                    </ul>
+                    <ul class="regras-list" id="grupo-regras">
+                        </ul>
                 </div>
 
                 <div class="disclaimer">
                     Antes de acessar o grupo, esteja ciente de que você precisa concordar com as regras acima. Este grupo é independente, sem relação direta com o nosso site, sendo a responsabilidade de moderação do administrador do próprio grupo.
                 </div>
 
-                <a href="#" onclick="registrarCliqueEEntrar('LINK_DO_WHATSAPP')" class="btn-entrar">Entrar no Grupo</a>
-                <a href="#" class="btn-report"><i class='bx bx-error-circle'></i> Comunicar Erro ou Denunciar</a>
+                <button id="btn-entrar-real" onclick="registrarCliqueEEntrar()" class="btn-entrar">Concordar e Entrar no Grupo</button>
+                <a href="#" class="btn-report" onclick="alert('Funcionalidade de denúncia em breve!')"><i class='bx bx-error-circle'></i> Comunicar Erro ou Denunciar</a>
             </div>
         </div>
 
-        <div class="meta-info">
-            Este grupo foi enviado para a nossa plataforma em <strong>02/07/2026 às 13:23</strong>.
+        <div class="meta-info" id="grupo-meta">
+            Este grupo foi enviado para a nossa plataforma em <strong id="grupo-data">--/--/----</strong>.
         </div>
     </div>
 
     <script>
-        function registrarCliqueEEntrar(linkDestino) {
-            alert("Registrando visualização no banco de dados...");
+        const urlParams = new URLSearchParams(window.location.search);
+        const grupoId = urlParams.get('id');
+
+        if (!grupoId) {
+            window.location.href = "/comunidades/index.html";
         }
+
+        let linkWhatsAppReal = "";
+
+        async function carregarDetalhes() {
+            try {
+                const resposta = await fetch(`https://apishard.squareweb.app/api/comunidades/${grupoId}`);
+                const grupo = await resposta.json();
+
+                if (grupo.erro) {
+                    alert("Grupo não encontrado ou foi removido.");
+                    window.location.href = "/comunidades/index.html";
+                    return;
+                }
+
+                linkWhatsAppReal = grupo.link;
+
+                document.getElementById('grupo-img').src = grupo.imagem || 'https://i.imgur.com/Qm8plwA.jpeg';
+                document.getElementById('grupo-categoria').innerText = grupo.categoria;
+                document.getElementById('grupo-nome').innerText = grupo.nome;
+                document.getElementById('grupo-nome-stats').innerText = grupo.nome;
+                document.getElementById('grupo-desc').innerText = grupo.descricao;
+                
+                document.getElementById('grupo-views').innerText = (grupo.visualizacoes > 0 ? grupo.visualizacoes : 1) + " acessos";
+
+                const dataObj = new Date(grupo.dataEnvio);
+                document.getElementById('grupo-data').innerText = dataObj.toLocaleDateString('pt-BR');
+
+                const listaRegras = document.getElementById('grupo-regras');
+                listaRegras.innerHTML = '';
+                
+                if (grupo.regras && grupo.regras.length > 0) {
+                    grupo.regras.forEach((regra, index) => {
+                        listaRegras.innerHTML += `<li><span class="num">${index + 1}</span> ${regra}</li>`;
+                    });
+                } else {
+                    listaRegras.innerHTML = `<li><span class="num">!</span> Nenhuma regra específica informada. Tenha bom senso.</li>`;
+                }
+
+                document.getElementById('loading-area').style.display = 'none';
+                document.getElementById('grupo-conteudo').style.display = 'block';
+                document.getElementById('grupo-meta').style.display = 'block';
+
+            } catch (erro) {
+                console.error(erro);
+                alert("Erro ao carregar os detalhes da comunidade.");
+            }
+        }
+
+        function registrarCliqueEEntrar() {
+            const btn = document.getElementById('btn-entrar-real');
+            btn.innerText = "Conectando ao WhatsApp...";
+            btn.disabled = true;
+            window.location.href = linkWhatsAppReal;
+        }
+
+        carregarDetalhes();
     </script>
 </body>
 </html>
