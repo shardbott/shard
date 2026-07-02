@@ -39,6 +39,8 @@
 
         /* Categorias */
         .categories { display: flex; gap: 10px; margin-bottom: 30px; overflow-x: auto; padding-bottom: 10px; }
+        .categories::-webkit-scrollbar { height: 4px; }
+        .categories::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
         .btn-cat {
             background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); color: var(--text-muted);
             padding: 10px 20px; border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: 600; transition: 0.3s; white-space: nowrap;
@@ -73,13 +75,16 @@
             padding: 8px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; text-decoration: none; cursor: pointer; transition: 0.3s;
         }
         .btn-view:hover { background: var(--neon-green); color: #000; border-color: var(--neon-green); }
+
+        /* Loader */
+        #loading-area { text-align: center; padding: 50px 20px; color: var(--text-muted); grid-column: 1 / -1; }
+        #loading-area i { font-size: 40px; color: var(--neon-green); margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
     <header>
         <a href="/index.html" class="btn-nav"><i class='bx bx-left-arrow-alt' style="font-size: 24px;"></i> Shard Bot</a>
-        
         <a href="/comunidades/enviar.html" class="btn-nav btn-header-enviar"><i class='bx bx-plus'></i> Enviar Grupo</a>
     </header>
 
@@ -87,37 +92,102 @@
         <h1>Descobrir Comunidades</h1>
         <p class="subtitle">Explore e entre nos melhores grupos e canais do WhatsApp revisados pelos nossos moderadores.</p>
 
-        <div class="categories">
+        <div class="categories" id="filtros">
             <button class="btn-cat active">Todos</button>
             <button class="btn-cat">Amizade</button>
             <button class="btn-cat">Jogos</button>
             <button class="btn-cat">Memes</button>
             <button class="btn-cat">Estudos</button>
+            <button class="btn-cat">+18</button>
         </div>
 
-        <div class="groups-grid">
-            <div class="group-card">
-                <div class="card-banner">
-                    <span class="card-tag">Amizade</span>
-                    <img src="https://i.imgur.com/Qm8plwA.jpeg" alt="Banner Grupo">
-                </div>
-                <div class="card-content">
-                    <h3>Fugitivos do Caps 🤪</h3>
-                    <p>Seja bem-vindo ao melhor grupo de amizade do WhatsApp! Aqui você vai encontrar pessoas divertidas e resenha 24h.</p>
-                    <div class="card-footer">
-                        <div class="card-views"><i class='bx bx-show'></i> <span>127</span> acessos</div>
-                        <a onclick="verGrupo('id_exemplo_1')" class="btn-view">Ver Grupo</a>
-                    </div>
-                </div>
+        <div class="groups-grid" id="lista-grupos">
             </div>
+
+        <div id="loading-area">
+            <i class='bx bx-loader-alt bx-spin'></i>
+            <p>Buscando comunidades incríveis...</p>
         </div>
     </div>
 
     <script>
+        // Função principal para buscar e renderizar os grupos
+        async function carregarGrupos(categoria = 'Todos') {
+            const grid = document.getElementById('lista-grupos');
+            const loading = document.getElementById('loading-area');
+            
+            // Reseta a tela
+            grid.innerHTML = '';
+            loading.style.display = 'block';
+
+            try {
+                // Prepara a URL com base na categoria
+                const url = categoria === 'Todos' 
+                    ? 'https://apishard.squareweb.app/api/comunidades'
+                    : `https://apishard.squareweb.app/api/comunidades?categoria=${categoria}`;
+                
+                // Busca os dados da Square Cloud
+                const resposta = await fetch(url);
+                const grupos = await resposta.json();
+                
+                loading.style.display = 'none';
+
+                // Tratamento se não tiver grupos
+                if (grupos.length === 0) {
+                    grid.innerHTML = `
+                        <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #888; background: var(--glass-bg); border-radius: 20px; border: 1px dashed var(--glass-border);">
+                            <i class='bx bx-ghost' style="font-size: 40px; margin-bottom: 10px;"></i>
+                            <p>Nenhum grupo encontrado nesta categoria.</p>
+                            <a href="/comunidades/enviar.html" style="color: var(--neon-green); text-decoration: none; font-weight: 600;">Seja o primeiro a enviar!</a>
+                        </div>`;
+                    return;
+                }
+
+                // Cria os cards HTML para cada grupo encontrado
+                grupos.forEach(grupo => {
+                    grid.innerHTML += `
+                        <div class="group-card">
+                            <div class="card-banner">
+                                <span class="card-tag">${grupo.categoria}</span>
+                                <img src="${grupo.imagem}" alt="Banner Grupo" onerror="this.src='https://i.imgur.com/Qm8plwA.jpeg'">
+                            </div>
+                            <div class="card-content">
+                                <h3>${grupo.nome}</h3>
+                                <p>${grupo.descricao}</p>
+                                <div class="card-footer">
+                                    <div class="card-views"><i class='bx bx-show'></i> <span>${grupo.visualizacoes}</span> acessos</div>
+                                    <a onclick="verGrupo('${grupo._id}')" class="btn-view">Ver Grupo</a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (erro) {
+                console.error("Erro ao buscar grupos:", erro);
+                loading.innerHTML = `<p style="color: #ff4757;"><i class='bx bx-error'></i> Erro ao carregar as comunidades.</p>`;
+            }
+        }
+
+        // Lógica dos botões de Categoria
+        document.querySelectorAll('.btn-cat').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // Remove a cor verde de todos
+                document.querySelectorAll('.btn-cat').forEach(b => b.classList.remove('active'));
+                // Adiciona a cor verde no que foi clicado
+                e.target.classList.add('active');
+                
+                // Recarrega os grupos com o novo filtro
+                carregarGrupos(e.target.innerText);
+            });
+        });
+
+        // Redireciona passando o ID secreto do MongoDB na URL
         function verGrupo(id) {
-            // CAMINHO CORRIGIDO: Redireciona com segurança a partir da raiz
             window.location.href = `/comunidades/detalhes.html?id=${id}`;
         }
+
+        // Inicia carregando "Todos" assim que abre o site
+        carregarGrupos();
     </script>
 </body>
 </html>
