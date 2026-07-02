@@ -107,8 +107,7 @@
             </div>
 
             <div class="gerenciar-grid">
-                <!-- Os cards aparecerão aqui -->
-            </div>
+                </div>
         </div>
     </div>
 
@@ -116,7 +115,7 @@
         async function acessarPainel() {
             const numeroRaw = document.getElementById('numero-login').value;
             const numero = numeroRaw.replace(/\D/g, ''); 
-            const senhaRaw = document.getElementById('senha-login').value; // CAPTURA A SENHA
+            const senhaRaw = document.getElementById('senha-login').value; 
 
             if(numero.length < 10 || senhaRaw.length < 1) {
                 alert("Por favor, insira um número válido com DDD e sua senha.");
@@ -129,7 +128,6 @@
             btn.disabled = true;
 
             try {
-                // MUDA PARA POST E ENVIA NÚMERO E SENHA NO BODY
                 const resposta = await fetch('https://apishard.squareweb.app/api/comunidades/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -154,40 +152,7 @@
                 document.getElementById('login-area').style.display = 'none';
                 document.getElementById('dashboard-area').style.display = 'block';
 
-                const grid = document.querySelector('.gerenciar-grid');
-                grid.innerHTML = ''; 
-
-                if (grupos.length === 0) {
-                    grid.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 20px;">Você ainda não enviou nenhum grupo com este número.</p>';
-                    return;
-                }
-
-                grupos.forEach(grupo => {
-                    const dataObj = new Date(grupo.dataEnvio);
-                    const dataFormatada = dataObj.toLocaleDateString('pt-BR');
-                    
-                    const badgeClass = grupo.status === 'aprovado' ? 'aprovado' : 'pendente';
-                    const badgeTexto = grupo.status === 'aprovado' ? 'Aprovado' : 'Pendente';
-                    const cardClass = grupo.status === 'pendente' ? 'pendente' : '';
-                    const nomeExibicao = grupo.nome !== 'Aguardando bot...' ? grupo.nome : 'Grupo em Análise';
-
-                    grid.innerHTML += `
-                        <div class="manage-card ${cardClass}">
-                            <div class="mc-header">
-                                <div class="mc-info">
-                                    <h3>${nomeExibicao}</h3>
-                                    <p>Enviado em ${dataFormatada} • ${grupo.visualizacoes} acessos</p>
-                                </div>
-                                <span class="badge ${badgeClass}">${badgeTexto}</span>
-                            </div>
-                            <div class="mc-actions">
-                                <button class="btn-action" onclick="editarAlerta()"><i class='bx bx-link'></i> Trocar Link</button>
-                                <button class="btn-action" onclick="editarAlerta()"><i class='bx bx-edit'></i> Editar</button>
-                                <button class="btn-action delete" onclick="excluirAlerta()"><i class='bx bx-trash'></i> Excluir</button>
-                            </div>
-                        </div>
-                    `;
-                });
+                carregarGrade(grupos); // Função separada para organizar melhor
 
             } catch (erro) {
                 console.error(erro);
@@ -197,20 +162,110 @@
             }
         }
 
+        function carregarGrade(grupos) {
+            const grid = document.querySelector('.gerenciar-grid');
+            grid.innerHTML = ''; 
+
+            if (grupos.length === 0) {
+                grid.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 20px;">Você ainda não enviou nenhum grupo com este número.</p>';
+                return;
+            }
+
+            grupos.forEach(grupo => {
+                const dataObj = new Date(grupo.dataEnvio);
+                const dataFormatada = dataObj.toLocaleDateString('pt-BR');
+                
+                const badgeClass = grupo.status === 'aprovado' ? 'aprovado' : 'pendente';
+                const badgeTexto = grupo.status === 'aprovado' ? 'Aprovado' : 'Pendente';
+                const cardClass = grupo.status === 'pendente' ? 'pendente' : '';
+                const nomeExibicao = grupo.nome !== 'Aguardando bot...' ? grupo.nome : 'Grupo em Análise';
+
+                // Repare que injetamos o ID nos onclicks abaixo!
+                grid.innerHTML += `
+                    <div class="manage-card ${cardClass}">
+                        <div class="mc-header">
+                            <div class="mc-info">
+                                <h3>${nomeExibicao}</h3>
+                                <p>Enviado em ${dataFormatada} • ${grupo.visualizacoes} acessos</p>
+                            </div>
+                            <span class="badge ${badgeClass}">${badgeTexto}</span>
+                        </div>
+                        <div class="mc-actions">
+                            <button class="btn-action" onclick="editarGrupo('${grupo._id}', 'link')"><i class='bx bx-link'></i> Link</button>
+                            <button class="btn-action" onclick="editarGrupo('${grupo._id}', 'descricao')"><i class='bx bx-edit'></i> Descrição</button>
+                            <button class="btn-action delete" onclick="excluirGrupo('${grupo._id}')"><i class='bx bx-trash'></i> Apagar</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // FUNÇÃO DE EDITAR
+        async function editarGrupo(id, tipo) {
+            const numero = document.getElementById('numero-login').value.replace(/\D/g, '');
+            const senha = document.getElementById('senha-login').value;
+
+            let novoValor = prompt(`Digite o novo ${tipo === 'link' ? 'Link do WhatsApp' : 'texto de Descrição'}:`);
+            
+            if (!novoValor || novoValor.trim() === '') return; // Cancelou ou deixou vazio
+
+            alert("Aviso: Ao atualizar, o seu grupo voltará para 'Pendente' até ser aprovado novamente pela moderação.");
+
+            const corpoRequisicao = { numero, senha };
+            if (tipo === 'link') corpoRequisicao.link = novoValor;
+            if (tipo === 'descricao') corpoRequisicao.descricao = novoValor;
+
+            try {
+                const resposta = await fetch(`https://apishard.squareweb.app/api/comunidades/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(corpoRequisicao)
+                });
+
+                if (resposta.ok) {
+                    alert("✅ Grupo atualizado! Refaça o login para ver a atualização.");
+                    sairPainel(); // Força ele a deslogar para recarregar do banco fresco
+                } else {
+                    alert("❌ Falha na autorização.");
+                }
+            } catch (e) {
+                alert("❌ Erro de conexão.");
+            }
+        }
+
+        // FUNÇÃO DE EXCLUIR
+        async function excluirGrupo(id) {
+            const numero = document.getElementById('numero-login').value.replace(/\D/g, '');
+            const senha = document.getElementById('senha-login').value;
+
+            const confirmar = confirm("🚨 Tem certeza? Esta ação apagará o grupo definitivamente e você perderá as visualizações dele.");
+            if (!confirmar) return;
+
+            try {
+                const resposta = await fetch(`https://apishard.squareweb.app/api/comunidades/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ numero, senha })
+                });
+
+                if (resposta.ok) {
+                    alert("🗑️ Grupo excluído com sucesso.");
+                    // Clica no botão de buscar invisivelmente para recarregar a lista
+                    acessarPainel(); 
+                } else {
+                    alert("❌ Falha na autorização para apagar.");
+                }
+            } catch (e) {
+                alert("❌ Erro de conexão ao tentar apagar.");
+            }
+        }
+
         function sairPainel() {
             document.getElementById('numero-login').value = '';
             document.getElementById('senha-login').value = '';
             document.getElementById('dashboard-area').style.display = 'none';
             document.getElementById('login-area').style.display = 'block';
             document.querySelector('.gerenciar-grid').innerHTML = '';
-        }
-
-        function editarAlerta() {
-            alert("Atenção: Ao editar os dados, seu grupo voltará para o status 'Pendente' e precisará ser aprovado novamente. (Função em desenvolvimento)");
-        }
-
-        function excluirAlerta() {
-            alert("Você tem certeza? A exclusão não poderá ser desfeita. (Função em desenvolvimento)");
         }
     </script>
 </body>
