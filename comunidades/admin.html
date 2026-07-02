@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin - Shard Bot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        * { -webkit-tap-highlight-color: transparent; outline: none; box-sizing: border-box; }
+        :root {
+            --bg-base: #030708;
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --glass-bg: rgba(15, 22, 18, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --neon-green: #00E676;
+            --danger: #ff4757;
+        }
+        body {
+            background-color: var(--bg-base); color: var(--text-main);
+            font-family: 'Inter', sans-serif; margin: 0; padding: 0;
+            background-image: radial-gradient(circle at 50% 0%, rgba(0, 230, 118, 0.05), transparent 50%);
+            background-attachment: fixed; min-height: 100vh;
+        }
+        header { padding: 20px 24px; border-bottom: 1px solid var(--glass-border); background: rgba(3, 7, 8, 0.6); backdrop-filter: blur(10px); }
+        .btn-voltar { color: #fff; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .btn-voltar:hover { color: var(--neon-green); }
+
+        .container { max-width: 800px; margin: 50px auto; padding: 0 20px; }
+
+        #login-area {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            padding: 40px; border-radius: 24px; text-align: center; backdrop-filter: blur(10px);
+            max-width: 400px; margin: 0 auto;
+        }
+        #login-area i { font-size: 50px; color: var(--neon-green); margin-bottom: 15px; }
+        
+        .form-control {
+            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border);
+            padding: 14px 20px; border-radius: 12px; color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center;
+        }
+        
+        .btn-primary {
+            background: var(--neon-green); color: #000; border: none; padding: 14px 30px;
+            border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; width: 100%;
+        }
+
+        #dashboard-area { display: none; }
+        
+        .admin-card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border); 
+            padding: 20px; border-radius: 16px; margin-bottom: 20px; display: flex; gap: 20px;
+            align-items: center;
+        }
+        .admin-card img { width: 80px; height: 80px; border-radius: 12px; object-fit: cover; }
+        .admin-info { flex: 1; }
+        .admin-info h3 { margin: 0 0 5px 0; }
+        .admin-info p { margin: 0; font-size: 13px; color: var(--text-muted); margin-bottom: 10px;}
+        
+        .admin-actions { display: flex; gap: 10px; }
+        .btn-approve { background: rgba(0, 230, 118, 0.15); color: var(--neon-green); border: 1px solid var(--neon-green); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .btn-approve:hover { background: var(--neon-green); color: #000; }
+        .btn-reject { background: rgba(255, 71, 87, 0.15); color: var(--danger); border: 1px solid var(--danger); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .btn-reject:hover { background: var(--danger); color: #fff; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="/comunidades/index.html" class="btn-voltar"><i class='bx bx-left-arrow-alt' style="font-size: 24px;"></i> Voltar para a Vitrine</a>
+    </header>
+
+    <div class="container">
+        <div id="login-area">
+            <i class='bx bx-shield-quarter'></i>
+            <h2>Painel da Moderação</h2>
+            <p>Área restrita aos administradores.</p>
+            <input type="password" class="form-control" id="senha-admin" placeholder="Senha Mestra" autocomplete="off">
+            <button class="btn-primary" onclick="acessarAdmin()">Entrar</button>
+        </div>
+
+        <div id="dashboard-area">
+            <h2>Grupos Aguardando Aprovação</h2>
+            <p style="color: var(--text-muted); margin-bottom: 30px;">Aprove apenas grupos que o Bot já conseguiu ler o nome e a foto corretamente.</p>
+            
+            <div id="lista-pendentes">
+                <!-- Cards aparecerão aqui -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let senhaSalva = "";
+
+        async function acessarAdmin() {
+            const senha = document.getElementById('senha-admin').value;
+            if(!senha) return;
+
+            try {
+                const resposta = await fetch('https://apishard.squareweb.app/api/admin/pendentes', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ senhaAdmin: senha })
+                });
+
+                if(resposta.status === 401) {
+                    alert("Senha incorreta!");
+                    return;
+                }
+
+                const grupos = await resposta.json();
+                senhaSalva = senha; // Salva na memória para usar nos botões de aprovar/rejeitar
+                
+                document.getElementById('login-area').style.display = 'none';
+                document.getElementById('dashboard-area').style.display = 'block';
+                
+                carregarPendentes(grupos);
+            } catch (erro) {
+                alert("Erro ao conectar no servidor.");
+            }
+        }
+
+        function carregarPendentes(grupos) {
+            const lista = document.getElementById('lista-pendentes');
+            lista.innerHTML = '';
+
+            if(grupos.length === 0) {
+                lista.innerHTML = '<p>Nenhum grupo pendente no momento.</p>';
+                return;
+            }
+
+            grupos.forEach(grupo => {
+                lista.innerHTML += `
+                    <div class="admin-card">
+                        <img src="${grupo.imagem || 'https://i.imgur.com/Qm8plwA.jpeg'}" alt="Foto">
+                        <div class="admin-info">
+                            <h3>${grupo.nome}</h3>
+                            <p><strong>Dono:</strong> ${grupo.numeroDono} | <strong>Categoria:</strong> ${grupo.categoria}</p>
+                            <p>${grupo.descricao}</p>
+                            <div class="admin-actions">
+                                <button class="btn-approve" onclick="aprovarGrupo('${grupo._id}')"><i class='bx bx-check'></i> Aprovar</button>
+                                <button class="btn-reject" onclick="rejeitarGrupo('${grupo._id}')"><i class='bx bx-x'></i> Rejeitar</button>
+                                <a href="${grupo.link}" target="_blank" style="color: var(--text-muted); text-decoration: none; font-size: 14px; margin-left: 10px;">Testar Link</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        async function aprovarGrupo(id) {
+            await fetch(`https://apishard.squareweb.app/api/admin/aprovar/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ senhaAdmin: senhaSalva })
+            });
+            
+            // Recarrega a lista
+            acessarAdmin();
+        }
+
+        async function rejeitarGrupo(id) {
+            const confirmar = confirm("Isso apagará o grupo permanentemente do banco de dados. Confirmar?");
+            if(!confirmar) return;
+
+            await fetch(`https://apishard.squareweb.app/api/admin/rejeitar/${id}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ senhaAdmin: senhaSalva })
+            });
+            
+            // Recarrega a lista
+            acessarAdmin();
+        }
+    </script>
+</body>
+</html>
