@@ -111,37 +111,34 @@
         async function enviarGrupoForm(event) {
             event.preventDefault();
 
-            // Altera o texto do botão para mostrar que está carregando
             const btn = document.querySelector('.btn-enviar');
             const textoOriginal = btn.innerText;
             btn.innerText = "Enviando...";
             btn.disabled = true;
 
-            // Captura os valores dos campos digitados
+            // Captura os valores dos campos
             const link = document.getElementById('link-grupo').value;
             const numeroDono = document.getElementById('dono-grupo').value;
+            const senha = document.getElementById('senha-grupo').value; // AGORA CAPTURA A SENHA
             const descricao = document.getElementById('desc-grupo').value;
 
-            // Captura apenas as regras que foram marcadas (checkboxes)
             const checkboxes = document.querySelectorAll('.regras-grid input[type="checkbox"]:checked');
             const regras = Array.from(checkboxes).map(cb => cb.value);
 
-            // Monta o objeto com os dados para enviar à API
+            // Monta o objeto com a senha inclusa
             const dadosGrupo = {
                 link: link,
                 numeroDono: numeroDono,
+                senha: senha,
                 descricao: descricao,
                 regras: regras,
-                categoria: "Amizade" // Padrão temporário, ajustaremos isso depois
+                categoria: "Amizade" // Padrão temporário
             };
 
             try {
-                // Faz a chamada real para a sua API na Square Cloud
                 const resposta = await fetch('https://apishard.squareweb.app/api/comunidades', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(dadosGrupo)
                 });
 
@@ -152,15 +149,12 @@
                     window.location.href = "/comunidades/index.html";
                 } else {
                     alert("❌ Erro ao enviar: " + (resultado.erro || "Tente novamente mais tarde."));
-                    // Desbloqueia o botão caso dê erro
                     btn.innerText = textoOriginal;
                     btn.disabled = false;
                 }
-
             } catch (erro) {
                 console.error("Erro na requisição:", erro);
                 alert("❌ Erro de conexão com o servidor. Tente novamente.");
-                // Desbloqueia o botão caso a internet falhe
                 btn.innerText = textoOriginal;
                 btn.disabled = false;
             }
