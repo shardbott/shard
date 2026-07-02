@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Painel - Shard Bot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        * { -webkit-tap-highlight-color: transparent; outline: none; box-sizing: border-box; }
+        :root {
+            --bg-base: #030708;
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --glass-bg: rgba(15, 22, 18, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --neon-green: #00E676;
+            --warning-yellow: #fbc531;
+            --danger-red: #ff4757;
+        }
+        body {
+            background-color: var(--bg-base); color: var(--text-main);
+            font-family: 'Inter', sans-serif; margin: 0; padding: 0;
+            background-image: radial-gradient(circle at 50% 0%, rgba(0, 230, 118, 0.05), transparent 50%);
+            background-attachment: fixed; min-height: 100vh;
+        }
+        
+        header { padding: 20px 24px; border-bottom: 1px solid var(--glass-border); background: rgba(3, 7, 8, 0.6); backdrop-filter: blur(10px); }
+        .btn-voltar { color: #fff; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
+        .btn-voltar:hover { color: var(--neon-green); }
+
+        .container { max-width: 700px; margin: 50px auto; padding: 0 20px; }
+
+        /* Área de Login */
+        #login-area {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            padding: 40px; border-radius: 24px; text-align: center; backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        #login-area i { font-size: 50px; color: var(--neon-green); margin-bottom: 15px; }
+        #login-area h2 { margin: 0 0 10px 0; font-size: 24px; }
+        #login-area p { color: var(--text-muted); font-size: 14px; margin-bottom: 25px; line-height: 1.5; }
+        
+        .form-control {
+            width: 100%; max-width: 400px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border);
+            padding: 14px 20px; border-radius: 12px; color: #fff; font-size: 16px; font-family: 'Inter', sans-serif; transition: 0.3s; margin-bottom: 20px; text-align: center;
+        }
+        .form-control:focus { border-color: var(--neon-green); box-shadow: 0 0 10px rgba(0, 230, 118, 0.15); }
+        
+        .btn-primary {
+            background: var(--neon-green); color: #000; border: none; padding: 14px 30px;
+            border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 230, 118, 0.3); }
+
+        /* Área do Painel (Escondida por padrão) */
+        #dashboard-area { display: none; }
+        .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .dash-header h1 { margin: 0; font-size: 28px; }
+        .dash-header a { background: rgba(255,255,255,0.05); color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 10px; font-size: 14px; font-weight: 600; border: 1px solid var(--glass-border); transition: 0.3s; }
+        .dash-header a:hover { background: rgba(255,255,255,0.1); }
+
+        /* Cards de Gerenciamento */
+        .gerenciar-grid { display: flex; flex-direction: column; gap: 20px; }
+        .manage-card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border); border-left: 4px solid var(--neon-green);
+            padding: 20px; border-radius: 16px; backdrop-filter: blur(10px); display: flex; flex-direction: column; gap: 15px;
+        }
+        .manage-card.pendente { border-left-color: var(--warning-yellow); }
+        
+        .mc-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .mc-info h3 { margin: 0 0 5px 0; font-size: 18px; }
+        .mc-info p { margin: 0; font-size: 13px; color: var(--text-muted); }
+        
+        .badge { padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+        .badge.aprovado { background: rgba(0, 230, 118, 0.1); color: var(--neon-green); border: 1px solid rgba(0, 230, 118, 0.3); }
+        .badge.pendente { background: rgba(251, 197, 49, 0.1); color: var(--warning-yellow); border: 1px solid rgba(251, 197, 49, 0.3); }
+
+        .mc-actions { display: flex; gap: 10px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px; flex-wrap: wrap; }
+        .btn-action {
+            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: #fff;
+            padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 6px;
+        }
+        .btn-action:hover { background: rgba(255,255,255,0.1); }
+        .btn-action.delete:hover { background: rgba(255, 71, 87, 0.1); color: var(--danger-red); border-color: rgba(255, 71, 87, 0.3); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="btn-voltar"><i class='bx bx-left-arrow-alt' style="font-size: 24px;"></i> Voltar</a>
+    </header>
+
+    <div class="container">
+        
+        <div id="login-area">
+            <i class='bx bx-lock-alt'></i>
+            <h2>Acessar Meus Grupos</h2>
+            <p>Digite o número de WhatsApp usado para cadastrar os seus grupos. Sem espaços ou símbolos.</p>
+            <input type="tel" class="form-control" id="numero-login" placeholder="Ex: 5511999999999" autocomplete="off">
+            <br>
+            <button class="btn-primary" onclick="acessarPainel()">Continuar</button>
+        </div>
+
+        <div id="dashboard-area">
+            <div class="dash-header">
+                <h1>Meus Grupos</h1>
+                <a href="#" onclick="sairPainel()"><i class='bx bx-log-out'></i> Sair</a>
+            </div>
+
+            <div class="gerenciar-grid">
+                
+                <div class="manage-card">
+                    <div class="mc-header">
+                        <div class="mc-info">
+                            <h3>Fugitivos do Caps 🤪</h3>
+                            <p>Enviado em 02/07/2026 • 127 acessos</p>
+                        </div>
+                        <span class="badge aprovado">Aprovado</span>
+                    </div>
+                    <div class="mc-actions">
+                        <button class="btn-action" onclick="editarAlerta()"><i class='bx bx-link'></i> Trocar Link</button>
+                        <button class="btn-action" onclick="editarAlerta()"><i class='bx bx-edit'></i> Editar Descrição</button>
+                        <button class="btn-action delete"><i class='bx bx-trash'></i> Excluir</button>
+                    </div>
+                </div>
+
+                <div class="manage-card pendente">
+                    <div class="mc-header">
+                        <div class="mc-info">
+                            <h3>Vendas e Trocas SP 🛒</h3>
+                            <p>Enviado em 02/07/2026 • 0 acessos</p>
+                        </div>
+                        <span class="badge pendente">Pendente</span>
+                    </div>
+                    <div class="mc-actions">
+                        <button class="btn-action" onclick="editarAlerta()"><i class='bx bx-link'></i> Trocar Link</button>
+                        <button class="btn-action" onclick="editarAlerta()"><i class='bx bx-edit'></i> Editar Descrição</button>
+                        <button class="btn-action delete"><i class='bx bx-trash'></i> Excluir</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function acessarPainel() {
+            const numero = document.getElementById('numero-login').value;
+            if(numero.length < 10) {
+                alert("Por favor, insira um número válido com DDD.");
+                return;
+            }
+            // FASE DE PLANEJAMENTO: Aqui faremos fetch(GET) no MongoDB para buscar os grupos deste número
+            // Simulação de transição de tela:
+            document.getElementById('login-area').style.display = 'none';
+            document.getElementById('dashboard-area').style.display = 'block';
+        }
+
+        function sairPainel() {
+            document.getElementById('numero-login').value = '';
+            document.getElementById('dashboard-area').style.display = 'none';
+            document.getElementById('login-area').style.display = 'block';
+        }
+
+        function editarAlerta() {
+            alert("Atenção: Ao editar os dados, seu grupo voltará para o status 'Pendente' e precisará ser aprovado novamente por nossos moderadores.");
+        }
+    </script>
+</body>
+</html>
