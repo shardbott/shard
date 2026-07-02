@@ -4,174 +4,148 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel Admin - Shard Bot</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
         * { -webkit-tap-highlight-color: transparent; outline: none; box-sizing: border-box; }
-        :root {
-            --bg-base: #030708;
-            --text-main: #ffffff;
-            --text-muted: #a1a1aa;
-            --glass-bg: rgba(15, 22, 18, 0.45);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --neon-green: #00E676;
-            --danger: #ff4757;
-        }
-        body {
-            background-color: var(--bg-base); color: var(--text-main);
-            font-family: 'Inter', sans-serif; margin: 0; padding: 0;
-            background-image: radial-gradient(circle at 50% 0%, rgba(0, 230, 118, 0.05), transparent 50%);
-            background-attachment: fixed; min-height: 100vh;
-        }
-        header { padding: 20px 24px; border-bottom: 1px solid var(--glass-border); background: rgba(3, 7, 8, 0.6); backdrop-filter: blur(10px); }
-        .btn-voltar { color: #fff; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-        .btn-voltar:hover { color: var(--neon-green); }
-
-        .container { max-width: 800px; margin: 50px auto; padding: 0 20px; }
-
-        #login-area {
-            background: var(--glass-bg); border: 1px solid var(--glass-border);
-            padding: 40px; border-radius: 24px; text-align: center; backdrop-filter: blur(10px);
-            max-width: 400px; margin: 0 auto;
-        }
-        #login-area i { font-size: 50px; color: var(--neon-green); margin-bottom: 15px; }
+        :root { --bg-base: #030708; --text-main: #ffffff; --text-muted: #a1a1aa; --glass-bg: rgba(15, 22, 18, 0.45); --glass-border: rgba(255, 255, 255, 0.08); --neon-green: #00E676; --danger: #ff4757; }
+        body { background-color: var(--bg-base); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; padding: 0; background-attachment: fixed; min-height: 100vh; }
+        header { padding: 20px 24px; border-bottom: 1px solid var(--glass-border); background: rgba(3, 7, 8, 0.6); backdrop-filter: blur(10px); display: flex; justify-content: space-between;}
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
         
-        .form-control {
-            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border);
-            padding: 14px 20px; border-radius: 12px; color: #fff; font-size: 16px; margin-bottom: 20px; text-align: center;
-        }
-        
-        .btn-primary {
-            background: var(--neon-green); color: #000; border: none; padding: 14px 30px;
-            border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; width: 100%;
-        }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px;}
+        .btn-tab { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: var(--text-muted); padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: 600; white-space: nowrap;}
+        .btn-tab.active { background: #fff; color: #000; border-color: #fff; }
 
-        #dashboard-area { display: none; }
-        
-        .admin-card {
-            background: var(--glass-bg); border: 1px solid var(--glass-border); 
-            padding: 20px; border-radius: 16px; margin-bottom: 20px; display: flex; gap: 20px;
-            align-items: center;
-        }
+        .admin-card { background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 20px; border-radius: 16px; margin-bottom: 20px; display: flex; gap: 20px; align-items: flex-start; }
         .admin-card img { width: 80px; height: 80px; border-radius: 12px; object-fit: cover; }
         .admin-info { flex: 1; }
         .admin-info h3 { margin: 0 0 5px 0; }
-        .admin-info p { margin: 0; font-size: 13px; color: var(--text-muted); margin-bottom: 10px;}
-        
-        .admin-actions { display: flex; gap: 10px; }
+        .admin-actions { display: flex; gap: 10px; margin-top: 15px;}
         .btn-approve { background: rgba(0, 230, 118, 0.15); color: var(--neon-green); border: 1px solid var(--neon-green); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; }
-        .btn-approve:hover { background: var(--neon-green); color: #000; }
         .btn-reject { background: rgba(255, 71, 87, 0.15); color: var(--danger); border: 1px solid var(--danger); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; }
-        .btn-reject:hover { background: var(--danger); color: #fff; }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="/comunidades/index.html" class="btn-voltar"><i class='bx bx-left-arrow-alt' style="font-size: 24px;"></i> Voltar para a Vitrine</a>
+        <a href="/comunidades/index.html" style="color: #fff; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px;"><i class='bx bx-left-arrow-alt' style="font-size: 24px;"></i> Sair</a>
+        <input type="password" id="senha-admin" placeholder="Senha Mestra" style="background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); color: #fff; padding: 6px 12px; border-radius: 8px; text-align: center;">
     </header>
 
     <div class="container">
-        <div id="login-area">
-            <i class='bx bx-shield-quarter'></i>
-            <h2>Painel da Moderação</h2>
-            <p>Área restrita aos administradores.</p>
-            <input type="password" class="form-control" id="senha-admin" placeholder="Senha Mestra" autocomplete="off">
-            <button class="btn-primary" onclick="acessarAdmin()">Entrar</button>
+        <div class="tabs">
+            <button class="btn-tab active" onclick="mudarAba('pendentes', this)">Aguardando Aprovação</button>
+            <button class="btn-tab" onclick="mudarAba('ativos', this)">Grupos Ativos (Apagar)</button>
+            <button class="btn-tab" onclick="mudarAba('denuncias', this)">Denúncias 🚨</button>
         </div>
 
-        <div id="dashboard-area">
-            <h2>Grupos Aguardando Aprovação</h2>
-            <p style="color: var(--text-muted); margin-bottom: 30px;">Aprove apenas grupos que o Bot já conseguiu ler o nome e a foto corretamente.</p>
-            
-            <div id="lista-pendentes">
-                <!-- Cards aparecerão aqui -->
-            </div>
+        <div id="conteudo-painel">
+            <p style="text-align: center; color: var(--text-muted); margin-top: 50px;">Digite a senha no topo e selecione uma aba para carregar.</p>
         </div>
     </div>
 
     <script>
-        let senhaSalva = "";
+        let abaAtual = 'pendentes';
 
-        async function acessarAdmin() {
+        function mudarAba(aba, btnElement) {
+            document.querySelectorAll('.btn-tab').forEach(b => b.classList.remove('active'));
+            btnElement.classList.add('active');
+            abaAtual = aba;
+            carregarDados();
+        }
+
+        async function carregarDados() {
             const senha = document.getElementById('senha-admin').value;
-            if(!senha) return;
+            if(!senha) return alert("Digite a senha no topo primeiro!");
+
+            const container = document.getElementById('conteudo-painel');
+            container.innerHTML = '<p style="text-align:center;">Carregando...</p>';
+
+            let url = '';
+            if(abaAtual === 'pendentes') url = 'https://apishard.squareweb.app/api/admin/pendentes';
+            if(abaAtual === 'ativos') url = 'https://apishard.squareweb.app/api/admin/aprovados';
+            if(abaAtual === 'denuncias') url = 'https://apishard.squareweb.app/api/admin/denuncias';
 
             try {
-                const resposta = await fetch('https://apishard.squareweb.app/api/admin/pendentes', {
+                const resposta = await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ senhaAdmin: senha })
                 });
 
-                if(resposta.status === 401) {
-                    alert("Senha incorreta!");
-                    return;
-                }
-
-                const grupos = await resposta.json();
-                senhaSalva = senha; // Salva na memória para usar nos botões de aprovar/rejeitar
-                
-                document.getElementById('login-area').style.display = 'none';
-                document.getElementById('dashboard-area').style.display = 'block';
-                
-                carregarPendentes(grupos);
-            } catch (erro) {
-                alert("Erro ao conectar no servidor.");
+                if(resposta.status === 401) return container.innerHTML = '<p style="text-align:center; color: #ff4757;">Senha Incorreta!</p>';
+                const dados = await resposta.json();
+                renderizar(dados);
+            } catch (e) {
+                container.innerHTML = '<p style="text-align:center;">Erro de conexão.</p>';
             }
         }
 
-        function carregarPendentes(grupos) {
-            const lista = document.getElementById('lista-pendentes');
-            lista.innerHTML = '';
+        function renderizar(dados) {
+            const container = document.getElementById('conteudo-painel');
+            container.innerHTML = '';
+            if(dados.length === 0) return container.innerHTML = '<p style="text-align:center;">Nenhum registro encontrado.</p>';
 
-            if(grupos.length === 0) {
-                lista.innerHTML = '<p>Nenhum grupo pendente no momento.</p>';
-                return;
-            }
-
-            grupos.forEach(grupo => {
-                lista.innerHTML += `
-                    <div class="admin-card">
-                        <img src="${grupo.imagem || 'https://i.imgur.com/Qm8plwA.jpeg'}" alt="Foto">
-                        <div class="admin-info">
-                            <h3>${grupo.nome}</h3>
-                            <p><strong>Dono:</strong> ${grupo.numeroDono} | <strong>Categoria:</strong> ${grupo.categoria}</p>
-                            <p>${grupo.descricao}</p>
-                            <div class="admin-actions">
-                                <button class="btn-approve" onclick="aprovarGrupo('${grupo._id}')"><i class='bx bx-check'></i> Aprovar</button>
-                                <button class="btn-reject" onclick="rejeitarGrupo('${grupo._id}')"><i class='bx bx-x'></i> Rejeitar</button>
-                                <a href="${grupo.link}" target="_blank" style="color: var(--text-muted); text-decoration: none; font-size: 14px; margin-left: 10px;">Testar Link</a>
+            dados.forEach(item => {
+                if(abaAtual === 'denuncias') {
+                    // Renderiza Card de Denúncia
+                    const imgHtml = item.imagemBase64 ? `<a href="${item.imagemBase64}" target="_blank"><img src="${item.imagemBase64}" style="width:100px; border-radius:8px; margin-top:10px;"></a>` : '';
+                    container.innerHTML += `
+                        <div class="admin-card" style="border-left: 4px solid #ff4757;">
+                            <div class="admin-info">
+                                <h3 style="color:#ff4757;">Denúncia: Grupo ID ${item.grupoId}</h3>
+                                <p style="color:var(--text-muted); font-size:13px;">Data: ${new Date(item.data).toLocaleString()}</p>
+                                <p style="margin-top: 10px;"><strong>Motivo:</strong> ${item.motivo}</p>
+                                ${imgHtml}
+                                <div class="admin-actions">
+                                    <button class="btn-approve" onclick="descartarDenuncia('${item._id}')"><i class='bx bx-check'></i> Ignorar Denúncia</button>
+                                    <button class="btn-reject" onclick="acaoGrupo('${item.grupoId}', 'rejeitar')"><i class='bx bx-trash'></i> Apagar Grupo Oficial</button>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                `;
+                        </div>`;
+                } else {
+                    // Renderiza Card de Grupos (Pendentes ou Ativos)
+                    const isPendente = abaAtual === 'pendentes';
+                    container.innerHTML += `
+                        <div class="admin-card">
+                            <img src="${item.imagem || 'https://i.imgur.com/Qm8plwA.jpeg'}">
+                            <div class="admin-info">
+                                <h3>${item.nome}</h3>
+                                <p style="color:var(--text-muted); font-size:13px;">Dono: ${item.numeroDono} | Cat: ${item.categoria}</p>
+                                <div class="admin-actions">
+                                    ${isPendente ? `<button class="btn-approve" onclick="acaoGrupo('${item._id}', 'aprovar')"><i class='bx bx-check'></i> Aprovar</button>` : ''}
+                                    <button class="btn-reject" onclick="acaoGrupo('${item._id}', 'rejeitar')"><i class='bx bx-x'></i> ${isPendente ? 'Rejeitar' : 'Excluir Definitivo'}</button>
+                                    <a href="${item.link}" target="_blank" style="color:var(--text-muted); padding: 8px;">Testar Link</a>
+                                </div>
+                            </div>
+                        </div>`;
+                }
             });
         }
 
-        async function aprovarGrupo(id) {
-            await fetch(`https://apishard.squareweb.app/api/admin/aprovar/${id}`, {
-                method: 'PUT',
+        async function acaoGrupo(id, acao) {
+            const senha = document.getElementById('senha-admin').value;
+            const msg = acao === 'rejeitar' ? 'Excluir este grupo permanentemente?' : 'Aprovar este grupo?';
+            if(!confirm(msg)) return;
+
+            const metodo = acao === 'aprovar' ? 'PUT' : 'DELETE';
+            await fetch(`https://apishard.squareweb.app/api/admin/${acao}/${id}`, {
+                method: metodo,
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ senhaAdmin: senhaSalva })
+                body: JSON.stringify({ senhaAdmin: senha })
             });
-            
-            // Recarrega a lista
-            acessarAdmin();
+            carregarDados();
         }
 
-        async function rejeitarGrupo(id) {
-            const confirmar = confirm("Isso apagará o grupo permanentemente do banco de dados. Confirmar?");
-            if(!confirmar) return;
-
-            await fetch(`https://apishard.squareweb.app/api/admin/rejeitar/${id}`, {
+        async function descartarDenuncia(idDenuncia) {
+            const senha = document.getElementById('senha-admin').value;
+            await fetch(`https://apishard.squareweb.app/api/admin/denuncias/${idDenuncia}`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ senhaAdmin: senhaSalva })
+                body: JSON.stringify({ senhaAdmin: senha })
             });
-            
-            // Recarrega a lista
-            acessarAdmin();
+            carregarDados();
         }
     </script>
 </body>
