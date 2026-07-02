@@ -50,7 +50,8 @@
             background: var(--neon-green); color: #000; border: none; padding: 14px 30px;
             border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s;
         }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 230, 118, 0.3); }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 230, 118, 0.3); }
+        .btn-primary:disabled { opacity: 0.7; cursor: wait; }
 
         #dashboard-area { display: none; }
         .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
@@ -105,58 +106,102 @@
             </div>
 
             <div class="gerenciar-grid">
-                <div class="manage-card">
-                    <div class="mc-header">
-                        <div class="mc-info">
-                            <h3>Fugitivos do Caps 🤪</h3>
-                            <p>Enviado em 02/07/2026 • 127 acessos</p>
-                        </div>
-                        <span class="badge aprovado">Aprovado</span>
-                    </div>
-                    <div class="mc-actions">
-                        <button class="btn-action" onclick="editarAlerta()"><i class='bx bx-link'></i> Trocar Link</button>
-                        <button class="btn-action" onclick="editarAlerta()"><i class='bx bx-edit'></i> Editar Descrição</button>
-                        <button class="btn-action delete"><i class='bx bx-trash'></i> Excluir</button>
-                    </div>
                 </div>
-
-                <div class="manage-card pendente">
-                    <div class="mc-header">
-                        <div class="mc-info">
-                            <h3>Vendas e Trocas SP 🛒</h3>
-                            <p>Enviado em 02/07/2026 • 0 acessos</p>
-                        </div>
-                        <span class="badge pendente">Pendente</span>
-                    </div>
-                    <div class="mc-actions">
-                        <button class="btn-action" onclick="editarAlerta()"><i class='bx bx-link'></i> Trocar Link</button>
-                        <button class="btn-action" onclick="editarAlerta()"><i class='bx bx-edit'></i> Editar Descrição</button>
-                        <button class="btn-action delete"><i class='bx bx-trash'></i> Excluir</button>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
     <script>
-        function acessarPainel() {
-            const numero = document.getElementById('numero-login').value;
+        async function acessarPainel() {
+            // Pega o número digitado e remove espaços ou traços
+            const numeroRaw = document.getElementById('numero-login').value;
+            const numero = numeroRaw.replace(/\D/g, ''); 
+
             if(numero.length < 10) {
-                alert("Por favor, insira um número válido com DDD.");
+                alert("Por favor, insira um número válido com DDD (apenas números).");
                 return;
             }
-            document.getElementById('login-area').style.display = 'none';
-            document.getElementById('dashboard-area').style.display = 'block';
+
+            const btn = document.querySelector('.btn-primary');
+            const txtOriginal = btn.innerText;
+            btn.innerText = "Buscando...";
+            btn.disabled = true;
+
+            try {
+                // Faz a busca na sua API pelo número do dono
+                const resposta = await fetch(`https://apishard.squareweb.app/api/comunidades/dono/${numero}`);
+                const grupos = await resposta.json();
+
+                btn.innerText = txtOriginal;
+                btn.disabled = false;
+
+                if (grupos.erro) {
+                    alert("Erro ao buscar grupos no servidor.");
+                    return;
+                }
+
+                // Troca a tela
+                document.getElementById('login-area').style.display = 'none';
+                document.getElementById('dashboard-area').style.display = 'block';
+
+                const grid = document.querySelector('.gerenciar-grid');
+                grid.innerHTML = ''; // Limpa a grade antes de adicionar
+
+                // Se o usuário não tem grupos
+                if (grupos.length === 0) {
+                    grid.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 20px;">Você ainda não enviou nenhum grupo com este número.</p>';
+                    return;
+                }
+
+                // Cria os cards para cada grupo que o usuário possui
+                grupos.forEach(grupo => {
+                    const dataObj = new Date(grupo.dataEnvio);
+                    const dataFormatada = dataObj.toLocaleDateString('pt-BR');
+                    
+                    // Define as cores e textos com base no status do banco de dados
+                    const badgeClass = grupo.status === 'aprovado' ? 'aprovado' : 'pendente';
+                    const badgeTexto = grupo.status === 'aprovado' ? 'Aprovado' : 'Pendente';
+                    const cardClass = grupo.status === 'pendente' ? 'pendente' : '';
+                    const nomeExibicao = grupo.nome !== 'Aguardando bot...' ? grupo.nome : 'Grupo em Análise';
+
+                    grid.innerHTML += `
+                        <div class="manage-card ${cardClass}">
+                            <div class="mc-header">
+                                <div class="mc-info">
+                                    <h3>${nomeExibicao}</h3>
+                                    <p>Enviado em ${dataFormatada} • ${grupo.visualizacoes} acessos</p>
+                                </div>
+                                <span class="badge ${badgeClass}">${badgeTexto}</span>
+                            </div>
+                            <div class="mc-actions">
+                                <button class="btn-action" onclick="editarAlerta()"><i class='bx bx-link'></i> Trocar Link</button>
+                                <button class="btn-action" onclick="editarAlerta()"><i class='bx bx-edit'></i> Editar</button>
+                                <button class="btn-action delete" onclick="excluirAlerta()"><i class='bx bx-trash'></i> Excluir</button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+            } catch (erro) {
+                console.error(erro);
+                alert("❌ Erro de conexão com o servidor.");
+                btn.innerText = txtOriginal;
+                btn.disabled = false;
+            }
         }
 
         function sairPainel() {
             document.getElementById('numero-login').value = '';
             document.getElementById('dashboard-area').style.display = 'none';
             document.getElementById('login-area').style.display = 'block';
+            document.querySelector('.gerenciar-grid').innerHTML = '';
         }
 
         function editarAlerta() {
-            alert("Atenção: Ao editar os dados, seu grupo voltará para o status 'Pendente' e precisará ser aprovado novamente por nossos moderadores.");
+            alert("Atenção: Ao editar os dados, seu grupo voltará para o status 'Pendente' e precisará ser aprovado novamente. (Função em desenvolvimento)");
+        }
+
+        function excluirAlerta() {
+            alert("Você tem certeza? A exclusão não poderá ser desfeita. (Função em desenvolvimento)");
         }
     </script>
 </body>
