@@ -111,28 +111,23 @@
     </div>
 
     <script>
-        // Função principal para buscar e renderizar os grupos
         async function carregarGrupos(categoria = 'Todos') {
             const grid = document.getElementById('lista-grupos');
             const loading = document.getElementById('loading-area');
             
-            // Reseta a tela
             grid.innerHTML = '';
             loading.style.display = 'block';
 
             try {
-                // Prepara a URL com base na categoria
                 const url = categoria === 'Todos' 
                     ? 'https://apishard.squareweb.app/api/comunidades'
                     : `https://apishard.squareweb.app/api/comunidades?categoria=${categoria}`;
                 
-                // Busca os dados da Square Cloud
                 const resposta = await fetch(url);
                 const grupos = await resposta.json();
                 
                 loading.style.display = 'none';
 
-                // Tratamento se não tiver grupos
                 if (grupos.length === 0) {
                     grid.innerHTML = `
                         <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #888; background: var(--glass-bg); border-radius: 20px; border: 1px dashed var(--glass-border);">
@@ -143,7 +138,6 @@
                     return;
                 }
 
-                // Cria os cards HTML para cada grupo encontrado
                 grupos.forEach(grupo => {
                     grid.innerHTML += `
                         <div class="group-card">
@@ -156,7 +150,7 @@
                                 <p>${grupo.descricao}</p>
                                 <div class="card-footer">
                                     <div class="card-views"><i class='bx bx-show'></i> <span>${grupo.visualizacoes}</span> acessos</div>
-                                    <a onclick="verGrupo('${grupo._id}')" class="btn-view">Ver Grupo</a>
+                                    <a onclick="verGrupo('${grupo._id}', this)" class="btn-view">Ver Grupo</a>
                                 </div>
                             </div>
                         </div>
@@ -168,25 +162,28 @@
             }
         }
 
-        // Lógica dos botões de Categoria
         document.querySelectorAll('.btn-cat').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                // Remove a cor verde de todos
                 document.querySelectorAll('.btn-cat').forEach(b => b.classList.remove('active'));
-                // Adiciona a cor verde no que foi clicado
                 e.target.classList.add('active');
-                
-                // Recarrega os grupos com o novo filtro
                 carregarGrupos(e.target.innerText);
             });
         });
 
-        // Redireciona passando o ID secreto do MongoDB na URL
-        function verGrupo(id) {
+        // Conta a visualização aqui na vitrine
+        async function verGrupo(id, botaoClicado) {
+            botaoClicado.innerText = "Abrindo...";
+            botaoClicado.style.pointerEvents = "none"; 
+
+            try {
+                await fetch(`https://apishard.squareweb.app/api/comunidades/${id}/clique`, { method: 'POST' });
+            } catch (erro) {
+                console.log("Erro de rede ignorado para não travar o usuário");
+            }
+            
             window.location.href = `/comunidades/detalhes.html?id=${id}`;
         }
 
-        // Inicia carregando "Todos" assim que abre o site
         carregarGrupos();
     </script>
 </body>
