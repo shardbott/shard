@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunidades - Shard Bot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        * { -webkit-tap-highlight-color: transparent; outline: none; box-sizing: border-box; }
+        :root {
+            --bg-base: #030708;
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --glass-bg: rgba(15, 22, 18, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.6);
+            --neon-green: #00E676;
+        }
+        body {
+            background-color: var(--bg-base); color: var(--text-main);
+            font-family: 'Inter', sans-serif; margin: 0; padding: 0;
+            background-image: radial-gradient(circle at 50% 0%, rgba(0, 230, 118, 0.08), transparent 50%);
+            background-attachment: fixed; min-height: 100vh;
+        }
+        header {
+            display: flex; justify-content: space-between; align-items: center; padding: 15px 24px;
+            background: rgba(3, 7, 8, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 100;
+        }
+        .btn-nav { color: #fff; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
+        .btn-nav:hover { color: var(--neon-green); }
+        .btn-header-enviar { background: var(--neon-green); color: #000; padding: 8px 16px; border-radius: 12px; font-weight: 700; }
+        .btn-header-enviar:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0, 230, 118, 0.3); }
+
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; text-align: left; }
+        h1 { font-size: 32px; font-weight: 800; margin: 0 0 8px 0; letter-spacing: -1px; }
+        p.subtitle { color: var(--text-muted); margin: 0 0 40px 0; font-size: 15px; }
+
+        /* Categorias */
+        .categories { display: flex; gap: 10px; margin-bottom: 30px; overflow-x: auto; padding-bottom: 10px; }
+        .btn-cat {
+            background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); color: var(--text-muted);
+            padding: 10px 20px; border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: 600; transition: 0.3s; white-space: nowrap;
+        }
+        .btn-cat.active, .btn-cat:hover { background: var(--neon-green); color: #000; border-color: var(--neon-green); }
+
+        /* Grid de Cards */
+        .groups-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media(min-width: 750px) { .groups-grid { grid-template-columns: 1fr 1fr; } }
+
+        .group-card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px;
+            overflow: hidden; display: flex; flex-direction: column; backdrop-filter: blur(10px);
+            transition: all 0.3s ease; box-shadow: var(--glass-shadow);
+        }
+        .group-card:hover { border-color: rgba(0, 230, 118, 0.3); transform: translateY(-3px); }
+        
+        .card-banner { width: 100%; height: 160px; background: #111; overflow: hidden; position: relative; }
+        .card-banner img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; }
+        .card-tag { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.6); padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--neon-green); border: 1px solid rgba(0, 230, 118, 0.2); }
+
+        .card-content { padding: 20px; display: flex; flex-direction: column; flex: 1; justify-content: space-between; }
+        .card-content h3 { margin: 0 0 10px 0; font-size: 18px; font-weight: 700; color: #fff; }
+        .card-content p { margin: 0 0 20px 0; font-size: 13.5px; color: var(--text-muted); line-height: 1.5; height: 40px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+
+        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px; }
+        .card-views { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+        .card-views i { font-size: 16px; color: var(--neon-green); }
+        
+        .btn-view {
+            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: #fff;
+            padding: 8px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; text-decoration: none; cursor: pointer; transition: 0.3s;
+        }
+        .btn-view:hover { background: var(--neon-green); color: #000; border-color: var(--neon-green); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="../index.html" class="btn-nav"><i class='bx bx-left-arrow-alt' style="font-size: 24px;"></i> Shard Bot</a>
+        <a href="enviar.html" class="btn-nav btn-header-enviar"><i class='bx bx-plus'></i> Enviar Grupo</a>
+    </header>
+
+    <div class="container">
+        <h1>Descobrir Comunidades</h1>
+        <p class="subtitle">Explore e entre nos melhores grupos e canais do WhatsApp revisados pelos nossos moderadores.</p>
+
+        <div class="categories">
+            <button class="btn-cat active">Todos</button>
+            <button class="btn-cat">Amizade</button>
+            <button class="btn-cat">Jogos</button>
+            <button class="btn-cat">Memes</button>
+            <button class="btn-cat">Estudos</button>
+        </div>
+
+        <div class="groups-grid">
+            <div class="group-card">
+                <div class="card-banner">
+                    <span class="card-tag">Amizade</span>
+                    <img src="https://i.imgur.com/Qm8plwA.jpeg" alt="Banner Grupo">
+                </div>
+                <div class="card-content">
+                    <h3>Fugitivos do Caps 🤪</h3>
+                    <p>Seja bem-vindo ao melhor grupo de amizade do WhatsApp! Aqui você vai encontrar pessoas divertidas e resenha 24h.</p>
+                    <div class="card-footer">
+                        <div class="card-views"><i class='bx bx-show'></i> <span>127</span> acessos</div>
+                        <a onclick="verGrupo('id_exemplo_1')" class="btn-view">Ver Grupo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function verGrupo(id) {
+            // FASE DE PLANEJAMENTO: Aqui faremos o fetch POST para o Node.js salvar o clique no Mongo
+            // Por enquanto, apenas simula o redirecionamento para a tela de detalhes
+            window.location.href = `detalhes.html?id=${id}`;
+        }
+    </script>
+</body>
+</html>
