@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes da Comunidade - Shard Bot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        * { -webkit-tap-highlight-color: transparent; outline: none; box-sizing: border-box; }
+        :root {
+            --bg-base: #030708;
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --glass-bg: rgba(15, 22, 18, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --neon-green: #00E676;
+            --danger-red: #ff4757;
+        }
+        body {
+            background-color: var(--bg-base); color: var(--text-main);
+            font-family: 'Inter', sans-serif; margin: 0; padding: 0;
+            background-image: radial-gradient(circle at 50% 0%, rgba(0, 230, 118, 0.05), transparent 50%);
+            background-attachment: fixed; min-height: 100vh;
+        }
+        header { padding: 15px 24px; border-bottom: 1px solid var(--glass-border); background: rgba(3, 7, 8, 0.8); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+        .btn-voltar { color: #fff; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
+        .btn-voltar:hover { color: var(--neon-green); }
+
+        .container { max-width: 700px; margin: 30px auto; padding: 0 20px; }
+        
+        /* Banner e Cabeçalho do Grupo */
+        .group-header {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-radius: 24px; overflow: hidden; backdrop-filter: blur(10px);
+            margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .banner { height: 200px; width: 100%; position: relative; background: #111; }
+        .banner img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+        .tag-cat { position: absolute; bottom: -15px; left: 25px; background: #1a1a1a; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; color: var(--text-muted); border: 1px solid var(--glass-border); text-transform: uppercase; z-index: 10; }
+
+        .info-content { padding: 35px 25px 25px 25px; }
+        .info-content h1 { margin: 0 0 15px 0; font-size: 26px; font-weight: 800; color: #fff; }
+        .desc-text { color: var(--text-muted); font-size: 15px; line-height: 1.6; margin: 0 0 20px 0; }
+
+        .stats-bar {
+            background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px;
+            font-size: 14px; color: var(--text-muted); line-height: 1.5; border: 1px solid rgba(255,255,255,0.05);
+        }
+        .stats-bar strong { color: var(--neon-green); font-weight: 700; }
+        .stats-bar a { color: #53bdeb; text-decoration: none; }
+
+        /* Regras do Grupo */
+        .regras-section { margin: 30px 0; }
+        .regras-section h3 { font-size: 18px; margin: 0 0 5px 0; display: flex; align-items: center; gap: 8px; }
+        .regras-section p { font-size: 13px; color: #777; margin: 0 0 15px 0; }
+        
+        .regras-list { list-style: none; padding: 0; margin: 0; }
+        .regras-list li {
+            padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-main); font-size: 14.5px; display: flex; align-items: flex-start; gap: 10px;
+        }
+        .regras-list li:last-child { border-bottom: none; }
+        .regras-list li span.num { color: var(--neon-green); font-weight: 800; }
+
+        /* Avisos e Botões */
+        .disclaimer {
+            font-size: 12.5px; color: #888; line-height: 1.6; margin-bottom: 25px;
+            padding-left: 15px; border-left: 2px solid #333;
+        }
+        .meta-info { font-size: 12px; color: #555; text-align: center; margin-bottom: 25px; }
+
+        .btn-entrar {
+            display: block; width: 100%; background: var(--neon-green); color: #000;
+            text-align: center; padding: 16px; border-radius: 14px; font-size: 18px; font-weight: 700;
+            text-decoration: none; transition: 0.3s; box-shadow: 0 8px 24px rgba(0, 230, 118, 0.25);
+        }
+        .btn-entrar:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0, 230, 118, 0.4); }
+
+        .btn-report {
+            display: block; width: 100%; background: rgba(255, 71, 87, 0.1); color: var(--danger-red);
+            text-align: center; padding: 14px; border-radius: 14px; font-size: 14px; font-weight: 600;
+            text-decoration: none; border: 1px solid rgba(255, 71, 87, 0.3); margin-top: 15px; transition: 0.3s;
+        }
+        .btn-report:hover { background: rgba(255, 71, 87, 0.2); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="btn-voltar"><i class='bx bx-left-arrow-alt' style="font-size: 24px;"></i> Voltar</a>
+    </header>
+
+    <div class="container">
+        <!-- FASE PLANEJAMENTO: Estes dados serão preenchidos dinamicamente pelo Node.js/MongoDB -->
+        <div class="group-header">
+            <div class="banner">
+                <!-- Imagem do Grupo -->
+                <img src="https://i.imgur.com/Qm8plwA.jpeg" alt="Banner do Grupo">
+                <div class="tag-cat">Amizade</div>
+            </div>
+            <div class="info-content">
+                <h1>Fugitivos do Caps 🤪</h1>
+                <p class="desc-text">Seja bem-vindo ao melhor grupo de amizade do WhatsApp! Aqui você vai encontrar pessoas legais, pessoas divertidas e quem sabe até arrumar um romance.</p>
+                
+                <div class="stats-bar">
+                    O grupo <strong>Fugitivos do Caps 🤪</strong> já teve <strong>127 acessos</strong> através do Shard Bot. <a href="enviar.html">Envie o seu grupo</a> também e comece a receber novos integrantes!
+                </div>
+
+                <div class="regras-section">
+                    <h3><i class='bx bx-list-ul'></i> Regras do Grupo</h3>
+                    <p>Leia todas as regras exigidas pelo administrador:</p>
+                    <ul class="regras-list">
+                        <li><span class="num">1</span> Proibido conteúdo adulto</li>
+                        <li><span class="num">2</span> Proibido agressividade</li>
+                        <li><span class="num">3</span> Proibido uso de palavrões</li>
+                        <li><span class="num">4</span> Proibido trava zap</li>
+                        <li><span class="num">5</span> Proibido menores de 18 anos</li>
+                    </ul>
+                </div>
+
+                <div class="disclaimer">
+                    Antes de acessar o grupo, esteja ciente de que você precisa concordar com as regras acima. Este grupo é independente, sem relação direta com o nosso site, sendo a responsabilidade de moderação do administrador do próprio grupo.
+                </div>
+
+                <!-- Botão de Ação Principal que fará a contagem e redirecionará -->
+                <a href="#" onclick="registrarCliqueEEntrar('LINK_DO_WHATSAPP')" class="btn-entrar">Entrar no Grupo</a>
+                
+                <a href="#" class="btn-report"><i class='bx bx-error-circle'></i> Comunicar Erro ou Denunciar</a>
+            </div>
+        </div>
+
+        <div class="meta-info">
+            Este grupo foi enviado para a nossa plataforma em <strong>02/07/2026 às 13:23</strong>.
+        </div>
+    </div>
+
+    <script>
+        function registrarCliqueEEntrar(linkDestino) {
+            // Aqui adicionaremos a lógica fetch(POST) para somar +1 no MongoDB
+            // Após registrar a view com sucesso, o usuário é mandado pro WhatsApp
+            alert("Registrando visualização no banco de dados...");
+            // window.location.href = linkDestino;
+        }
+    </script>
+</body>
+</html>
