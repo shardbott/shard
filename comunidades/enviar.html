@@ -60,6 +60,15 @@
         }
         .btn-enviar:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 230, 118, 0.3); }
         .btn-enviar:disabled { opacity: 0.7; cursor: not-allowed; }
+
+        /* Estilos do Toast (Substitui o alert nativo) */
+        #toast-container { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+        .toast { background: rgba(15, 22, 18, 0.95); border: 1px solid var(--neon-green); color: #fff; padding: 14px 24px; border-radius: 12px; display: flex; align-items: center; gap: 12px; font-family: 'Inter', sans-serif; font-size: 14.5px; font-weight: 500; box-shadow: 0 10px 30px rgba(0,0,0,0.6); backdrop-filter: blur(10px); animation: slideUp 0.3s ease forwards; }
+        .toast.error { border-color: #ff4757; }
+        .toast.error i { color: #ff4757; }
+        .toast i { color: var(--neon-green); font-size: 22px; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
     </style>
 </head>
 <body>
@@ -123,6 +132,24 @@
     </div>
 
     <script>
+        // Função para mostrar notificações Toast
+        function mostrarAviso(mensagem, erro = false) {
+            let container = document.getElementById('toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                document.body.appendChild(container);
+            }
+            const toast = document.createElement('div');
+            toast.className = `toast ${erro ? 'error' : ''}`;
+            toast.innerHTML = `<i class='bx ${erro ? 'bx-error-circle' : 'bx-check-circle'}'></i> <span>${mensagem}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.3s ease forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
         async function enviarGrupoForm(event) {
             event.preventDefault();
 
@@ -167,16 +194,16 @@
                 const resultado = await resposta.json();
 
                 if (resultado.sucesso) {
-                    alert("✨ Sucesso! Seu grupo foi enviado e está na fila para aprovação manual.");
-                    window.location.href = "/comunidades/index.html";
+                    mostrarAviso("✨ Sucesso! Seu grupo foi enviado e está na fila para aprovação manual.");
+                    setTimeout(() => window.location.href = "/comunidades/index.html", 2500);
                 } else {
-                    alert("❌ Erro ao enviar: " + (resultado.erro || "Tente novamente mais tarde."));
+                    mostrarAviso(resultado.erro || "Tente novamente mais tarde.", true);
                     btn.innerText = textoOriginal;
                     btn.disabled = false;
                 }
             } catch (erro) {
                 console.error("Erro na requisição:", erro);
-                alert("❌ Erro de conexão com o servidor. Tente novamente.");
+                mostrarAviso("Erro de conexão com o servidor. Tente novamente.", true);
                 btn.innerText = textoOriginal;
                 btn.disabled = false;
             }
