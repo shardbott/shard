@@ -2,163 +2,206 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comunidades - Shard Bot</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Comunidades 💬</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
         * { -webkit-tap-highlight-color: transparent; outline: none; box-sizing: border-box; }
+        
         :root {
-            --bg-base: #030708;
-            --text-main: #ffffff;
-            --text-muted: #a1a1aa;
-            --glass-bg: rgba(15, 22, 18, 0.45);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.6);
-            --neon-green: #00E676;
+            /* Cores Estilo iOS Dark Mode & WhatsApp */
+            --ios-bg: #000000;
+            --ios-glass: rgba(28, 28, 30, 0.65);
+            --ios-border: rgba(255, 255, 255, 0.1);
+            --wa-green: #25D366;
+            --wa-green-dark: #1DA851;
+            --text-main: #FFFFFF;
+            --text-muted: rgba(235, 235, 245, 0.6);
+            --ios-blue: #0A84FF;
         }
+
         body {
-            background-color: var(--bg-base); color: var(--text-main);
-            font-family: 'Inter', sans-serif; margin: 0; padding: 0;
-            background-image: radial-gradient(circle at 50% 0%, rgba(0, 230, 118, 0.08), transparent 50%);
+            background-color: var(--ios-bg);
+            color: var(--text-main);
+            font-family: '-apple-system', 'BlinkMacSystemFont', 'Inter', sans-serif;
+            margin: 0; padding: 0;
+            /* Um fundo super sutil que lembra o padrão do whatsapp dark */
+            background-image: radial-gradient(circle at 50% 0%, rgba(37, 211, 102, 0.05), transparent 60%);
             background-attachment: fixed; min-height: 100vh;
+            padding-bottom: 40px;
         }
+
+        /* Topbar Estilo iPhone */
         header {
-            display: flex; justify-content: space-between; align-items: center; padding: 15px 24px;
-            background: rgba(3, 7, 8, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 16px 20px; position: sticky; top: 0; z-index: 100;
+            background: rgba(10, 10, 10, 0.75);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-bottom: 0.5px solid var(--ios-border);
         }
-        .btn-nav { color: #fff; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
-        .btn-nav:hover { color: var(--neon-green); }
-        .btn-header-enviar { background: var(--neon-green); color: #000; padding: 8px 16px; border-radius: 12px; font-weight: 700; }
-        .btn-header-enviar:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0, 230, 118, 0.3); }
+        
+        .header-title { font-weight: 600; font-size: 17px; position: absolute; left: 50%; transform: translateX(-50%); }
+        
+        .btn-nav { color: var(--ios-blue); text-decoration: none; font-size: 17px; display: flex; align-items: center; gap: 4px; }
+        .btn-nav:active { opacity: 0.7; }
+        .btn-nav i { font-size: 22px; }
 
-        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; text-align: left; }
-        h1 { font-size: 32px; font-weight: 800; margin: 0 0 8px 0; letter-spacing: -1px; }
-        p.subtitle { color: var(--text-muted); margin: 0 0 40px 0; font-size: 15px; }
+        .container { max-width: 800px; margin: 0 auto; }
 
-        /* Categorias */
-        .categories { display: flex; gap: 10px; margin-bottom: 30px; overflow-x: auto; padding-bottom: 10px; }
-        .categories::-webkit-scrollbar { height: 4px; }
-        .categories::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        /* Título Principal */
+        .page-header { padding: 20px 20px 10px 20px; }
+        .page-header h1 { font-size: 32px; font-weight: 700; margin: 0 0 5px 0; letter-spacing: -0.5px; }
+        .page-header p { color: var(--text-muted); font-size: 15px; margin: 0; }
+
+        /* Filtros iOS Segmented Control Vibe */
+        .categories-wrapper { padding: 10px 20px 20px 20px; }
+        .categories { 
+            display: flex; gap: 8px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none;
+        }
+        .categories::-webkit-scrollbar { display: none; }
+        
         .btn-cat {
-            background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); color: var(--text-muted);
-            padding: 10px 20px; border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: 600; transition: 0.3s; white-space: nowrap;
+            background: var(--ios-glass); border: 0.5px solid var(--ios-border); color: var(--text-main);
+            padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: 500; 
+            white-space: nowrap; transition: 0.2s; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
         }
-        .btn-cat.active, .btn-cat:hover { background: var(--neon-green); color: #000; border-color: var(--neon-green); }
+        .btn-cat.active { background: var(--wa-green); color: #000; border-color: var(--wa-green); font-weight: 600; }
 
-        /* Grid de Cards */
-        .groups-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-        @media(min-width: 750px) { .groups-grid { grid-template-columns: 1fr 1fr; } }
-
-        .group-card {
-            background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px;
-            overflow: hidden; display: flex; flex-direction: column; backdrop-filter: blur(10px);
-            transition: all 0.3s ease; box-shadow: var(--glass-shadow);
+        /* Lista de Chats (WhatsApp Style) */
+        .chat-list {
+            background: var(--ios-glass);
+            border-top: 0.5px solid var(--ios-border);
+            border-bottom: 0.5px solid var(--ios-border);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
         }
-        .group-card:hover { border-color: rgba(0, 230, 118, 0.3); transform: translateY(-3px); }
+
+        .chat-item {
+            display: flex; align-items: center; padding: 12px 20px;
+            text-decoration: none; color: inherit; cursor: pointer;
+            transition: background 0.2s; position: relative;
+        }
+        .chat-item:active { background: rgba(255, 255, 255, 0.05); }
         
-        .card-banner { width: 100%; height: 160px; background: #111; overflow: hidden; position: relative; }
-        .card-banner img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; }
-        .card-tag { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.6); padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--neon-green); border: 1px solid rgba(0, 230, 118, 0.2); }
-
-        .card-content { padding: 20px; display: flex; flex-direction: column; flex: 1; justify-content: space-between; }
-        .card-content h3 { margin: 0 0 10px 0; font-size: 18px; font-weight: 700; color: #fff; }
-        .card-content p { margin: 0 0 20px 0; font-size: 13.5px; color: var(--text-muted); line-height: 1.5; height: 40px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-
-        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px; }
-        .card-views { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
-        .card-views i { font-size: 16px; color: var(--neon-green); }
-        
-        .btn-view {
-            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: #fff;
-            padding: 8px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; text-decoration: none; cursor: pointer; transition: 0.3s;
+        /* Linha divisória típica do iOS */
+        .chat-item:not(:last-child)::after {
+            content: ''; position: absolute; bottom: 0; left: 84px; right: 0;
+            height: 0.5px; background: var(--ios-border);
         }
-        .btn-view:hover { background: var(--neon-green); color: #000; border-color: var(--neon-green); }
+
+        .chat-avatar {
+            width: 54px; height: 54px; border-radius: 50%; object-fit: cover;
+            margin-right: 14px; background: #222; flex-shrink: 0;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .chat-info { flex: 1; overflow: hidden; padding-right: 10px; }
+        
+        .chat-header-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3px; }
+        .chat-title { font-weight: 600; font-size: 17px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0; }
+        .chat-meta { font-size: 13px; color: var(--text-muted); flex-shrink: 0; display: flex; align-items: center; gap: 4px; }
+        
+        .chat-desc { font-size: 15px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0; }
+
+        .wa-badge { 
+            display: inline-block; background: rgba(37, 211, 102, 0.15); color: var(--wa-green); 
+            padding: 2px 8px; border-radius: 12px; font-weight: 600; font-size: 11px; margin-top: 5px;
+            border: 1px solid rgba(37, 211, 102, 0.2); text-transform: uppercase; letter-spacing: 0.5px;
+        }
 
         /* Loader */
-        #loading-area { text-align: center; padding: 50px 20px; color: var(--text-muted); grid-column: 1 / -1; }
-        #loading-area i { font-size: 40px; color: var(--neon-green); margin-bottom: 10px; }
+        #loading-area { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+        #loading-area i { font-size: 32px; color: var(--text-muted); margin-bottom: 10px; animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        .empty-state { text-align: center; padding: 50px 20px; color: var(--text-muted); }
+        .empty-state i { font-size: 48px; color: rgba(255,255,255,0.2); margin-bottom: 15px; }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="/index.html" class="btn-nav"><i class='bx bx-left-arrow-alt' style="font-size: 24px;"></i> Shard Bot</a>
-        <a href="/comunidades/enviar.html" class="btn-nav btn-header-enviar"><i class='bx bx-plus'></i> Enviar Grupo</a>
+        <a href="/index.html" class="btn-nav"><i class='bx bx-chevron-left'></i> Shard</a>
+        <div class="header-title">Comunidades</div>
+        <a href="/comunidades/enviar.html" class="btn-nav"><i class='bx bx-plus-circle'></i></a>
     </header>
 
     <div class="container">
-        <h1>Descobrir Comunidades</h1>
-        <p class="subtitle">Explore e entre nos melhores grupos e canais do WhatsApp revisados pelos nossos moderadores.</p>
-
-        <div class="categories" id="filtros">
-            <button class="btn-cat active">Todos</button>
-            <button class="btn-cat">Amizade</button>
-            <button class="btn-cat">Jogos</button>
-            <button class="btn-cat">Memes</button>
-            <button class="btn-cat">Estudos</button>
-            <button class="btn-cat">+18</button>
+        <div class="page-header">
+            <h1>Descobrir 📱</h1>
+            <p>Entre nos melhores grupos validados pelo bot.</p>
         </div>
 
-        <div class="groups-grid" id="lista-grupos">
+        <div class="categories-wrapper">
+            <div class="categories" id="filtros">
+                <button class="btn-cat active">Todos</button>
+                <button class="btn-cat">Amizade 🤝</button>
+                <button class="btn-cat">Jogos 🎮</button>
+                <button class="btn-cat">Memes 😂</button>
+                <button class="btn-cat">Estudos 📚</button>
+                <button class="btn-cat">+18 🔞</button>
             </div>
+        </div>
 
         <div id="loading-area">
-            <i class='bx bx-loader-alt bx-spin'></i>
-            <p>Buscando comunidades incríveis...</p>
+            <i class='bx bx-loader-alt'></i>
+            <p>Conectando ao servidor...</p>
         </div>
+
+        <div class="chat-list" id="lista-grupos" style="display: none;">
+            </div>
     </div>
 
     <script>
         async function carregarGrupos(categoria = 'Todos') {
-            const grid = document.getElementById('lista-grupos');
+            const list = document.getElementById('lista-grupos');
             const loading = document.getElementById('loading-area');
             
-            grid.innerHTML = '';
+            list.innerHTML = '';
+            list.style.display = 'none';
             loading.style.display = 'block';
 
             try {
-                const url = categoria === 'Todos' 
+                // Remove os emojis do nome da categoria para a busca na API funcionar certinho
+                const categoriaLimpa = categoria.replace(/[^a-zA-Z0-9+ ]/g, '').trim();
+
+                const url = categoriaLimpa === 'Todos' 
                     ? 'https://apishard.squareweb.app/api/comunidades'
-                    : `https://apishard.squareweb.app/api/comunidades?categoria=${categoria}`;
+                    : `https://apishard.squareweb.app/api/comunidades?categoria=${categoriaLimpa}`;
                 
                 const resposta = await fetch(url);
                 const grupos = await resposta.json();
                 
                 loading.style.display = 'none';
+                list.style.display = 'block';
 
                 if (grupos.length === 0) {
-                    grid.innerHTML = `
-                        <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #888; background: var(--glass-bg); border-radius: 20px; border: 1px dashed var(--glass-border);">
-                            <i class='bx bx-ghost' style="font-size: 40px; margin-bottom: 10px;"></i>
+                    list.innerHTML = `
+                        <div class="empty-state">
+                            <i class='bx bx-ghost'></i>
                             <p>Nenhum grupo encontrado nesta categoria.</p>
-                            <a href="/comunidades/enviar.html" style="color: var(--neon-green); text-decoration: none; font-weight: 600;">Seja o primeiro a enviar!</a>
                         </div>`;
                     return;
                 }
 
                 grupos.forEach(grupo => {
-                    grid.innerHTML += `
-                        <div class="group-card">
-                            <div class="card-banner">
-                                <span class="card-tag">${grupo.categoria}</span>
-                                <img src="${grupo.imagem}" alt="Banner Grupo" onerror="this.src='https://i.imgur.com/Qm8plwA.jpeg'">
-                            </div>
-                            <div class="card-content">
-                                <h3>${grupo.nome}</h3>
-                                <p>${grupo.descricao}</p>
-                                <div class="card-footer">
-                                    <div class="card-views"><i class='bx bx-show'></i> <span>${grupo.visualizacoes}</span> acessos</div>
-                                    <a onclick="verGrupo('${grupo._id}', this)" class="btn-view">Ver Grupo</a>
+                    list.innerHTML += `
+                        <div class="chat-item" onclick="verGrupo('${grupo._id}')">
+                            <img src="${grupo.imagem}" alt="Avatar" class="chat-avatar" onerror="this.src='https://i.imgur.com/Qm8plwA.jpeg'">
+                            <div class="chat-info">
+                                <div class="chat-header-row">
+                                    <h3 class="chat-title">${grupo.nome}</h3>
+                                    <div class="chat-meta">${grupo.visualizacoes} <i class='bx bx-show'></i></div>
                                 </div>
+                                <p class="chat-desc">${grupo.descricao}</p>
+                                <span class="wa-badge">${grupo.categoria}</span>
                             </div>
                         </div>
                     `;
                 });
             } catch (erro) {
-                console.error("Erro ao buscar grupos:", erro);
-                loading.innerHTML = `<p style="color: #ff4757;"><i class='bx bx-error'></i> Erro ao carregar as comunidades.</p>`;
+                console.error("Erro:", erro);
+                loading.innerHTML = `<p style="color: var(--text-muted);">Erro ao carregar as conversas.</p>`;
             }
         }
 
@@ -170,28 +213,19 @@
             });
         });
 
-        // Conta a visualização com Sistema Anti-Spam (localStorage)
-        async function verGrupo(id, botaoClicado) {
-            botaoClicado.innerText = "Abrindo...";
-            botaoClicado.style.pointerEvents = "none"; 
-
-            // 1. Puxa a lista de grupos que esse usuário já clicou hoje
+        async function verGrupo(id) {
             let gruposVisitados = JSON.parse(localStorage.getItem('gruposVisitados_Shard') || '[]');
 
-            // 2. Só dispara para a API se ele ainda não tiver clicado neste ID
             if (!gruposVisitados.includes(id)) {
                 try {
                     await fetch(`https://apishard.squareweb.app/api/comunidades/${id}/clique`, { method: 'POST' });
-                    
-                    // 3. Salva que ele já visitou para bloquear futuros cliques
                     gruposVisitados.push(id);
                     localStorage.setItem('gruposVisitados_Shard', JSON.stringify(gruposVisitados));
                 } catch (erro) {
-                    console.log("Erro de rede ignorado para não travar o usuário");
+                    console.log("Ignorado");
                 }
             }
             
-            // 4. Redireciona para a página (quer tenha contado view ou não)
             window.location.href = `/comunidades/detalhes.html?id=${id}`;
         }
 
