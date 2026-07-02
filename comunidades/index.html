@@ -78,8 +78,9 @@
 <body>
 
     <header>
-        <a href="../index.html" class="btn-nav"><i class='bx bx-left-arrow-alt' style="font-size: 24px;"></i> Shard Bot</a>
-        <a href="enviar.html" class="btn-nav btn-header-enviar"><i class='bx bx-plus'></i> Enviar Grupo</a>
+        <a href="/index.html" class="btn-nav"><i class='bx bx-left-arrow-alt' style="font-size: 24px;"></i> Shard Bot</a>
+        
+        <a href="/comunidades/enviar.html" class="btn-nav btn-header-enviar"><i class='bx bx-plus'></i> Enviar Grupo</a>
     </header>
 
     <div class="container">
@@ -114,9 +115,8 @@
 
     <script>
         function verGrupo(id) {
-            // FASE DE PLANEJAMENTO: Aqui faremos o fetch POST para o Node.js salvar o clique no Mongo
-            // Por enquanto, apenas simula o redirecionamento para a tela de detalhes
-            window.location.href = `detalhes.html?id=${id}`;
+            // CAMINHO CORRIGIDO: Redireciona com segurança a partir da raiz
+            window.location.href = `/comunidades/detalhes.html?id=${id}`;
         }
     </script>
 </body>
