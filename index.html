@@ -114,21 +114,15 @@
         }
         .sidebar-overlay.active { display: block; opacity: 1; }
 
-        /* Nova Animação do Título */
         .hero { padding: 70px 20px 40px; }
         .hero h1 { font-size: 46px; font-weight: 800; margin: 0 0 18px 0; line-height: 1.1; letter-spacing: -1.5px; }
         
         .palavra-animada {
-            color: var(--neon-green);
-            display: inline-block;
+            color: var(--neon-green); display: inline-block;
             transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-            opacity: 1;
-            transform: translateY(0);
+            opacity: 1; transform: translateY(0);
         }
-        .palavra-animada.escondida {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
+        .palavra-animada.escondida { opacity: 0; transform: translateY(-10px); }
 
         .hero p.subtitle { font-size: 18px; color: var(--text-muted); margin: 0 auto 35px auto; max-width: 460px; line-height: 1.6; }
         
@@ -142,7 +136,6 @@
         .btn-outline { background: rgba(255,255,255,0.03); color: #fff; border: 1px solid var(--glass-border); }
         .btn-outline:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); transform: translateY(-3px); }
 
-        /* Mockup do Celular */
         .mockup-container { display: flex; justify-content: center; margin-bottom: 60px; position: relative; z-index: 10; perspective: 1500px; }
         .phone-mockup {
             background-color: var(--wa-bg); border: 4px solid var(--neon-green); border-radius: 36px;
@@ -192,7 +185,6 @@
         .wa-input-pill span { flex: 1; margin: 0 10px; text-align: left; color: #8696a0; font-size: 15px; }
         .wa-mic-btn { width: 44px; height: 44px; background: var(--neon-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #0b141a; font-size: 22px; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
 
-        /* Demais seções (Stats, Features, Timeline, FAQ) */
         .section-title { font-size: 28px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; }
         .section-desc { color: var(--text-muted); font-size: 15px; margin-bottom: 40px; }
         .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; max-width: 900px; margin: 60px auto; padding: 0 20px; }
@@ -222,7 +214,6 @@
         details[open] summary::after { transform: rotate(180deg); }
         details p { margin: 12px 0 0 0; font-size: 14px; color: var(--text-muted); line-height: 1.6; }
 
-        /* Nova Área de Doação Rápida na Home */
         .donation-banner {
             background: linear-gradient(145deg, rgba(15, 22, 18, 0.8), rgba(0, 50, 25, 0.4));
             border: 1px solid var(--glass-border);
@@ -248,7 +239,12 @@
         .toast-content span { display: block; color: var(--text-muted); line-height: 1.4; }
         .toast-progress { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--neon-green); width: 100%; animation: toastProgressAnim 4s linear forwards; }
         @keyframes toastProgressAnim { from { width: 100%; } to { width: 0%; } }
-        @media (max-width: 600px) { #toast-container { width: 90%; } .live-toast { max-width: 100%; } }
+        
+        /* Oculta textos dos botões extras no mobile */
+        @media (max-width: 600px) { 
+            #toast-container { width: 90%; } .live-toast { max-width: 100%; } 
+            .hide-mobile { display: none !important; }
+        }
     </style>
 </head>
 <body>
@@ -266,16 +262,20 @@
         </div>
         
         <div class="menu-section">
+            <h3><i class='bx bx-compass'></i> Comunidades</h3>
+            <p>Descubra, divulgue e participe dos melhores grupos validados.</p>
+            <a href="comunidades/index.html" class="btn-menu" style="background: rgba(0, 230, 118, 0.1); border-color: rgba(0, 230, 118, 0.3); color: var(--neon-green);">Explorar Grupos</a>
+        </div>
+
+        <div class="menu-section">
             <h3><i class='bx bx-book-open'></i> Lista de Comandos</h3>
             <p>Conheca todos os comandos de mídia, diversão e utilitários.</p>
-            <!-- Link agora leva para a nova subpágina HTML -->
             <a href="comandos.html" class="btn-menu">Ver Todos os Comandos</a>
         </div>
 
         <div class="menu-section">
             <h3><i class='bx bx-heart'></i> Apoie o Projeto</h3>
             <p>Ajude a manter nossos servidores rápidos e online 24h por dia.</p>
-            <!-- Link agora leva para a nova subpágina de doação HTML -->
             <a href="doacao.html" class="btn-menu btn-primary">Fazer Doação</a>
         </div>
 
@@ -292,19 +292,24 @@
             <img src="https://i.ibb.co/ZphNKWDH/1780534058432.png" alt="Logo Shard Bot" class="logo-img">
             Shard Bot
         </div>
-        <div class="status-ping">
-            <div class="ping-dot"></div> Bot Online
+        <div style="display: flex; gap: 12px; align-items: center;">
+            <a href="comunidades/index.html" style="color: var(--text-main); text-decoration: none; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.05); padding: 8px 14px; border-radius: 12px; border: 1px solid var(--glass-border); transition: 0.3s;" onmouseover="this.style.borderColor='var(--neon-green)'; this.style.color='var(--neon-green)'" onmouseout="this.style.borderColor='var(--glass-border)'; this.style.color='var(--text-main)'">
+                <i class='bx bx-compass' style="font-size: 18px;"></i> <span class="hide-mobile">Comunidades</span>
+            </a>
+            
+            <div class="status-ping">
+                <div class="ping-dot"></div> <span class="hide-mobile">Bot Online</span>
+            </div>
         </div>
     </header>
 
     <div class="hero">
-        <!-- O Título agora tem animação de palavras -->
         <h1>Seu <span class="palavra-animada" id="palavra-mutavel">bot</span><br>favorito.</h1>
         <p class="subtitle">Crie figurinhas, faça downloads de arquivos, consulte IA e divirta-se em uma única conversa no WhatsApp.</p>
         
         <div class="cta-container">
             <a href="https://api.whatsapp.com/send?phone=56950572559&text=%2Fmenu" target="_blank" class="btn-action btn-main-green"><i class='bx bxl-whatsapp' style="font-size: 22px;"></i> Testar no Privado</a>
-            <a href="comandos.html" class="btn-action btn-outline">Ver Comandos</a>
+            <a href="comunidades/index.html" class="btn-action btn-outline" style="background: rgba(0, 230, 118, 0.1); border-color: var(--neon-green); color: var(--neon-green);"><i class='bx bx-group' style="font-size: 20px;"></i> Ver Comunidades</a>
         </div>
     </div>
 
@@ -424,7 +429,6 @@
         </details>
     </div>
 
-    <!-- Área Nova: Doação Rápida na Home -->
     <div class="donation-banner">
         <i class='bx bx-coffee-togo'></i>
         <h3>Mantenha o Shard Bot online!</h3>
@@ -440,27 +444,24 @@
     <div id="toast-container"></div>
 
     <script>
-        // Função de Animação de Troca de Palavras (Typewriter/Fade)
         const palavras = ["bot", "amigo", "ajudante", "parceiro"];
         let indexPalavra = 0;
         const elementoPalavra = document.getElementById("palavra-mutavel");
 
         setInterval(() => {
-            elementoPalavra.classList.add("escondida"); // Oculta a palavra
+            elementoPalavra.classList.add("escondida");
             setTimeout(() => {
                 indexPalavra = (indexPalavra + 1) % palavras.length;
                 elementoPalavra.innerText = palavras[indexPalavra];
-                elementoPalavra.classList.remove("escondida"); // Mostra a nova palavra
-            }, 500); // Espera 0.5s pra trocar o texto e revelar
-        }, 3500); // Troca a cada 3.5 segundos
+                elementoPalavra.classList.remove("escondida");
+            }, 500); 
+        }, 3500); 
 
-        // Menu Lateral
         function toggleMenu() {
             document.getElementById('sidebar').classList.toggle('active');
             document.getElementById('overlay').classList.toggle('active');
         }
 
-        // Estatísticas Dinâmicas
         async function carregarStatusAoVivo() {
             try {
                 const urlAPI = 'https://shard.squareweb.app/api/stats'; 
@@ -483,7 +484,6 @@
         carregarStatusAoVivo();
         setInterval(carregarStatusAoVivo, 10000); 
 
-        // Notificações / Toasts
         const mensagensToast = [
             { icon: 'bx-image-add', title: 'Sticker Criado!', text: 'Alguém acabou de gerar uma figurinha animada. ⚡' },
             { icon: 'bx-music', title: 'Download de Áudio', text: 'Usuário usou /play para baixar uma música. 🎵' },
