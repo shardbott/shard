@@ -28,16 +28,28 @@
             background: rgba(3, 7, 8, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 100;
         }
-        .btn-nav { color: #fff; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
-        .btn-nav:hover { color: var(--neon-green); }
-        .btn-header-enviar { background: var(--neon-green); color: #000; padding: 8px 16px; border-radius: 12px; font-weight: 700; }
-        .btn-header-enviar:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0, 230, 118, 0.3); }
+        
+        .btn-nav-logo { color: #fff; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
+        .btn-nav-logo:hover { color: var(--neon-green); }
+
+        /* Novos Estilos para os Botões do Cabeçalho */
+        .header-actions { display: flex; gap: 10px; align-items: center; }
+        .btn-head-sec { background: rgba(255,255,255,0.05); color: #fff; padding: 10px 16px; border-radius: 12px; font-weight: 600; border: 1px solid var(--glass-border); text-decoration: none; display: flex; align-items: center; gap: 8px; transition: 0.3s; white-space: nowrap; font-size: 14px; }
+        .btn-head-sec:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+        .btn-head-pri { background: var(--neon-green); color: #000; padding: 10px 16px; border-radius: 12px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 8px; transition: 0.3s; white-space: nowrap; font-size: 14px; border: 1px solid var(--neon-green); }
+        .btn-head-pri:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0, 230, 118, 0.3); }
+
+        /* Responsividade para não quebrar no celular */
+        @media (max-width: 500px) {
+            .btn-head-sec span, .btn-head-pri span, .btn-nav-logo span { display: none; }
+            .btn-head-sec, .btn-head-pri { padding: 10px 12px; font-size: 20px; }
+            .btn-nav-logo { font-size: 26px; }
+        }
 
         .container { max-width: 900px; margin: 40px auto; padding: 0 20px; text-align: left; }
         h1 { font-size: 32px; font-weight: 800; margin: 0 0 8px 0; letter-spacing: -1px; }
         p.subtitle { color: var(--text-muted); margin: 0 0 40px 0; font-size: 15px; }
 
-        /* Categorias */
         .categories { display: flex; gap: 10px; margin-bottom: 30px; overflow-x: auto; padding-bottom: 10px; }
         .categories::-webkit-scrollbar { height: 4px; }
         .categories::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
@@ -47,7 +59,6 @@
         }
         .btn-cat.active, .btn-cat:hover { background: var(--neon-green); color: #000; border-color: var(--neon-green); }
 
-        /* Grid de Cards */
         .groups-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
         @media(min-width: 750px) { .groups-grid { grid-template-columns: 1fr 1fr; } }
 
@@ -76,7 +87,6 @@
         }
         .btn-view:hover { background: var(--neon-green); color: #000; border-color: var(--neon-green); }
 
-        /* Estilo do Loader adicionado de volta */
         #loading-area { text-align: center; padding: 50px 20px; color: var(--text-muted); grid-column: 1 / -1; }
         #loading-area i { font-size: 40px; color: var(--neon-green); margin-bottom: 10px; }
     </style>
@@ -84,14 +94,14 @@
 <body>
 
     <header>
-        <a href="/index.html" class="btn-nav"><i class='bx bx-left-arrow-alt' style="font-size: 24px;"></i> Shard Bot</a>
+        <a href="/index.html" class="btn-nav-logo"><i class='bx bx-left-arrow-alt'></i> <span>Shard Bot</span></a>
         
-        <div style="display: flex; gap: 10px;">
-            <a href="/comunidades/painel.html" class="btn-nav" style="background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: 12px; font-weight: 600; border: 1px solid var(--glass-border);">
-                <i class='bx bx-user'></i> Meus Grupos
+        <div class="header-actions">
+            <a href="/comunidades/painel.html" class="btn-head-sec">
+                <i class='bx bx-user'></i> <span>Meus Grupos</span>
             </a>
-            <a href="/comunidades/enviar.html" class="btn-nav btn-header-enviar">
-                <i class='bx bx-plus'></i> Enviar Grupo
+            <a href="/comunidades/enviar.html" class="btn-head-pri">
+                <i class='bx bx-plus'></i> <span>Enviar Grupo</span>
             </a>
         </div>
     </header>
@@ -119,7 +129,6 @@
     </div>
 
     <script>
-        // Função para carregar os grupos da API
         async function carregarGrupos(categoria = 'Todos') {
             const grid = document.getElementById('lista-grupos');
             const loading = document.getElementById('loading-area');
@@ -171,7 +180,6 @@
             }
         }
 
-        // Lógica de clique nas categorias
         document.querySelectorAll('.btn-cat').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 document.querySelectorAll('.btn-cat').forEach(b => b.classList.remove('active'));
@@ -180,7 +188,6 @@
             });
         });
 
-        // Função de clique com sistema Anti-Spam
         async function verGrupo(id, botaoClicado) {
             botaoClicado.innerText = "Abrindo...";
             botaoClicado.style.pointerEvents = "none"; 
@@ -193,14 +200,13 @@
                     gruposVisitados.push(id);
                     localStorage.setItem('gruposVisitados_Shard', JSON.stringify(gruposVisitados));
                 } catch (erro) {
-                    console.log("Erro de rede ignorado para não travar o usuário");
+                    console.log("Ignorado");
                 }
             }
             
             window.location.href = `/comunidades/detalhes.html?id=${id}`;
         }
 
-        // Inicia o carregamento assim que a página abre
         carregarGrupos();
     </script>
 </body>
