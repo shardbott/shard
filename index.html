@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shard Bot 💚</title>
     
-    <meta property="og:title" content="Shard Bot - Automação e Mídia no WhatsApp">
+    <meta property="og:title" content="Shard Bot - Automação no WhatsApp">
     <meta property="og:description" content="Crie figurinhas animadas, baixe músicas e use Inteligência Artificial direto no seu chat gratuitamente.">
-    <meta property="og:image" content="https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg">
+    <meta property="og:image" content="https://i.ibb.co/5g52vBHY/1780534058432.png">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#00E676">
 
@@ -66,6 +66,18 @@
 
         .logo { font-size: 20px; font-weight: 800; display: flex; align-items: center; gap: 10px; letter-spacing: -0.5px; }
         .logo-img { width: 36px; height: 36px; border-radius: 11px; object-fit: cover; border: 1px solid rgba(255,255,255,0.15); }
+        
+        /* NOVO EFEITO DO RAIO NO LOGO */
+        .logo-zap {
+            color: var(--neon-green);
+            font-size: 22px;
+            filter: drop-shadow(0 0 5px var(--neon-green));
+            animation: zapPulse 1.5s infinite alternate;
+        }
+        @keyframes zapPulse {
+            0% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 2px var(--neon-green)); }
+            100% { transform: scale(1.15) rotate(10deg); filter: drop-shadow(0 0 12px var(--neon-green)); }
+        }
 
         .status-ping {
             display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500;
@@ -114,15 +126,23 @@
         }
         .sidebar-overlay.active { display: block; opacity: 1; }
 
+        /* MUDANÇA NA ANIMAÇÃO DO TEXTO DA HERO */
         .hero { padding: 70px 20px 40px; }
         .hero h1 { font-size: 46px; font-weight: 800; margin: 0 0 18px 0; line-height: 1.1; letter-spacing: -1.5px; }
         
         .palavra-animada {
-            color: var(--neon-green); display: inline-block;
-            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-            opacity: 1; transform: translateY(0);
+            color: var(--neon-green);
+            display: inline-block;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Efeito mais solto tipo "bounce" */
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0px);
         }
-        .palavra-animada.escondida { opacity: 0; transform: translateY(-10px); }
+        .palavra-animada.escondida {
+            opacity: 0;
+            transform: translateY(15px) scale(0.9);
+            filter: blur(4px);
+        }
 
         .hero p.subtitle { font-size: 18px; color: var(--text-muted); margin: 0 auto 35px auto; max-width: 460px; line-height: 1.6; }
         
@@ -214,13 +234,31 @@
         details[open] summary::after { transform: rotate(180deg); }
         details p { margin: 12px 0 0 0; font-size: 14px; color: var(--text-muted); line-height: 1.6; }
 
+        /* NOVA ÁREA DE DOAÇÃO: TAMANHO AJUSTADO E EFEITO LUMINOSO (SWEEP) */
         .donation-banner {
             background: linear-gradient(145deg, rgba(15, 22, 18, 0.8), rgba(0, 50, 25, 0.4));
             border: 1px solid var(--glass-border);
             border-left: 4px solid var(--neon-green);
+            width: 90%; 
             max-width: 600px; margin: 80px auto 40px auto; padding: 30px;
             border-radius: 20px; backdrop-filter: blur(10px);
             display: flex; flex-direction: column; align-items: center; gap: 15px;
+            position: relative; overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .donation-banner::before {
+            content: ''; position: absolute; top: 0; left: -150%;
+            width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(0, 230, 118, 0.15), transparent);
+            transform: skewX(-20deg); animation: sweepGlow 4s infinite;
+        }
+        @keyframes sweepGlow {
+            0% { left: -150%; }
+            50%, 100% { left: 200%; }
+        }
+        .donation-banner:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 230, 118, 0.15);
         }
         .donation-banner i { font-size: 40px; color: var(--neon-green); }
         .donation-banner h3 { margin: 0; font-size: 22px; font-weight: 800; }
@@ -240,7 +278,6 @@
         .toast-progress { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--neon-green); width: 100%; animation: toastProgressAnim 4s linear forwards; }
         @keyframes toastProgressAnim { from { width: 100%; } to { width: 0%; } }
         
-        /* Oculta textos dos botões extras no mobile */
         @media (max-width: 600px) { 
             #toast-container { width: 90%; } .live-toast { max-width: 100%; } 
             .hide-mobile { display: none !important; }
@@ -290,8 +327,7 @@
         <button class="icon-btn" onclick="toggleMenu()"><i class='bx bx-menu'></i></button>
         <div class="logo">
             <img src="https://i.ibb.co/ZphNKWDH/1780534058432.png" alt="Logo Shard Bot" class="logo-img">
-            Shard Bot
-        </div>
+            Shard Bot <i class='bx bxs-zap logo-zap'></i> </div>
         <div style="display: flex; gap: 12px; align-items: center;">
             <a href="comunidades/index.html" style="color: var(--text-main); text-decoration: none; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.05); padding: 8px 14px; border-radius: 12px; border: 1px solid var(--glass-border); transition: 0.3s;" onmouseover="this.style.borderColor='var(--neon-green)'; this.style.color='var(--neon-green)'" onmouseout="this.style.borderColor='var(--glass-border)'; this.style.color='var(--text-main)'">
                 <i class='bx bx-compass' style="font-size: 18px;"></i> <span class="hide-mobile">Comunidades</span>
