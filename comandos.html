@@ -116,9 +116,15 @@
 
         <div class="filtros">
             <button class="btn-filtro active" onclick="filtrar('todos')">Todos</button>
-            <button class="btn-filtro" onclick="filtrar('midia')">Mídia & Downloads</button>
-            <button class="btn-filtro" onclick="filtrar('grupos')">Grupos</button>
-            <button class="btn-filtro" onclick="filtrar('ia')">Inteligência Artificial</button>
+            <button class="btn-filtro" onclick="filtrar('admin')">Admin</button>
+            <button class="btn-filtro" onclick="filtrar('midia')">Mídia & Edição</button>
+            <button class="btn-filtro" onclick="filtrar('audio')">Áudios & Música</button>
+            <button class="btn-filtro" onclick="filtrar('ia')">IA & Úteis</button>
+            <button class="btn-filtro" onclick="filtrar('jogos')">Jogos</button>
+            <button class="btn-filtro" onclick="filtrar('diversao')">Diversão</button>
+            <button class="btn-filtro" onclick="filtrar('filtros')">Filtros (Fotos)</button>
+            <button class="btn-filtro" onclick="filtrar('memes')">Memes</button>
+            <button class="btn-filtro" onclick="filtrar('texto')">Ferramentas</button>
         </div>
 
         <div class="comandos-grid" id="lista-comandos">
@@ -131,30 +137,119 @@
     </div>
 
     <script>
-        // Banco de Dados de Comandos (Adicione os seus comandos do Node.js aqui)
         const comandos = [
-            { cmd: "/sticker", desc: "Transforma a imagem ou vídeo marcado em figurinha.", cat: "midia" },
-            { cmd: "/play", desc: "Baixa o áudio de uma música do YouTube (Ex: /play Nome da Música).", cat: "midia" },
-            { cmd: "/toimg", desc: "Transforma uma figurinha animada ou estática de volta em imagem.", cat: "midia" },
-            { cmd: "/ban", desc: "Remove um membro do grupo. (Apenas Administradores).", cat: "grupos" },
-            { cmd: "/marcar", desc: "Marca todos os integrantes do grupo silenciosamente.", cat: "grupos" },
-            { cmd: "/link", desc: "Gera o link de convite do grupo atual.", cat: "grupos" },
-            { cmd: "/gpt", desc: "Faz uma pergunta para o ChatGPT responder.", cat: "ia" },
-            { cmd: "/imagem", desc: "Pede para a IA criar uma imagem baseada no seu texto.", cat: "ia" },
-            { cmd: "/menu", desc: "Abre o painel completo de ajuda no chat.", cat: "todos" }
+            // ADMINISTRAÇÃO
+            { cmd: "/ban", desc: "Remove um membro do grupo (marque ou responda a mensagem).", cat: "admin" },
+            { cmd: "/del", desc: "Apaga uma mensagem do grupo (responda a mensagem).", cat: "admin" },
+            { cmd: "/promover", desc: "Dá administrador para um usuário do grupo.", cat: "admin" },
+            { cmd: "/rebaixar", desc: "Tira o administrador de um usuário.", cat: "admin" },
+            { cmd: "/bemvindo", desc: "Ativa/Desativa e configura a mensagem de boas vindas [on/off/texto].", cat: "admin" },
+            { cmd: "/regras", desc: "O bot envia a descrição do grupo no chat.", cat: "admin" },
+            { cmd: "/link", desc: "Gera o link de convite do grupo atual.", cat: "admin" },
+            { cmd: "/grupo", desc: "Abre ou fecha o grupo para mensagens [abrir/fechar].", cat: "admin" },
+            { cmd: "/todos", desc: "Marca silenciosamente todos os integrantes do grupo.", cat: "admin" },
+            { cmd: "/prefix", desc: "Muda o prefixo de comandos do bot.", cat: "admin" },
+
+            // MÍDIA E EDIÇÃO
+            { cmd: "/s", desc: "Transforma a foto ou vídeo em figurinha animada/estática.", cat: "midia" },
+            { cmd: "/qc", desc: "Cria uma figurinha de citação estilo balão de mensagem.", cat: "midia" },
+            { cmd: "/removebg", desc: "Remove o fundo de uma imagem e a transforma em figurinha.", cat: "midia" },
+            { cmd: "/emojimix", desc: "Junta dois emojis diferentes e cria uma figurinha híbrida (ex: /emojimix 😭 🐢).", cat: "midia" },
+            { cmd: "/togif", desc: "Transforma uma figurinha animada de volta em um vídeo (mp4).", cat: "midia" },
+            { cmd: "/efeito", desc: "Aplica efeitos na voz de um áudio [fino/grosso].", cat: "midia" },
+
+            // ÁUDIOS E MÚSICA
+            { cmd: "/play", desc: "Baixa o áudio de uma música do YouTube pelo nome.", cat: "audio" },
+            { cmd: "/tomp3", desc: "Transforma um vídeo enviado no chat em áudio MP3.", cat: "audio" },
+            { cmd: "/tts", desc: "O bot fala o texto que você digitar (Texto para Áudio).", cat: "audio" },
+            { cmd: "/lyrics", desc: "Busca e envia a letra de uma música.", cat: "audio" },
+            { cmd: "/itunes", desc: "Busca informações sobre uma música no iTunes.", cat: "audio" },
+
+            // IA E UTILIDADES
+            { cmd: "/ia", desc: "Faz uma pergunta ou pedido para a Inteligência Artificial (ChatGPT).", cat: "ia" },
+            { cmd: "/imagem", desc: "Pede para a IA gerar uma imagem baseada na sua descrição.", cat: "ia" },
+            { cmd: "/wiki", desc: "Faz uma busca rápida na Wikipédia.", cat: "ia" },
+            { cmd: "/clima", desc: "Mostra a previsão do tempo de uma cidade.", cat: "ia" },
+            { cmd: "/cep", desc: "Consulta informações sobre um CEP brasileiro.", cat: "ia" },
+            { cmd: "/qrcode", desc: "Gera um QR Code a partir de um texto ou link.", cat: "ia" },
+            { cmd: "/print", desc: "Tira print de um site e te envia a imagem.", cat: "ia" },
+            { cmd: "/imdb", desc: "Busca informações sobre filmes ou séries.", cat: "ia" },
+            { cmd: "/periodictable", desc: "Mostra dados sobre um elemento da tabela periódica.", cat: "ia" },
+
+            // JOGOS E COMPETIÇÃO
+            { cmd: "/rank", desc: "Mostra o ranking de quem mais envia mensagens no grupo [semanal/total].", cat: "jogos" },
+            { cmd: "/anagrama", desc: "Jogo de desembaralhar letras para formar a palavra.", cat: "jogos" },
+            { cmd: "/forca", desc: "Inicia um jogo da forca no chat.", cat: "jogos" },
+            { cmd: "/quiz", desc: "Inicia um jogo de perguntas e respostas.", cat: "jogos" },
+            { cmd: "/ppt", desc: "Jogue Pedra, Papel ou Tesoura contra o bot.", cat: "jogos" },
+            { cmd: "/dado", desc: "Gira um dado virtual.", cat: "jogos" },
+            { cmd: "/moeda", desc: "Joga cara ou coroa.", cat: "jogos" },
+
+            // DIVERSÃO E ZOEIRA
+            { cmd: "/presentear", desc: "Dá um presente virtual para alguém do grupo (@pessoa item).", cat: "diversao" },
+            { cmd: "/desafio", desc: "O bot envia um desafio aleatório para você.", cat: "diversao" },
+            { cmd: "/verdade", desc: "O bot faz uma pergunta polêmica.", cat: "diversao" },
+            { cmd: "/8ball", desc: "Faça uma pergunta de sim/não para a bola mágica.", cat: "diversao" },
+            { cmd: "/gado", desc: "Mede o nível de gadice de alguém.", cat: "diversao" },
+            { cmd: "/gay", desc: "Mede a porcentagem gay de alguém.", cat: "diversao" },
+            { cmd: "/gostoso", desc: "Calcula o nível de beleza de alguém.", cat: "diversao" },
+            { cmd: "/bater", desc: "Dê um tapa virtual em alguém.", cat: "diversao" },
+            { cmd: "/beijar", desc: "Mande um beijo para alguém do grupo.", cat: "diversao" },
+            { cmd: "/abracar", desc: "Mande um abraço virtual.", cat: "diversao" },
+            { cmd: "/biscoito", desc: "Dá um biscoito para alguém.", cat: "diversao" },
+            { cmd: "/cantada", desc: "O bot envia uma cantada aleatória.", cat: "diversao" },
+            { cmd: "/ship", desc: "Shippa (combina) duas pessoas do grupo aleatoriamente.", cat: "diversao" },
+            { cmd: "/mock", desc: "tRaNsFoRmA sEu TeXtO nIsSo.", cat: "diversao" },
+            { cmd: "/emojipasta", desc: "Entope o seu texto com emojis aleatórios.", cat: "diversao" },
+            { cmd: "/reverse", desc: "Inverte as letras do texto digitado.", cat: "diversao" },
+            { cmd: "/facts", desc: "Envia um fato aleatório e interessante.", cat: "diversao" },
+
+            // FILTROS DE IMAGEM
+            { cmd: "/ad", desc: "Cria uma figurinha de anúncio com sua foto.", cat: "filtros" },
+            { cmd: "/blur", desc: "Desfoca uma imagem enviada.", cat: "filtros" },
+            { cmd: "/clown", desc: "Aplica filtro de palhaço na foto.", cat: "filtros" },
+            { cmd: "/colorify", desc: "Muda a cor predominante da imagem.", cat: "filtros" },
+            { cmd: "/communism", desc: "Coloca a foice e martelo na imagem.", cat: "filtros" },
+            { cmd: "/drip", desc: "Coloca a jaqueta Drip de grife na sua foto.", cat: "filtros" },
+            { cmd: "/greyscale", desc: "Deixa a foto em preto e branco.", cat: "filtros" },
+            { cmd: "/gun", desc: "Coloca uma mira de arma apontando para a foto.", cat: "filtros" },
+            { cmd: "/huerotate", desc: "Aplica rotação de matiz nas cores da imagem.", cat: "filtros" },
+            { cmd: "/invert", desc: "Aplica o efeito negativo na foto.", cat: "filtros" },
+            { cmd: "/jail", desc: "Coloca a pessoa da foto atrás das grades.", cat: "filtros" },
+            { cmd: "/mnm", desc: "Transforma em um M&M vermelho.", cat: "filtros" },
+            { cmd: "/nokia", desc: "Coloca a imagem na tela de um Nokia tijolão.", cat: "filtros" },
+            { cmd: "/pet", desc: "Cria um GIF de uma mão fazendo carinho na imagem.", cat: "filtros" },
+            { cmd: "/uncover", desc: "Aplica o filtro de lençóis na imagem.", cat: "filtros" },
+            { cmd: "/wanted", desc: "Cria um cartaz de 'Procurado' do velho oeste.", cat: "filtros" },
+
+            // GERADOR DE MEMES
+            { cmd: "/alert", desc: "Gera meme de aviso/alerta do celular.", cat: "memes" },
+            { cmd: "/caution", desc: "Meme de faixa amarela de cuidado.", cat: "memes" },
+            { cmd: "/drake", desc: "Meme do Drake (Não gosta / Gosta). Separe as frases por |.", cat: "memes" },
+            { cmd: "/oogway", desc: "Meme da tartaruga Mestre Oogway com sua frase.", cat: "memes" },
+            { cmd: "/opinion", desc: "Meme de 'minha opinião honesta'.", cat: "memes" },
+            { cmd: "/pikachu", desc: "Meme do Pikachu surpreso com sua frase.", cat: "memes" },
+            { cmd: "/pooh", desc: "Meme do Ursinho Pooh (Normal / Chique). Separe por |.", cat: "memes" },
+            { cmd: "/sadcat", desc: "Meme do gatinho triste chorando.", cat: "memes" },
+            { cmd: "/supreme", desc: "Cria a logo da Supreme com o seu texto.", cat: "memes" },
+            { cmd: "/quoteimg", desc: "Gera imagem de citação. Separe frase e autor por |.", cat: "memes" },
+
+            // FERRAMENTAS E TEXTOS
+            { cmd: "/encode", desc: "Converte o texto digitado para código binário.", cat: "texto" },
+            { cmd: "/decode", desc: "Traduz um código binário de volta para texto.", cat: "texto" },
+            { cmd: "/morse", desc: "Converte o texto para Código Morse.", cat: "texto" }
         ];
 
         const listaContainer = document.getElementById("lista-comandos");
         const noResults = document.getElementById("no-results");
 
-        // Função para renderizar os comandos na tela
         function renderizarComandos(filtroTexto = "", categoria = "todos") {
             listaContainer.innerHTML = "";
             let contagem = 0;
 
             comandos.forEach(c => {
                 const textoMatch = c.cmd.toLowerCase().includes(filtroTexto.toLowerCase()) || c.desc.toLowerCase().includes(filtroTexto.toLowerCase());
-                const catMatch = categoria === "todos" || c.cat === categoria || c.cat === "todos";
+                const catMatch = categoria === "todos" || c.cat === categoria;
 
                 if (textoMatch && catMatch) {
                     contagem++;
@@ -175,12 +270,10 @@
             noResults.style.display = contagem === 0 ? "block" : "none";
         }
 
-        // Sistema de Copiar
         function copiarComando(texto, botao) {
             navigator.clipboard.writeText(texto);
             const icon = botao.querySelector('i');
             
-            // Feedback visual
             botao.classList.add('copied');
             icon.className = 'bx bx-check';
             
@@ -190,7 +283,6 @@
             }, 2000);
         }
 
-        // Sistema de Filtros (Abas)
         let categoriaAtual = "todos";
         function filtrar(cat) {
             categoriaAtual = cat;
@@ -199,12 +291,10 @@
             renderizarComandos(document.getElementById("search").value, categoriaAtual);
         }
 
-        // Sistema de Busca em tempo real
         document.getElementById("search").addEventListener("input", (e) => {
             renderizarComandos(e.target.value, categoriaAtual);
         });
 
-        // Carrega tudo ao iniciar
         renderizarComandos();
     </script>
 </body>
