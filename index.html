@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shard Bot 💚</title>
     
-    <meta property="og:title" content="Shard Bot - Automação no WhatsApp">
+    <meta property="og:title" content="Shard Bot - Automação e Mídia no WhatsApp">
     <meta property="og:description" content="Crie figurinhas animadas, baixe músicas e use Inteligência Artificial direto no seu chat gratuitamente.">
-    <meta property="og:image" content="https://i.ibb.co/5g52vBHY/1780534058432.png">
+    <meta property="og:image" content="https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#00E676">
 
@@ -25,10 +25,6 @@
             --glass-border: rgba(255, 255, 255, 0.08);
             --glass-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.6);
             --glass-accent: rgba(0, 230, 118, 0.1);
-            --wa-bg: #0b141a;
-            --wa-header: #1f2c34;
-            --wa-bubble-out: #005c4b;
-            --wa-bubble-in: #202c33;
             --neon-green: #00E676;
         }
 
@@ -67,7 +63,6 @@
         .logo { font-size: 20px; font-weight: 800; display: flex; align-items: center; gap: 10px; letter-spacing: -0.5px; }
         .logo-img { width: 36px; height: 36px; border-radius: 11px; object-fit: cover; border: 1px solid rgba(255,255,255,0.15); }
         
-        /* NOVO EFEITO DO RAIO NO LOGO */
         .logo-zap {
             color: var(--neon-green);
             font-size: 22px;
@@ -126,14 +121,13 @@
         }
         .sidebar-overlay.active { display: block; opacity: 1; }
 
-        /* MUDANÇA NA ANIMAÇÃO DO TEXTO DA HERO */
         .hero { padding: 70px 20px 40px; }
         .hero h1 { font-size: 46px; font-weight: 800; margin: 0 0 18px 0; line-height: 1.1; letter-spacing: -1.5px; }
         
         .palavra-animada {
             color: var(--neon-green);
             display: inline-block;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Efeito mais solto tipo "bounce" */
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             opacity: 1;
             transform: translateY(0) scale(1);
             filter: blur(0px);
@@ -149,61 +143,103 @@
         .cta-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 20px; }
         .btn-action {
             display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px; border-radius: 14px;
-            font-size: 15px; font-weight: 600; text-decoration: none; transition: all 0.3s ease;
+            font-size: 15px; font-weight: 600; text-decoration: none; transition: all 0.3s ease; z-index: 20; position: relative;
         }
         .btn-main-green { background: linear-gradient(135deg, #00E676, #00b359); color: #000; box-shadow: 0 8px 24px rgba(0, 230, 118, 0.25); }
         .btn-main-green:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0, 230, 118, 0.4); }
         .btn-outline { background: rgba(255,255,255,0.03); color: #fff; border: 1px solid var(--glass-border); }
         .btn-outline:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); transform: translateY(-3px); }
 
-        .mockup-container { display: flex; justify-content: center; margin-bottom: 60px; position: relative; z-index: 10; perspective: 1500px; }
-        .phone-mockup {
-            background-color: var(--wa-bg); border: 4px solid var(--neon-green); border-radius: 36px;
-            height: 550px; width: 270px; position: relative; box-shadow: 0 40px 80px rgba(0,0,0, 0.8), inset 0 0 0 4px #000;
-            overflow: hidden; opacity: 0; transform: translateY(60px) rotateX(15deg);
-            animation: phoneEntrance 1.4s cubic-bezier(0.1, 0.8, 0.2, 1) forwards; transition: transform 0.4s;
-            transform-style: preserve-3d;
+        /* =========================================
+           NOVA ANIMAÇÃO: ARTEFATO MÍSTICO 3D
+           ========================================= */
+        .artefato-container {
+            position: relative;
+            display: flex; justify-content: center; align-items: center;
+            height: 450px; width: 100%; margin-bottom: 40px;
+            font-family: 'Courier New', Courier, monospace;
         }
-        .mockup-container:hover .phone-mockup { transform: translateY(-5px) rotateX(5deg) rotateY(8deg); }
-        @keyframes phoneEntrance { to { opacity: 1; transform: translateY(0) rotateX(0); } }
 
-        .phone-mockup::before { content: ''; position: absolute; left: -4px; top: 110px; width: 4px; height: 60px; background: var(--neon-green); border-radius: 4px 0 0 4px; z-index: -1; }
-        .phone-mockup::after { content: ''; position: absolute; right: -4px; top: 140px; width: 4px; height: 40px; background: var(--neon-green); border-radius: 0 4px 4px 0; z-index: -1; }
-        .phone-notch { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 80px; height: 22px; background-color: #000; border-radius: 20px; z-index: 40; }
-        .phone-status-bar { position: absolute; top: 0; width: 100%; height: 35px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; box-sizing: border-box; font-size: 11px; font-weight: 600; color: #fff; z-index: 35; background: var(--wa-header); padding-top: 5px; }
-        .status-icons { display: flex; align-items: center; gap: 4px; font-size: 13px; color: var(--neon-green); }
-        .phone-screen { background-color: var(--wa-bg); width: 100%; height: 100%; display: flex; flex-direction: column; box-sizing: border-box; background-image: radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 12px 12px; padding-top: 35px; }
-        .chat-header { background: var(--wa-header); padding: 10px 15px; display: flex; align-items: center; gap: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.2); z-index: 30; }
-        .chat-avatar-img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; }
-        .chat-status { text-align: left; flex: 1; }
-        .chat-status strong { display: block; font-size: 15px; color: #fff; font-weight: 500; }
-        .chat-status span { font-size: 11px; color: #8696a0; }
-        .header-dots { color: #fff; font-size: 20px; }
-        .chat-body { flex: 1; padding: 12px; display: flex; flex-direction: column; position: relative; overflow: hidden; box-sizing: border-box; }
-        .chat-scroll-container { display: flex; flex-direction: column; gap: 10px; width: 100%; position: absolute; left: 0; padding: 12px; box-sizing: border-box; animation: whatsappScroll 12s infinite cubic-bezier(0.25, 1, 0.5, 1); }
-        .msg-row { display: flex; width: 100%; position: relative; margin-bottom: 4px; }
-        .msg-row.row-out { justify-content: flex-end; }
-        .msg-row.row-in { justify-content: flex-start; }
-        .msg-box { padding: 5px; font-size: 13.5px; color: #e9edef; position: relative; box-shadow: 0 1px 1px rgba(0,0,0,0.2); text-align: left; max-width: 85%; }
-        .msg-box.outgoing { background-color: var(--wa-bubble-out); border-radius: 12px 0 12px 12px; }
-        .msg-box.incoming { background-color: var(--wa-bubble-in); border-radius: 0 12px 12px 12px; }
-        .media-box { border-radius: 8px; overflow: hidden; width: 155px; height: 180px; background: #182229; display: flex; align-items: center; justify-content: center; }
-        .media-box img { width: 100%; height: 100%; object-fit: cover; }
-        .sticker-wrapper { background: transparent !important; box-shadow: none !important; padding: 0 !important; }
-        .whatsapp-sticker { width: 120px; height: 120px; border-radius: 10px; background: url('https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg') center/cover; animation: floatEffect 2s infinite alternate ease-in-out; box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
-        .msg-time { position: absolute; bottom: 6px; right: 8px; font-size: 10px; color: rgba(255,255,255,0.7); display: flex; align-items: center; gap: 3px; background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 10px; backdrop-filter: blur(2px); }
-        .msg-time i { color: #53bdeb; font-size: 14px; }
-        @keyframes floatEffect { from { transform: translateY(0); } to { transform: translateY(-4px); } }
-        @keyframes whatsappScroll { 0%, 22% { transform: translateY(220px); } 28%, 52% { transform: translateY(140px); } 58%, 92% { transform: translateY(-20px); } 98%, 100% { transform: translateY(220px); } }
-        @keyframes bubbleFade { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
-        .anim-b1 { animation: bubbleFade 0.3s 0s forwards; opacity: 0; }
-        .anim-b2 { animation: bubbleFade 0.3s 3.2s forwards; opacity: 0; }
-        .anim-b3 { animation: bubbleFade 0.3s 6.8s forwards; opacity: 0; }
-        .chat-footer { background: transparent; padding: 8px 10px; display: flex; align-items: flex-end; gap: 8px; z-index: 30; }
-        .wa-input-pill { flex: 1; background: #ffffff; border-radius: 24px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
-        .wa-input-pill i { font-size: 22px; color: #8696a0; }
-        .wa-input-pill span { flex: 1; margin: 0 10px; text-align: left; color: #8696a0; font-size: 15px; }
-        .wa-mic-btn { width: 44px; height: 44px; background: var(--neon-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #0b141a; font-size: 22px; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .binary-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; display: flex; justify-content: center; align-items: center;
+        }
+        .binary-bg span {
+            position: absolute; color: rgba(0, 255, 136, 0.25); font-size: 13px; font-weight: bold;
+            text-shadow: 0 0 5px rgba(0, 255, 136, 0.3);
+            animation: pulseBinary 4s var(--delay) infinite alternate ease-in-out;
+            transform: translate(var(--x), var(--y));
+        }
+        @keyframes pulseBinary {
+            0% { opacity: 0; transform: translate(var(--x), calc(var(--y) + 10px)); }
+            50% { opacity: 1; }
+            100% { opacity: 0; transform: translate(var(--x), calc(var(--y) - 10px)); }
+        }
+
+        .scene {
+            position: relative; width: 400px; height: 400px; perspective: 1200px;
+            display: flex; justify-content: center; align-items: center;
+            transform-style: preserve-3d; animation: levitate 5s ease-in-out infinite; z-index: 10;
+        }
+
+        .crystal-group {
+            position: absolute; width: 100px; height: 160px;
+            transform-style: preserve-3d; animation: spinCrystal 12s linear infinite;
+        }
+
+        .crystal-core {
+            transform: scale(0.4) rotateY(180deg);
+            animation: spinCrystalReverse 6s linear infinite;
+        }
+
+        .face {
+            position: absolute; width: 100px; height: 80px;
+            border: 1px solid rgba(0, 255, 136, 0.8);
+            box-shadow: inset 0 0 15px rgba(0, 255, 136, 0.4); backface-visibility: visible;
+        }
+
+        .crystal-group > .face { background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 40, 20, 0.7)); }
+        .crystal-core > .face { background: linear-gradient(135deg, rgba(100, 255, 200, 0.8), rgba(0, 150, 80, 0.9)); border-color: #fff; box-shadow: 0 0 20px rgba(0, 255, 136, 0.5); }
+
+        .face-top { top: 0; left: 0; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); transform-origin: bottom center; }
+        .face-bottom { top: 80px; left: 0; clip-path: polygon(0% 0%, 100% 0%, 50% 100%); transform-origin: top center; }
+
+        .t-front { transform: rotateY(0deg) translateZ(50px) rotateX(32deg); }
+        .t-right { transform: rotateY(90deg) translateZ(50px) rotateX(32deg); }
+        .t-back { transform: rotateY(180deg) translateZ(50px) rotateX(32deg); }
+        .t-left { transform: rotateY(270deg) translateZ(50px) rotateX(32deg); }
+        .b-front { transform: rotateY(0deg) translateZ(50px) rotateX(-32deg); }
+        .b-right { transform: rotateY(90deg) translateZ(50px) rotateX(-32deg); }
+        .b-back { transform: rotateY(180deg) translateZ(50px) rotateX(-32deg); }
+        .b-left { transform: rotateY(270deg) translateZ(50px) rotateX(-32deg); }
+
+        .orbit-wrapper { position: absolute; border-radius: 50%; transform-style: preserve-3d; display: flex; justify-content: center; align-items: center; }
+        .orbit-outer { width: 320px; height: 320px; border: 1px dashed rgba(0, 255, 136, 0.4); animation: spinOuter 14s linear infinite; }
+        .orbit-inner { width: 240px; height: 240px; border: 1px solid rgba(0, 255, 136, 0.2); box-shadow: inset 0 0 20px rgba(0, 255, 136, 0.05); animation: spinInner 10s linear infinite; }
+
+        .icon {
+            position: absolute; display: flex; justify-content: center; align-items: center;
+            background: rgba(1, 4, 3, 0.95); border: 1px solid #00ff88; color: #00ff88;
+            border-radius: 50%; font-weight: bold; font-family: sans-serif;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.5); transform-style: preserve-3d;
+        }
+
+        .icon-out { width: 36px; height: 36px; font-size: 16px; animation: counterOuter 14s linear infinite; }
+        .i1 { top: -18px; left: calc(50% - 18px); }
+        .i2 { bottom: -18px; left: calc(50% - 18px); }
+
+        .icon-in { width: 28px; height: 28px; font-size: 12px; animation: counterInner 10s linear infinite; }
+        .i3 { top: calc(50% - 14px); left: -14px; }
+        .i4 { top: calc(50% - 14px); right: -14px; }
+
+        @keyframes levitate { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        @keyframes spinCrystal { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
+        @keyframes spinCrystalReverse { from { transform: scale(0.4) rotateY(360deg); } to { transform: scale(0.4) rotateY(0deg); } }
+        @keyframes spinOuter { from { transform: rotateX(65deg) rotateY(-30deg) rotateZ(0deg); } to { transform: rotateX(65deg) rotateY(-30deg) rotateZ(360deg); } }
+        @keyframes counterOuter { from { transform: rotateZ(0deg) rotateY(30deg) rotateX(-65deg); } to { transform: rotateZ(-360deg) rotateY(30deg) rotateX(-65deg); } }
+        @keyframes spinInner { from { transform: rotateX(60deg) rotateY(40deg) rotateZ(360deg); } to { transform: rotateX(60deg) rotateY(40deg) rotateZ(0deg); } }
+        @keyframes counterInner { from { transform: rotateZ(-360deg) rotateY(-40deg) rotateX(-60deg); } to { transform: rotateZ(0deg) rotateY(-40deg) rotateX(-60deg); } }
+        /* ========================================= */
 
         .section-title { font-size: 28px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; }
         .section-desc { color: var(--text-muted); font-size: 15px; margin-bottom: 40px; }
@@ -213,18 +249,21 @@
         .feature-icon { font-size: 34px; margin-bottom: 15px; display: block; color: var(--neon-green); }
         .feature-card h4 { margin: 0 0 10px 0; font-size: 18px; font-weight: 700; }
         .feature-card p { margin: 0; font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+        
         .timeline-section { max-width: 700px; margin: 80px auto; padding: 0 24px; text-align: left; }
         .timeline { position: relative; border-left: 2px dashed rgba(255,255,255,0.1); padding-left: 24px; margin-left: 10px; }
         .timeline-item { position: relative; margin-bottom: 40px; }
         .timeline-item::before { content: ''; position: absolute; left: -31px; top: 4px; width: 12px; height: 12px; background: #00E676; border-radius: 50%; box-shadow: 0 0 8px #00E676; }
         .timeline-item h4 { margin: 0 0 5px 0; font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
         .timeline-item p { margin: 0; font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+        
         .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; max-width: 600px; margin: 60px auto; padding: 0 20px; }
         @media(min-width: 600px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
         .stat-card { background: var(--glass-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid var(--glass-border); padding: 24px 15px; border-radius: 22px; text-align: center; box-shadow: var(--glass-shadow); transition: transform 0.3s ease; }
         .stat-card:hover { transform: scale(1.05); border-color: rgba(255,255,255,0.15); }
         .stat-card h3 { font-size: 26px; margin: 0 0 5px 0; color: #fff; font-weight: 800; letter-spacing: -0.5px; }
         .stat-card p { margin: 0; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
+        
         .faq-section { max-width: 650px; margin: 80px auto; padding: 0 20px; text-align: left; }
         details { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; margin-bottom: 12px; padding: 16px; transition: all 0.3s ease; backdrop-filter: blur(10px); }
         details[open] { border-color: rgba(0, 230, 118, 0.3); background: rgba(20, 28, 24, 0.5); }
@@ -234,32 +273,20 @@
         details[open] summary::after { transform: rotate(180deg); }
         details p { margin: 12px 0 0 0; font-size: 14px; color: var(--text-muted); line-height: 1.6; }
 
-        /* NOVA ÁREA DE DOAÇÃO: TAMANHO AJUSTADO E EFEITO LUMINOSO (SWEEP) */
         .donation-banner {
             background: linear-gradient(145deg, rgba(15, 22, 18, 0.8), rgba(0, 50, 25, 0.4));
-            border: 1px solid var(--glass-border);
-            border-left: 4px solid var(--neon-green);
-            width: 77%; 
-            max-width: 600px; margin: 80px auto 40px auto; padding: 30px;
-            border-radius: 20px; backdrop-filter: blur(10px);
-            display: flex; flex-direction: column; align-items: center; gap: 15px;
-            position: relative; overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--glass-border); border-left: 4px solid var(--neon-green);
+            width: 90%; max-width: 600px; margin: 80px auto 40px auto; padding: 30px;
+            border-radius: 20px; backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; gap: 15px;
+            position: relative; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .donation-banner::before {
-            content: ''; position: absolute; top: 0; left: -150%;
-            width: 50%; height: 100%;
+            content: ''; position: absolute; top: 0; left: -150%; width: 50%; height: 100%;
             background: linear-gradient(to right, transparent, rgba(0, 230, 118, 0.15), transparent);
             transform: skewX(-20deg); animation: sweepGlow 4s infinite;
         }
-        @keyframes sweepGlow {
-            0% { left: -150%; }
-            50%, 100% { left: 200%; }
-        }
-        .donation-banner:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 230, 118, 0.15);
-        }
+        @keyframes sweepGlow { 0% { left: -150%; } 50%, 100% { left: 200%; } }
+        .donation-banner:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0, 230, 118, 0.15); }
         .donation-banner i { font-size: 40px; color: var(--neon-green); }
         .donation-banner h3 { margin: 0; font-size: 22px; font-weight: 800; }
         .donation-banner p { margin: 0; font-size: 14px; color: var(--text-muted); line-height: 1.5; }
@@ -327,7 +354,8 @@
         <button class="icon-btn" onclick="toggleMenu()"><i class='bx bx-menu'></i></button>
         <div class="logo">
             <img src="https://i.ibb.co/ZphNKWDH/1780534058432.png" alt="Logo Shard Bot" class="logo-img">
-            Shard Bot <i class='bx bxs-zap logo-zap'></i> </div>
+            Shard Bot <i class='bx bxs-zap logo-zap'></i>
+        </div>
         <div style="display: flex; gap: 12px; align-items: center;">
             <a href="comunidades/index.html" style="color: var(--text-main); text-decoration: none; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.05); padding: 8px 14px; border-radius: 12px; border: 1px solid var(--glass-border); transition: 0.3s;" onmouseover="this.style.borderColor='var(--neon-green)'; this.style.color='var(--neon-green)'" onmouseout="this.style.borderColor='var(--glass-border)'; this.style.color='var(--text-main)'">
                 <i class='bx bx-compass' style="font-size: 18px;"></i> <span class="hide-mobile">Comunidades</span>
@@ -349,47 +377,49 @@
         </div>
     </div>
 
-    <div class="mockup-container">
-        <div class="phone-mockup">
-            <div class="phone-notch"></div>
-            <div class="phone-status-bar">
-                <div>09:29</div>
-                <div class="status-icons">
-                    <i class='bx bx-signal-5'></i><i class='bx bx-wifi'></i><i class='bx bxs-battery-full' style="transform: rotate(270deg);"></i>
-                </div>
+    <div class="artefato-container">
+        <div class="binary-bg">
+            <span style="--x: -150px; --y: -100px; --delay: 0s;">0 1</span>
+            <span style="--x: 170px;  --y: -120px; --delay: 1.5s;">1 0 1</span>
+            <span style="--x: -180px; --y: 80px;  --delay: 0.8s;">1</span>
+            <span style="--x: 140px;  --y: 130px; --delay: 2.2s;">0 0</span>
+            <span style="--x: -90px;  --y: 160px; --delay: 1.1s;">1 1 0</span>
+            <span style="--x: 190px;  --y: 20px;  --delay: 0.4s;">0</span>
+        </div>
+
+        <div class="scene">
+            <div class="crystal-group">
+                <div class="face face-top t-front"></div>
+                <div class="face face-top t-right"></div>
+                <div class="face face-top t-back"></div>
+                <div class="face face-top t-left"></div>
+                
+                <div class="face face-bottom b-front"></div>
+                <div class="face face-bottom b-right"></div>
+                <div class="face face-bottom b-back"></div>
+                <div class="face face-bottom b-left"></div>
             </div>
-            <div class="phone-screen">
-                <div class="chat-header">
-                    <img src="https://i.ibb.co/ZphNKWDH/1780534058432.png" class="chat-avatar-img">
-                    <div class="chat-status">
-                        <strong>Shard Bot</strong><span>online</span>
-                    </div>
-                    <i class='bx bx-dots-vertical-rounded header-dots'></i>
-                </div>
-                <div class="chat-body">
-                    <div class="chat-scroll-container">
-                        <div class="msg-row row-out anim-b1">
-                            <div class="msg-box outgoing">
-                                <div class="media-box"><img src="https://i.ibb.co/tr6F61b/quality-restoration-20260601074400131.jpg" alt="Upload"></div>
-                                <div class="msg-time">09:29 <i class='bx bx-check-double'></i></div>
-                            </div>
-                        </div>
-                        <div class="msg-row row-in anim-b2">
-                            <div class="msg-box incoming" style="padding: 10px 14px; max-width: 70%;">
-                                Criando figurinha... ⏳<span style="font-size: 10px; color: #8696a0; float: right; margin-top: 8px;">09:29</span>
-                            </div>
-                        </div>
-                        <div class="msg-row row-in anim-b3">
-                            <div class="msg-box incoming sticker-wrapper">
-                                <div class="whatsapp-sticker"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="chat-footer">
-                    <div class="wa-input-pill"><i class='bx bx-smile'></i><span>Mensagem</span><i class='bx bx-paperclip' style="transform: rotate(-45deg);"></i></div>
-                    <div class="wa-mic-btn"><i class='bx bxs-microphone'></i></div>
-                </div>
+
+            <div class="crystal-group crystal-core">
+                <div class="face face-top t-front"></div>
+                <div class="face face-top t-right"></div>
+                <div class="face face-top t-back"></div>
+                <div class="face face-top t-left"></div>
+                
+                <div class="face face-bottom b-front"></div>
+                <div class="face face-bottom b-right"></div>
+                <div class="face face-bottom b-back"></div>
+                <div class="face face-bottom b-left"></div>
+            </div>
+
+            <div class="orbit-wrapper orbit-outer">
+                <div class="icon icon-out i1">✦</div>
+                <div class="icon icon-out i2">✧</div>
+            </div>
+
+            <div class="orbit-wrapper orbit-inner">
+                <div class="icon icon-in i3">0</div>
+                <div class="icon icon-in i4">1</div>
             </div>
         </div>
     </div>
